@@ -1,6 +1,7 @@
 package me.zrxjava.system.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Sets;
 import me.zrxjava.common.enums.DataScopeEnum;
 import me.zrxjava.system.entity.Menu;
@@ -75,7 +76,8 @@ public class AuthorityServiceImpl implements AuthorityService
         roles.forEach(role -> {
             List<Menu> menus = menuService.getByRoleId(role.getRoleId());
             if (CollectionUtil.isNotEmpty(menus)){
-                sets.addAll(menus.stream().map(Menu::getPermission).collect(Collectors.toSet()));
+                sets.addAll(menus.stream().filter(menu -> StrUtil.isNotBlank(menu.getPermission()))
+                        .map(Menu::getPermission).collect(Collectors.toSet()));
             }
         });
         return sets.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());

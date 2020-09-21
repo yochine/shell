@@ -18,11 +18,8 @@
         <skipTests>true</skipTests>
         <docker.host>http://192.168.3.101:2375</docker.host>
         <docker.maven.plugin.version>1.2.2</docker.maven.plugin.version>
-        <druid.version>1.1.10</druid.version>
         <hutool.version>4.5.7</hutool.version>
-        <swagger2.version>2.9.2</swagger2.version>
         <mybatis-plus.version>3.3.2</mybatis-plus.version>
-        <velocity.version>2.2</velocity.version>
     </properties>
 
     <dependencies>

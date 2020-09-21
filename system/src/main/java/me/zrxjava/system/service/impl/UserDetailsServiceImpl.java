@@ -39,6 +39,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             Set<GrantedAuthority> grantedAuthorities = authorityService.getGrantedAuthorities(user.getUserId());
             return new AdminUserDetails(user,deptIds,grantedAuthorities);
         }
-        throw new UsernameNotFoundException("");
+        throw new UsernameNotFoundException("用户不存在！");
     }
 }
