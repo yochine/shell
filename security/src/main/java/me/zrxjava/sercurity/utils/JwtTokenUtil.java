@@ -1,17 +1,22 @@
 package me.zrxjava.sercurity.utils;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import com.google.common.collect.Maps;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -21,6 +26,7 @@ import java.util.Map;
 @Slf4j
 public class JwtTokenUtil {
     private static final String CLAIM_KEY_USERNAME = "sub";
+    private static final String CLAIM_KEY_AUTH= "auth";
     private static final String CLAIM_KEY_CREATED = "created";
     @Value("${jwt.secret}")
     private String secret;
@@ -35,6 +41,27 @@ public class JwtTokenUtil {
     private String generateToken(Map<String, Object> claims) {
         return Jwts.builder()
                 .setClaims(claims)
+                .setExpiration(generateExpirationDate())
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
+    }
+
+    /**
+     * 根据负责生成JWT的token
+     */
+    public String generateToken(Authentication authentication) {
+        /*
+         * 获取权限列表
+         */
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        Map<String, Object> claims = Maps.newHashMap();
+        claims.put(CLAIM_KEY_AUTH, authorities);
+        return Jwts.builder()
+                .setId(IdUtil.simpleUUID())
+                .setClaims(claims)
+                .setSubject(authentication.getName())
                 .setExpiration(generateExpirationDate())
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();

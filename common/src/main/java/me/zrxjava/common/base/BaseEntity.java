@@ -34,7 +34,7 @@ public class BaseEntity implements Serializable {
     @ApiModelProperty(value = "更新时间", hidden = true)
     private LocalDateTime updateTime;
 
-    @TableField(value = "delete_flag")
-    private Integer deleteFlag;
+//    @TableField(value = "delete_flag")
+//    private Integer deleteFlag;
 
 }

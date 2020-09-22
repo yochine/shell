@@ -1,5 +1,6 @@
 package me.zrxjava.system.bo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import me.zrxjava.system.entity.User;
@@ -21,6 +22,7 @@ public class AdminUserDetails implements UserDetails {
 
     private final Set<Long> dataScopes;
 
+    @JsonIgnore
     private final Set<GrantedAuthority> grantedAuthorities;
 
 

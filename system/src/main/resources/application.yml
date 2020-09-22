@@ -20,3 +20,5 @@ mybatis-plus:
 
 security:
   ignoreUrl: /**/*.html,/**/*.css, /**/*.js, /swagger**/**, /druid/**
+
+
