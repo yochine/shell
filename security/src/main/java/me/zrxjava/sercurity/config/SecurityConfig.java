@@ -3,7 +3,6 @@ package me.zrxjava.sercurity.config;
 import me.zrxjava.sercurity.component.JwtAccessDeniedHandler;
 import me.zrxjava.sercurity.component.JwtAuthenticationEntryPoint;
 import me.zrxjava.sercurity.filter.JwtTokenFilter;
-import me.zrxjava.sercurity.filter.MyAuthenticationFilter;
 import me.zrxjava.sercurity.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +15,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 
 /**
@@ -54,9 +52,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint())
                 .accessDeniedHandler(jwtAccessDeniedHandler())
                 .and()
+
                 // jwt过滤器
-                .addFilterBefore(jwtFilter(), BasicAuthenticationFilter.class)
-                .addFilterBefore(myAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilter(jwtFilter());
     }
 
 
@@ -72,10 +70,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public MyAuthenticationFilter myAuthenticationFilter() throws Exception {
-        return  new MyAuthenticationFilter(authenticationManagerBean());
-    }
 
     @Bean
     public JwtTokenFilter jwtFilter() throws Exception {

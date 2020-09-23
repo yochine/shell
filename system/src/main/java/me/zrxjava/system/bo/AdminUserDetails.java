@@ -1,12 +1,14 @@
 package me.zrxjava.system.bo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 import me.zrxjava.system.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
@@ -16,13 +18,15 @@ import java.util.Set;
  */
 @Getter
 @AllArgsConstructor
-public class AdminUserDetails implements UserDetails {
+@ToString
+public class AdminUserDetails implements UserDetails, Serializable {
 
     private final User user;
 
+    @JSONField(serialize = false)
     private final Set<Long> dataScopes;
 
-    @JsonIgnore
+    @JSONField(serialize = false)
     private final Set<GrantedAuthority> grantedAuthorities;
 
 

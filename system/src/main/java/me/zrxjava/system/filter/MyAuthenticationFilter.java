@@ -1,18 +1,22 @@
-package me.zrxjava.sercurity.filter;
+package me.zrxjava.system.filter;
 
-import cn.hutool.json.JSON;
 import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.google.common.collect.Maps;
 import lombok.extern.log4j.Log4j2;
+import me.zrxjava.common.base.ResponseResult;
 import me.zrxjava.sercurity.bo.LoginUser;
 import me.zrxjava.sercurity.utils.JwtTokenUtil;
+import me.zrxjava.system.bo.AdminUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -64,11 +68,15 @@ public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter
      */
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+        response.setCharacterEncoding("UTF-8");
         HashMap<String,Object> map = Maps.newHashMap();
+        AdminUserDetails adminUserDetails = (AdminUserDetails)authResult.getPrincipal();
         String token = jwtTokenUtil.generateToken(authResult);
         map.put("token",token);
         map.put("username",authResult.getName());
-        response.getWriter().write(JSONUtil.toJsonStr(map));
+        map.put("user",adminUserDetails.getUser());
+        SecurityContextHolder.getContext().setAuthentication(authResult);
+        response.getWriter().write(JSON.toJSONString(ResponseResult.success(map)));
     }
 
     /**

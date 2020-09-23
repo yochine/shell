@@ -1,7 +1,7 @@
 package me.zrxjava.sercurity.utils;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Maps;
 import io.jsonwebtoken.Claims;
@@ -9,12 +9,16 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -46,26 +50,6 @@ public class JwtTokenUtil {
                 .compact();
     }
 
-    /**
-     * 根据负责生成JWT的token
-     */
-    public String generateToken(Authentication authentication) {
-        /*
-         * 获取权限列表
-         */
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
-        Map<String, Object> claims = Maps.newHashMap();
-        claims.put(CLAIM_KEY_AUTH, authorities);
-        return Jwts.builder()
-                .setId(IdUtil.simpleUUID())
-                .setClaims(claims)
-                .setSubject(authentication.getName())
-                .setExpiration(generateExpirationDate())
-                .signWith(SignatureAlgorithm.HS512, secret)
-                .compact();
-    }
 
     /**
      * 从token中获取JWT中的负载
@@ -90,30 +74,6 @@ public class JwtTokenUtil {
         return new Date(System.currentTimeMillis() + expiration * 1000);
     }
 
-    /**
-     * 从token中获取登录用户名
-     */
-    public String getUserNameFromToken(String token) {
-        String username;
-        try {
-            Claims claims = getClaimsFromToken(token);
-            username = claims.getSubject();
-        } catch (Exception e) {
-            username = null;
-        }
-        return username;
-    }
-
-    /**
-     * 验证token是否还有效
-     *
-     * @param token       客户端传入的token
-     * @param userDetails 从数据库中查询出来的用户信息
-     */
-    public boolean validateToken(String token, UserDetails userDetails) {
-        String username = getUserNameFromToken(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
-    }
 
     /**
      * 判断token是否已经失效
@@ -134,11 +94,29 @@ public class JwtTokenUtil {
     /**
      * 根据用户信息生成token
      */
-    public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
+    public String generateToken(Authentication authentication) {
+        Map<String, Object> claims = Maps.newHashMap();
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        claims.put(CLAIM_KEY_AUTH, authorities);
         claims.put(CLAIM_KEY_CREATED, new Date());
+        claims.put(CLAIM_KEY_USERNAME, authentication.getName());
         return generateToken(claims);
+    }
+
+    public Authentication getAuthentication(String token) {
+        token = token.substring(tokenHead.length());
+        Claims claims = getClaimsFromToken(token);
+        Object authoritiesStr = claims.get(CLAIM_KEY_AUTH);
+        Collection<? extends GrantedAuthority> authorities =
+                ObjectUtil.isNotEmpty(authoritiesStr) ?
+                        Arrays.stream(authoritiesStr.toString().split(","))
+                                .map(SimpleGrantedAuthority::new)
+                                .collect(Collectors.toList()) : Collections.emptyList();
+
+        User principal = new User((String) claims.get(CLAIM_KEY_USERNAME), "******", authorities);
+        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
     /**
@@ -187,4 +165,5 @@ public class JwtTokenUtil {
         }
         return false;
     }
+
 }

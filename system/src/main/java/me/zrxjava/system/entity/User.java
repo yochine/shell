@@ -1,9 +1,12 @@
 package me.zrxjava.system.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import me.zrxjava.common.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -55,6 +58,7 @@ public class User extends BaseEntity {
     private String avatarPath;
 
     @ApiModelProperty(value = "密码")
+    @JSONField(serialize = false)
     private String password;
 
     @ApiModelProperty(value = "是否为admin账号")
