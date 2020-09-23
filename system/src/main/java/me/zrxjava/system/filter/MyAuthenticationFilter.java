@@ -76,7 +76,7 @@ public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter
         map.put("username",authResult.getName());
         map.put("user",adminUserDetails.getUser());
         SecurityContextHolder.getContext().setAuthentication(authResult);
-        response.getWriter().write(JSON.toJSONString(ResponseResult.success(map)));
+        response.getWriter().write(JSON.toJSONStringWithDateFormat(ResponseResult.success(map),JSON.DEFFAULT_DATE_FORMAT));
     }
 
     /**

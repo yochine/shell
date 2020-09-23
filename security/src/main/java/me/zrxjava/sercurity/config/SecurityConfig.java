@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 /**
@@ -34,6 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 // 禁用 CSRF
                 .csrf().disable()
+                //支持跨域
+                .cors()
+                .and()
                 //不创建session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -52,7 +54,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint())
                 .accessDeniedHandler(jwtAccessDeniedHandler())
                 .and()
-
                 // jwt过滤器
                 .addFilter(jwtFilter());
     }
