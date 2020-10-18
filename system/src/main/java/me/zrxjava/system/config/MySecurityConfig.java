@@ -5,8 +5,11 @@ import me.zrxjava.system.filter.MyAuthenticationFilter;
 import me.zrxjava.system.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -15,11 +18,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @create 2020-09-19
  */
 @EnableWebSecurity
+@Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class MySecurityConfig extends SecurityConfig {
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
+    @Bean
+    public MyAuthenticationFilter myAuthenticationFilter() throws Exception {
+        return  new MyAuthenticationFilter(authenticationManagerBean());
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -32,8 +41,10 @@ public class MySecurityConfig extends SecurityConfig {
         super.configure(http);
     }
 
-    @Bean
-    public MyAuthenticationFilter myAuthenticationFilter() throws Exception {
-        return  new MyAuthenticationFilter(authenticationManagerBean());
+    @Override
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/css/**", "/js/**", "/**/*.html","/**/*.png","/**/*.js","/v2/api-docs",
+                "/img/**", "/fonts/**","/webjars/**", "/favicon.ico", "/test/**","/verifyCode");
     }
+
 }

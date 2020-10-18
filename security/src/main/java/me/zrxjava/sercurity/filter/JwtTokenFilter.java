@@ -2,6 +2,7 @@ package me.zrxjava.sercurity.filter;
 
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
+import me.zrxjava.common.exception.BadRequestException;
 import me.zrxjava.sercurity.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

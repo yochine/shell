@@ -1,20 +1,10 @@
+
+server:
+  port: 9091
+
 spring:
-  datasource:
-    driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/shell?useUnicode=true&useSSL=false&characterEncoding=utf8
-    username: root
-    password: 123456
-  main:
-    allow-bean-definition-overriding: true
-  jackson:
-      default-property-inclusion: non_null
-
-
-jwt:
-  tokenHeader: Authorization #JWT存储的请求头
-  secret: mall-admin-secret #JWT加解密使用的密钥
-  expiration: 604800 #JWT的超期限时间(60*60*24*7)
-  tokenHead: 'Bearer '  #JWT负载中拿到开头
+  profiles:
+    active: dev
 
 mybatis-plus:
     mapper-locations: classpath:/mapper/**/*.xml
@@ -22,8 +12,6 @@ mybatis-plus:
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 
-security:
-  ignoreUrl: /**/*.html,/**/*.css, /**/*.js, /swagger**/**, /druid/**
 
 
 

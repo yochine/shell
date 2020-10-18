@@ -21,7 +21,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
  */
 @Slf4j
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler{
 
     /**
      * 处理所有不可知的异常
@@ -30,6 +30,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleException(Throwable e){
         // 打印堆栈信息
         log.error("Throwable ->",e);
+        return buildResponseEntity(ApiError.error(e.getMessage()));
+    }
+
+    /**
+     * 处理运行时异常
+     */
+    @ExceptionHandler(value = RuntimeException.class)
+    public ResponseEntity<ApiError> runtimeException(RuntimeException e) {
+        // 打印堆栈信息
+        log.error("RuntimeException ->",e);
         return buildResponseEntity(ApiError.error(e.getMessage()));
     }
 
