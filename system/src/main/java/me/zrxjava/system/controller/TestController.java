@@ -15,6 +15,7 @@ public class TestController {
 
     @GetMapping("/test/1")
     public void test(String name){
+        int i = 1/0;
         System.out.println("hello world" + name);
     }
 

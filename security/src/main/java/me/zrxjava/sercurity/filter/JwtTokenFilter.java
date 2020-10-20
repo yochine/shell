@@ -44,11 +44,13 @@ public class JwtTokenFilter extends BasicAuthenticationFilter {
         String authHeader = request.getHeader(this.tokenHeader);
         if (authHeader != null && authHeader.startsWith(this.tokenHead)) {
             if (StrUtil.isEmpty(jwtTokenUtil.refreshHeadToken(authHeader))) {
-                throw new BadCredentialsException("非法请求");
+                response.setCharacterEncoding("UTF-8");response.setStatus(401);
+                response.getWriter().write("非法请求");
+                return;
             }
             Authentication authentication = jwtTokenUtil.getAuthentication(authHeader);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.info("authentication->" + authentication);
+            log.info("authentication-->" + authentication);
 
         }
         chain.doFilter(request, response);

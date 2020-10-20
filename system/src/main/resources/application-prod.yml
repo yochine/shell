@@ -1,7 +1,4 @@
 
-server:
-  port: 9091
-  shutdown: immediate #开启优雅停机 GRACEFUL
 
 spring:
   datasource:
@@ -13,12 +10,9 @@ spring:
     allow-bean-definition-overriding: true
   jackson:
       default-property-inclusion: non_null
-  devtools:
-    restart:
-      enabled: true
 
 knife4j:
-  production: false #true则屏蔽swagger资源
+  production: true #true则屏蔽swagger资源
 
 jwt:
   tokenHeader: Authorization #JWT存储的请求头

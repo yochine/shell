@@ -1,4 +1,4 @@
-package me.zrxjava.system.config;
+package me.zrxjava.common.config;
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import com.google.common.collect.Lists;
@@ -28,32 +28,15 @@ import java.util.List;
  */
 
 @Configuration
-@EnableSwagger2
-@EnableKnife4j
-@Import(BeanValidatorPluginsConfiguration.class)
 public class Knife4jConfig {
 
-    @Bean(value = "defaultApi2")
-    public Docket defaultApi2() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo())
-                //分组名称
-                .groupName("1.X版本")
-                .select()
-                //这里指定Controller扫描包路径
-                .apis(RequestHandlerSelectors.basePackage("me.zrxjava.*.controller"))
-                .paths(PathSelectors.any())
-                .build().securityContexts(Lists.newArrayList(securityContext()))
-                .securitySchemes(Lists.<SecurityScheme>newArrayList(apiKey()));
-    }
 
-
-    private ApiKey apiKey() {
+    public ApiKey apiKey() {
         return new ApiKey("BearerToken", "Authorization", "header");
     }
 
 
-    private SecurityContext securityContext() {
+    public SecurityContext securityContext() {
         return SecurityContext.builder()
                 .securityReferences(defaultAuth())
                 .forPaths(PathSelectors.regex("/.*"))

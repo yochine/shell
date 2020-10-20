@@ -3,18 +3,24 @@ package me.zrxjava.system.controller;
 
 import com.diboot.core.binding.Binder;
 import com.diboot.core.binding.QueryBuilder;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import me.zrxjava.common.base.ResponseResult;
 import me.zrxjava.system.criteria.UserCriteria;
+import me.zrxjava.system.dto.UserDto;
 import me.zrxjava.system.entity.User;
 import me.zrxjava.system.service.IUserService;
 import me.zrxjava.system.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -28,6 +34,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/user")
+@Api(value = "用户服务",tags = "用户服务")
 public class UserController {
 
     @Autowired
@@ -35,10 +42,18 @@ public class UserController {
 
 
     @GetMapping("/list")
+    @ApiOperation("用户列表")
     public ResponseResult<List<UserVo>> list(@RequestBody UserCriteria criteria){
         List<User> users =  userService.list(QueryBuilder.toDynamicJoinQueryWrapper(criteria));
         List<UserVo> userVos = Binder.convertAndBindRelations(users, UserVo.class);
         return ResponseResult.success(userVos);
+    }
+
+    @PostMapping("/add")
+    @ApiOperation("新增用户")
+    @ApiOperationSupport(ignoreParameters = {"dto.id"})
+    public ResponseResult<Boolean> add(@Valid  @RequestBody UserDto dto){
+        return ResponseResult.failed();
     }
 
 }
