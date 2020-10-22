@@ -6,11 +6,14 @@ import me.zrxjava.system.request.RequestErrorInfo;
 import me.zrxjava.system.request.RequestInfo;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.MDC;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -20,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * 请求日志切面
@@ -33,6 +37,11 @@ import java.util.Map;
 public class RequestLogAspect {
     @Pointcut("execution(* me.zrxjava.*.controller..*(..))")
     public void requestServer() {
+    }
+
+    @Before("requestServer()")
+    public void before(JoinPoint joinPoint){
+//        MDC.put("traceId", UUID.randomUUID().toString());
     }
 
     @Around("requestServer()")
@@ -70,6 +79,11 @@ public class RequestLogAspect {
         requestErrorInfo.setRequestParams(getRequestParamsByJoinPoint(joinPoint));
         requestErrorInfo.setException(e);
         log.info("Error Request Info      : {}", JSON.toJSONString(requestErrorInfo));
+    }
+
+    @AfterReturning(pointcut = "requestServer()", returning = "ret")
+    public void afterReturning(Object ret){
+//        MDC.remove("traceId");
     }
 
     /**

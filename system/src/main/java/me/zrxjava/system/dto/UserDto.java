@@ -1,15 +1,14 @@
 package me.zrxjava.system.dto;
 
-import cn.hutool.core.date.DateUnit;
-import cn.hutool.core.date.DateUtil;
-import com.alibaba.fastjson.annotation.JSONField;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import me.zrxjava.common.group.Update;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -21,12 +20,15 @@ import java.time.LocalDateTime;
 public class UserDto {
 
     @ApiModelProperty(value = "ID")
+    @NotNull(message = "id不能为空",groups = Update.class)
     private Long userId;
 
-    @ApiModelProperty(value = "部门名称")
+    @ApiModelProperty(value = "部门id")
+    @NotNull(message = "部门id不能为空")
     private Long deptId;
 
     @ApiModelProperty(value = "用户名")
+    @NotBlank(message = "用户名不能为空")
     private String username;
 
     @ApiModelProperty(value = "昵称")
@@ -36,9 +38,11 @@ public class UserDto {
     private String gender;
 
     @ApiModelProperty(value = "手机号码")
+    @NotBlank(message = "用户名不能为空")
     private String phone;
 
     @ApiModelProperty(value = "邮箱")
+    @Email(message = "邮箱格式不正确")
     private String email;
 
     @ApiModelProperty(value = "头像地址")
@@ -48,12 +52,15 @@ public class UserDto {
     private String avatarPath;
 
     @ApiModelProperty(value = "密码")
+    @NotBlank(message = "密码不能为空")
     private String password;
 
     @ApiModelProperty(value = "是否为admin账号")
+    @NotNull(message = "是否为admin账号不能为空")
     private Boolean isAdmin;
 
     @ApiModelProperty(value = "状态：1启用、0禁用")
+    @NotNull(message = "状态不能为空")
     private Boolean enabled;
 
     @ApiModelProperty(value = "修改密码的时间")

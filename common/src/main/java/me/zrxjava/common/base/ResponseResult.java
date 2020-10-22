@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import me.zrxjava.common.enums.ResultCode;
+import org.slf4j.MDC;
 
 import java.io.Serializable;
 
@@ -12,7 +13,6 @@ import java.io.Serializable;
  * @author zhongrongxin
  */
 @Data
-@AllArgsConstructor
 @ApiModel("返回结果")
 public class ResponseResult<T> implements Serializable {
     @ApiModelProperty("状态码")
@@ -21,6 +21,17 @@ public class ResponseResult<T> implements Serializable {
     private String message;
     @ApiModelProperty("返回对象")
     private T data;
+
+    private String traceId;
+
+    /**
+     * 日志跟踪标识
+     */
+    private static final String TRACE_ID = "traceId";
+
+    public ResponseResult(int code, String message, T data) {
+        this.traceId = MDC.get(TRACE_ID);
+    }
 
     /**
      * 成功返回结果
@@ -87,6 +98,17 @@ public class ResponseResult<T> implements Serializable {
     public static <T> ResponseResult<T> validateFailed(String message) {
         return new ResponseResult<T>(ResultCode.VALIDATE_FAILED.getCode(), message, null);
     }
+
+    /**
+     * 根据返回boolean判断结果
+     * @param flag
+     * @param <T>
+     * @return
+     */
+    public static <T> ResponseResult<T> setBody(Boolean flag) {
+        return flag ? success(null) :failed();
+    }
+
 
     /**
      * 未登录返回结果

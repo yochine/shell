@@ -1,7 +1,10 @@
 package me.zrxjava.system.config;
 
+import me.zrxjava.system.intercept.TraceInterceptor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -18,5 +21,15 @@ public class MyWebMvcConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .allowedOrigins("*")
                 .allowedMethods("*");
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(traceInterceptor()).addPathPatterns("/**");
+    }
+
+    @Bean
+    public TraceInterceptor traceInterceptor(){
+        return new TraceInterceptor();
     }
 }
