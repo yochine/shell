@@ -21,7 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @create 2020-09-16
  */
 
-@Configuration
+//@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${security.ignoreUrl}")

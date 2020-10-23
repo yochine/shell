@@ -3,6 +3,7 @@ package me.zrxjava.common.exception.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import me.zrxjava.common.exception.BadRequestException;
+import me.zrxjava.common.exception.BusinessException;
 import me.zrxjava.common.exception.EntityExistException;
 import me.zrxjava.common.exception.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,15 @@ public class GlobalExceptionHandler{
         return buildResponseEntity(ApiError.error(e.getMessage()));
     }
 
+    /**
+     * 处理业务异常
+     */
+    @ExceptionHandler(value = BusinessException.class)
+    public ResponseEntity<ApiError> businessException(BusinessException e) {
+        // 打印堆栈信息
+        log.error("BusinessException ->",e);
+        return buildResponseEntity(ApiError.error(e.getStatus(),e.getMessage()));
+    }
 
     /**
      * 处理自定义异常
