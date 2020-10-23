@@ -1,8 +1,8 @@
 package me.zrxjava.system.config;
 
 import me.zrxjava.sercurity.config.SecurityConfig;
-import me.zrxjava.system.filter.MyAuthenticationFilter;
-import me.zrxjava.system.service.impl.UserDetailsServiceImpl;
+import me.zrxjava.system.support.filter.MyAuthenticationFilter;
+import me.zrxjava.system.modules.ems.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

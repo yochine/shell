@@ -1,12 +1,11 @@
 package me.zrxjava.common.enums;
 
-import com.baomidou.mybatisplus.extension.api.IErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 
 /**
- * @author zhongrongxin
+ * @author void
  */
 @AllArgsConstructor
 @Getter

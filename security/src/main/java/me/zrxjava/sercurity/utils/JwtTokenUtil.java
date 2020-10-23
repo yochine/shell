@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 
 /**
  * jwt生成的工具类
- * @author zhongrongxin
  */
 @Slf4j
 public class JwtTokenUtil {

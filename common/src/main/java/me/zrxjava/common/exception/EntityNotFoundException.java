@@ -4,7 +4,7 @@ import org.springframework.util.StringUtils;
 
 /**
  * 实体未找到异常
- * @author zhongrongxin
+ * @author void
  */
 public class EntityNotFoundException extends RuntimeException {
 

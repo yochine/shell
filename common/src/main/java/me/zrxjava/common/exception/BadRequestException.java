@@ -9,7 +9,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 /**
  * 错误请求异常
- * @author zhongrongxin
+ * @author void
  */
 @Getter
 public class BadRequestException extends RuntimeException{

@@ -10,7 +10,7 @@ import org.slf4j.MDC;
 import java.io.Serializable;
 
 /**
- * @author zhongrongxin
+ * @author void
  */
 @Data
 @ApiModel("返回结果")

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration  monitorInterval="30">
     <Properties>
-        <property name="log.charset" value="utf-8" />
+        <property name="SERVICE_NAME">shell-system</property>
         <!--日志文件保存路径-->
-        <property name="LOG_FILE_PATH" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/logs}"/>
-        <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} [traceId:%X{traceId}] -  %msg%n"/>
+        <property name="LOG_FILE_PATH">logs</property>
+        <property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} [traceId:%X{traceId}] -  %msg%n</property>
     </Properties>
     <Appenders>
         <Console name="STDOUT" target="SYSTEM_OUT">
             <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
 
-        <RollingFile name="RollingFile" fileName="logs/app.log"
-                     filePattern="logs/${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log">
+        <RollingFile name="RollingFile" fileName="${LOG_FILE_PATH}/${SERVICE_NAME}.log"
+                     filePattern="logs/%d{yyyy-MM}/%d{yyyy-MM-dd}.log.gz">
             <PatternLayout>
                 <Pattern>${LOG_PATTERN}</Pattern>
             </PatternLayout>

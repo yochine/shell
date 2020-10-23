@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 线程池配置属性类
- * @author zhongrongxin
+ * @author void
  */
 @Data
 @Component

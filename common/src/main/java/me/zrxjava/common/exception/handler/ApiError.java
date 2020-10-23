@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 
 /**
- * @author zhongrongxin
+ * @author void
  */
 @Data
 public class ApiError {

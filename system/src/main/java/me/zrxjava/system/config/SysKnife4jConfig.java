@@ -42,7 +42,7 @@ public class SysKnife4jConfig extends Knife4jConfig {
                 .groupName("1.X版本")
                 .select()
                 //这里指定Controller扫描包路径
-                .apis(RequestHandlerSelectors.basePackage("me.zrxjava.system.controller"))
+                .apis(RequestHandlerSelectors.basePackage("me.zrxjava.system.modules.ems.controller"))
                 .paths(PathSelectors.any())
                 .build().securityContexts(Lists.newArrayList(securityContext()))
                 .securitySchemes(Lists.<SecurityScheme>newArrayList(apiKey()));

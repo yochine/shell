@@ -17,7 +17,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
  * 全局异常处理
- * @author zhongrongxin
+ * @author void
  */
 @Slf4j
 @RestControllerAdvice
