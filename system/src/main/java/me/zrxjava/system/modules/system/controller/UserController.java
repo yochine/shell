@@ -7,7 +7,7 @@ import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import me.zrxjava.common.base.ResponseResult;
-import me.zrxjava.common.group.Insert;
+import me.zrxjava.common.validated.group.Insert;
 import me.zrxjava.system.modules.system.criteria.UserCriteria;
 import me.zrxjava.system.modules.system.dto.UserDto;
 import me.zrxjava.system.modules.system.entity.User;

@@ -1,4 +1,4 @@
-package me.zrxjava.common.group;
+package me.zrxjava.common.validated.group;
 
 import javax.validation.groups.Default;
 

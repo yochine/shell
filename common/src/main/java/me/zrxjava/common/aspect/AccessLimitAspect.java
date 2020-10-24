@@ -51,12 +51,12 @@ public class AccessLimitAspect extends AbstractAspectManager{
             // 创建令牌桶
             rateLimiter = RateLimiter.create(lxRateLimit.perSecond());
             limitMap.put(url, rateLimiter);
-            log.info("<<=================  请求{},创建令牌桶,容量{} 成功!!!",url,lxRateLimit.perSecond());
+            log.info("<<=================>>  请求{},创建令牌桶,容量{} 成功!!!",url,lxRateLimit.perSecond());
         }
         rateLimiter = limitMap.get(url);
         if (!rateLimiter.tryAcquire(lxRateLimit.timeOut(), lxRateLimit.timeOutUnit())) {
-            log.error("Error ---时间:{},获取令牌失败.", LocalDateTime.now());
-            throw new BusinessException("当前登录人数过多，请稍后再试!");
+            log.error("Error--url:{}, ip:{},time:{},获取令牌失败.",url,request.getRemoteUser(), LocalDateTime.now());
+            throw new BusinessException("当前访问人数过多，请稍后再试!");
         }
         return null;
     }
