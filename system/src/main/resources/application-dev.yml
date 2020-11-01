@@ -40,6 +40,12 @@ task:
     # 队列容量
     queue-capacity: 50
 
+rest:
+  connection:
+    timeout: 20000
+  read:
+      timeout: 5000
+
 
 #日志配置 无特殊需求无需更改
 logging:

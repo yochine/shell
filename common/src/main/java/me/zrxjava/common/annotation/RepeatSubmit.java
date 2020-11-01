@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 /**
  * 自定义注解防止表单重复提交
  *
+ * @author void
  */
 @Inherited
 @Target(ElementType.METHOD)
@@ -18,4 +19,9 @@ import java.lang.annotation.Target;
 public @interface RepeatSubmit
 {
 
+    /**
+     * 间隔多长时间内算重复提交
+     * @return
+     */
+    int time() default 1;
 }

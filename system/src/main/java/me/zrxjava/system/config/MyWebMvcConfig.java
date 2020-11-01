@@ -22,6 +22,17 @@ import java.util.Map;
 @Configuration
 public class MyWebMvcConfig implements WebMvcConfigurer {
 
+    @Value("${xss.enabled}")
+    private String enabled;
+
+    @Value("${xss.excludes}")
+    private String excludes;
+
+    @Value("${xss.urlPatterns}")
+    private String urlPatterns;
+
+
+
     @Override
     public void addCorsMappings (CorsRegistry registry) {
         registry.addMapping("/**")
@@ -41,15 +52,6 @@ public class MyWebMvcConfig implements WebMvcConfigurer {
         return new TraceInterceptor();
     }
 
-    @Value("${xss.enabled}")
-    private String enabled;
-
-    @Value("${xss.excludes}")
-    private String excludes;
-
-    @Value("${xss.urlPatterns}")
-    private String urlPatterns;
-
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Bean
     public FilterRegistrationBean xssFilterRegistration()
@@ -66,5 +68,7 @@ public class MyWebMvcConfig implements WebMvcConfigurer {
         registration.setInitParameters(initParameters);
         return registration;
     }
+
+
 
 }
