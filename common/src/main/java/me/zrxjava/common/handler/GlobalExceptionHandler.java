@@ -1,5 +1,5 @@
 
-package me.zrxjava.common.exception.handler;
+package me.zrxjava.common.handler;
 
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;

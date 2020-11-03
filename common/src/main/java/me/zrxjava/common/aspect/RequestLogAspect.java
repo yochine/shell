@@ -4,9 +4,14 @@ import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import me.zrxjava.common.request.RequestErrorInfo;
 import me.zrxjava.common.request.RequestInfo;
+import me.zrxjava.common.utils.ServletUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -24,13 +29,18 @@ import java.util.Map;
  * @create 2020-10-19
  */
 @Slf4j
+@Aspect
+@Component
 public class RequestLogAspect {
 
+    @Pointcut("@annotation(me.zrxjava.common.annotation.AccessLimit)")
+    public void aspect() {
+    }
+
+    @Around(value = "aspect()")
     public Object successLog(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         long start = System.currentTimeMillis();
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        assert attributes != null;
-        HttpServletRequest request = attributes.getRequest();
+        HttpServletRequest request = ServletUtils.getRequest();
         Object result = proceedingJoinPoint.proceed();
         RequestInfo requestInfo = new RequestInfo();
         requestInfo.setIp(request.getRemoteAddr());
@@ -46,10 +56,9 @@ public class RequestLogAspect {
     }
 
 
+    @AfterThrowing(pointcut = "aspect()", throwing = "e")
     public void errorLog(JoinPoint joinPoint, RuntimeException e) {
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        assert attributes != null;
-        HttpServletRequest request = attributes.getRequest();
+        HttpServletRequest request = ServletUtils.getRequest();
         RequestErrorInfo requestErrorInfo = new RequestErrorInfo();
         requestErrorInfo.setIp(request.getRemoteAddr());
         requestErrorInfo.setUrl(request.getRequestURL().toString());

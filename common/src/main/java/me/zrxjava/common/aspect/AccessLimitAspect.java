@@ -5,33 +5,32 @@ import com.google.common.util.concurrent.RateLimiter;
 import lombok.extern.slf4j.Slf4j;
 import me.zrxjava.common.annotation.AccessLimit;
 import me.zrxjava.common.exception.BusinessException;
+import me.zrxjava.common.utils.ServletUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author void
  * @create 2020-10-23
  */
 @Slf4j
-public class AccessLimitAspect extends AbstractAspectManager{
+@Aspect
+@Order(-1)
+@Component
+public class AccessLimitAspect {
 
 
-    public AccessLimitAspect(AspectApi aspectApi) {
-        super(aspectApi);
-    }
-
-    @Override
-    public Object doHandlerAspect(ProceedingJoinPoint pjp, Method method) throws Throwable {
-        super.doHandlerAspect(pjp,method);
-        execute(pjp,method);
-        return null;
+    @Pointcut("@annotation(me.zrxjava.common.annotation.AccessLimit)")
+    public void aspect() {
     }
 
     /**
@@ -41,10 +40,11 @@ public class AccessLimitAspect extends AbstractAspectManager{
 
     private static Map<String, RateLimiter> limitMap = Maps.newConcurrentMap();
 
-    @Override
-    public Object execute(ProceedingJoinPoint pjp,Method method) {
-        AccessLimit lxRateLimit = method.getAnnotation(AccessLimit.class);
-        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+
+    @Around(value = "aspect()")
+    public Object execute(ProceedingJoinPoint pjp) throws Throwable {
+        AccessLimit lxRateLimit = ((MethodSignature) pjp.getSignature()).getMethod().getAnnotation(AccessLimit.class);
+        HttpServletRequest request = ServletUtils.getRequest();
         // 或者url(存在map集合的key)
         String url = request.getRequestURI();
         if (!limitMap.containsKey(url)) {
@@ -58,6 +58,6 @@ public class AccessLimitAspect extends AbstractAspectManager{
             log.error("Error--url:{}, ip:{},time:{},获取令牌失败.",url,request.getRemoteUser(), LocalDateTime.now());
             throw new BusinessException("当前访问人数过多，请稍后再试!");
         }
-        return null;
+        return pjp.proceed();
     }
 }

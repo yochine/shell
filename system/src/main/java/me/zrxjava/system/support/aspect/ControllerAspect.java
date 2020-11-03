@@ -1,10 +1,6 @@
 package me.zrxjava.system.support.aspect;
 
 
-import me.zrxjava.common.annotation.AccessLimit;
-import me.zrxjava.common.aspect.AccessLimitAspect;
-import me.zrxjava.common.aspect.AspectApiImpl;
-import me.zrxjava.common.aspect.RequestLogAspect;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -39,14 +35,7 @@ public class ControllerAspect {
         MethodSignature signature = (MethodSignature) pjp.getSignature();
          // 获取切入点所在的方法
         Method method = signature.getMethod();
-        //创建被装饰者
-        AspectApiImpl aspectApi = new AspectApiImpl();
-
-        //是否需要限流
-        if (method.isAnnotationPresent(AccessLimit.class)) {
-            new AccessLimitAspect(aspectApi).doHandlerAspect(pjp,method);
-        }
-        return new RequestLogAspect().successLog(pjp);
+       return null;
     }
 
     @AfterReturning(pointcut = "aspect()", returning = "ret")
@@ -56,7 +45,7 @@ public class ControllerAspect {
 
     @AfterThrowing(pointcut = "aspect()", throwing = "e")
     public void doAfterThrow(JoinPoint joinPoint, RuntimeException e) {
-        new RequestLogAspect().errorLog(joinPoint,e);
+
     }
 
 

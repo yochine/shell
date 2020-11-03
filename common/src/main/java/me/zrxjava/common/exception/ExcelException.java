@@ -1,4 +1,4 @@
-package me.zrxjava.common.utils.easyexcel;
+package me.zrxjava.common.exception;
 
 /**
  * 文件异常
