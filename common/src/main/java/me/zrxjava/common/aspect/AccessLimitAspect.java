@@ -29,8 +29,8 @@ import java.util.Map;
 public class AccessLimitAspect {
 
 
-    @Pointcut("@annotation(me.zrxjava.common.annotation.AccessLimit)")
-    public void aspect() {
+    @Pointcut("@annotation(accessLimit)")
+    public void aspect(AccessLimit accessLimit) {
     }
 
     /**
@@ -41,20 +41,19 @@ public class AccessLimitAspect {
     private static Map<String, RateLimiter> limitMap = Maps.newConcurrentMap();
 
 
-    @Around(value = "aspect()")
-    public Object execute(ProceedingJoinPoint pjp) throws Throwable {
-        AccessLimit lxRateLimit = ((MethodSignature) pjp.getSignature()).getMethod().getAnnotation(AccessLimit.class);
+    @Around(value = "aspect(accessLimit)")
+    public Object execute(ProceedingJoinPoint pjp,AccessLimit accessLimit) throws Throwable {
         HttpServletRequest request = ServletUtils.getRequest();
         // 或者url(存在map集合的key)
         String url = request.getRequestURI();
         if (!limitMap.containsKey(url)) {
             // 创建令牌桶
-            rateLimiter = RateLimiter.create(lxRateLimit.perSecond());
+            rateLimiter = RateLimiter.create(accessLimit.perSecond());
             limitMap.put(url, rateLimiter);
-            log.info("<<=================>>  请求{},创建令牌桶,容量{} 成功!!!",url,lxRateLimit.perSecond());
+            log.info("<<=================>>  请求{},创建令牌桶,容量{} 成功!!!",url,accessLimit.perSecond());
         }
         rateLimiter = limitMap.get(url);
-        if (!rateLimiter.tryAcquire(lxRateLimit.timeOut(), lxRateLimit.timeOutUnit())) {
+        if (!rateLimiter.tryAcquire(accessLimit.timeOut(), accessLimit.timeOutUnit())) {
             log.error("Error--url:{}, ip:{},time:{},获取令牌失败.",url,request.getRemoteUser(), LocalDateTime.now());
             throw new BusinessException("当前访问人数过多，请稍后再试!");
         }

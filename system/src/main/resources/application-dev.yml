@@ -13,11 +13,7 @@ spring:
     allow-bean-definition-overriding: true
   jackson:
       default-property-inclusion: non_null
-  devtools:
-    restart:
-      enabled: true
-  freemarker:
-    cache: false #页面不加载缓存，修改即时生效
+
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
