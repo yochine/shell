@@ -61,6 +61,9 @@ public class AuthorityServiceImpl implements AuthorityService
                 case CUSTOMIZE:
                     deptIds.addAll(rolesDeptsService.getCustomizeDepts(role.getRoleId()));
                     break;
+                case SELF_LEVEL:
+                    deptIds.add(-1L);
+                    break;
                 default:
                     return deptIds;
             }

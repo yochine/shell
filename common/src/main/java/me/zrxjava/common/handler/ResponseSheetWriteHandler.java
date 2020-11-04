@@ -14,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +29,9 @@ import java.util.List;
  * @author void
  * @create 2020-11-03
  */
+@Component
 public class ResponseSheetWriteHandler {
+
 
     @Value("${easyexcel.templatePath}")
     private String templatePath;
@@ -87,8 +90,6 @@ public class ResponseSheetWriteHandler {
         return writerBuilder.build();
     }
 
-
-
     public void export(Object o, HttpServletResponse response, ResponseExcel responseExcel) throws IOException {
 
         check(responseExcel);
@@ -102,8 +103,8 @@ public class ResponseSheetWriteHandler {
     public void write(Object obj, HttpServletResponse response, ResponseExcel responseExcel) throws IOException {
         List objList = (List) obj;
         // 返回类型是否为多list
-        boolean isSingle = objList.get(0) instanceof List;
-        List eleList = !isSingle ? (List) objList.get(0) : objList;
+        boolean isMulti = objList.get(0) instanceof List;
+        List eleList = isMulti ? (List) objList.get(0) : objList;
 
         ExcelWriter excelWriter = getExcelWriter(response, responseExcel, eleList);
 
@@ -116,7 +117,7 @@ public class ResponseSheetWriteHandler {
             } else {
                 sheet = EasyExcel.writerSheet(i, sheets[i]).build();
             }
-            if (isSingle){
+            if (!isMulti){
                 excelWriter.write(objList, sheet);
             }else {
                 excelWriter.write((List) objList.get(i), sheet);

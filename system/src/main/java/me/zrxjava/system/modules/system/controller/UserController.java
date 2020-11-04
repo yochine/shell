@@ -6,6 +6,7 @@ import com.diboot.core.binding.QueryBuilder;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import me.zrxjava.common.annotation.ResponseExcel;
 import me.zrxjava.common.base.ResponseResult;
 import me.zrxjava.common.validated.group.Insert;
 import me.zrxjava.system.modules.system.criteria.UserCriteria;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -46,10 +48,18 @@ public class UserController {
 
     @GetMapping("/list")
     @ApiOperation("用户列表")
-    public ResponseResult<List<UserVo>> list(@RequestBody UserCriteria criteria){
+    public ResponseResult<List<UserVo>> list(UserCriteria criteria){
         List<User> users =  userService.list(QueryBuilder.toDynamicJoinQueryWrapper(criteria));
         List<UserVo> userVos = Binder.convertAndBindRelations(users, UserVo.class);
         return ResponseResult.success(userVos);
+    }
+
+    @GetMapping("/export")
+    @ApiOperation("导出用户列表")
+    @ResponseExcel(name = "user",password = "123")
+    public List<User> export(UserCriteria criteria){
+        List<User> users =  userService.list();
+        return users;
     }
 
     @PostMapping("/add")

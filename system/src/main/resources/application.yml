@@ -5,10 +5,6 @@ spring:
   lifecycle:
     timeout-per-shutdown-phase: 10s #设置缓冲器 最大等待时间
 
-mybatis-plus:
-    mapper-locations: classpath*:/mapper/**/*.xml
-    configuration:
-      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 # 防止XSS攻击
 xss:
@@ -20,7 +16,8 @@ xss:
   urlPatterns: /system/*,/monitor/*,/tool/*
 
 
-
+easyexcel:
+  templatePath: /template
 
 
 

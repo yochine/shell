@@ -16,6 +16,14 @@ spring:
   devtools:
     restart:
       enabled: true
+  freemarker:
+    cache: false #页面不加载缓存，修改即时生效
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
 
 knife4j:
   production: false #true则屏蔽swagger资源
@@ -27,7 +35,7 @@ jwt:
   tokenHead: 'Bearer '  #JWT负载中拿到开头
 
 security:
-  ignoreUrl: /test/**,/swagger-resources/**
+  ignoreUrl: /test/**,/swagger-resources/**,/user/**
 
 task:
   pool:

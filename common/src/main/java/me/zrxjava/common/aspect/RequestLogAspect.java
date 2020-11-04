@@ -33,7 +33,7 @@ import java.util.Map;
 @Component
 public class RequestLogAspect {
 
-    @Pointcut("@annotation(me.zrxjava.common.annotation.AccessLimit)")
+    @Pointcut("execution(* me.zrxjava..*.controller..*(..))")
     public void aspect() {
     }
 

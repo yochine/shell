@@ -1,7 +1,6 @@
 package me.zrxjava.common.handler;
 
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.zrxjava.common.annotation.ResponseExcel;
 import org.springframework.core.MethodParameter;
@@ -18,10 +17,15 @@ import javax.servlet.http.HttpServletResponse;
  * @author lengleng
  */
 @Slf4j
-@RequiredArgsConstructor
 public class ResponseExcelReturnValueHandler implements HandlerMethodReturnValueHandler {
 
-	private final ResponseSheetWriteHandler responseSheetWriteHandler;
+	private ResponseSheetWriteHandler responseSheetWriteHandler;
+
+	public ResponseExcelReturnValueHandler(ResponseSheetWriteHandler responseSheetWriteHandler) {
+		this.responseSheetWriteHandler = responseSheetWriteHandler;
+	}
+
+
 
 
 	/**
@@ -32,7 +36,7 @@ public class ResponseExcelReturnValueHandler implements HandlerMethodReturnValue
 	 */
 	@Override
 	public boolean supportsReturnType(MethodParameter parameter) {
-		return parameter.getMethodAnnotation(ResponseExcel.class) != null;
+		return parameter.hasMethodAnnotation(ResponseExcel.class);
 	}
 
 	/**
@@ -46,12 +50,12 @@ public class ResponseExcelReturnValueHandler implements HandlerMethodReturnValue
 	 */
 	@Override
 	public void handleReturnValue(Object o, MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest nativeWebRequest) throws Exception {
-		/* check */
 		HttpServletResponse response = nativeWebRequest.getNativeResponse(HttpServletResponse.class);
 		Assert.state(response != null, "No HttpServletResponse");
 		ResponseExcel responseExcel = parameter.getMethodAnnotation(ResponseExcel.class);
 		Assert.state(responseExcel != null, "No @ResponseExcel");
 		mavContainer.setRequestHandled(true);
 		responseSheetWriteHandler.export(o,response,responseExcel);
+
 	}
 }

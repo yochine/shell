@@ -38,7 +38,7 @@ public class User extends BaseEntity {
     @TableId(value = "user_id", type = IdType.AUTO)
     private Long userId;
 
-    @ApiModelProperty(value = "部门名称")
+    @ApiModelProperty(value = "部门id")
     private Long deptId;
 
     @ApiModelProperty(value = "用户名")

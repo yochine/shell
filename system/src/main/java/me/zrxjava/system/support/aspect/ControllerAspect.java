@@ -9,10 +9,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Method;
 
 /**
  * 控制器切面
@@ -32,10 +30,7 @@ public class ControllerAspect {
 
     @Around(value = "aspect()")
     public Object validationPoint(ProceedingJoinPoint pjp)throws Throwable{
-        MethodSignature signature = (MethodSignature) pjp.getSignature();
-         // 获取切入点所在的方法
-        Method method = signature.getMethod();
-       return null;
+       return pjp.proceed();
     }
 
     @AfterReturning(pointcut = "aspect()", returning = "ret")
