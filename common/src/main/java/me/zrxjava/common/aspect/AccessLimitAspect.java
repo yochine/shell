@@ -41,7 +41,7 @@ public class AccessLimitAspect {
     private static Map<String, RateLimiter> limitMap = Maps.newConcurrentMap();
 
 
-    @Around(value = "aspect(accessLimit)")
+    @Around(value = "aspect(accessLimit)", argNames = "pjp,accessLimit")
     public Object execute(ProceedingJoinPoint pjp,AccessLimit accessLimit) throws Throwable {
         HttpServletRequest request = ServletUtils.getRequest();
         // 或者url(存在map集合的key)

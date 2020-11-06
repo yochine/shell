@@ -36,8 +36,4 @@ public @interface Log
      */
     OperatorType operatorType() default OperatorType.MANAGE;
 
-    /**
-     * 是否保存请求的参数
-     */
-    boolean isSaveRequestData() default true;
 }

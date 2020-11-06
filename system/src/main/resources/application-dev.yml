@@ -13,12 +13,37 @@ spring:
     allow-bean-definition-overriding: true
   jackson:
       default-property-inclusion: non_null
-
+  redis:
+    database: 2
+    host: 127.0.0.1
+    password:
+    port: 6379
+    timeout: 6000
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+aj:
+  captcha:
+    aes-status: true   #aes加密坐标开启或者禁用(true|false)
+    cache-type: redis #缓存local/redis... # 对于分布式部署的应用，我们建议应用自己实现CaptchaCacheService，比如用Redis或者memcache，参考CaptchaCacheServiceRedisImpl.java
+      # 如果应用是单点的，也没有使用redis，那默认使用内存。
+    # 内存缓存只适合单节点部署的应用，否则验证码生产与验证在节点之间信息不同步，导致失败。
+    # ！！！ 注意啦，如果应用有使用spring-boot-starter-data-redis，请打开CaptchaCacheServiceRedisImpl.java注释。
+    cache-number: 1000 #local缓存的阈值,达到这个值，清除缓存
+    timing-clear: 180  #local定时清除过期缓存(单位秒),设置为0代表不执行
+    font-type: \u5b8b\u4f53
+    interference-options: 2   #滑动干扰项(0/1/2) 1.2.2版本新增
+    jigsaw: classpath:images/jigsaw  #滑动验证，底图路径，不配置将使用默认图片
+    pic-click: classpath:images/pic-click #点击验证，底图路径，不配置将使用默认图片
+    slip-offset: 5  #校验滑动拼图允许误差偏移量(默认5像素)
+    type: default #验证码类型default两种都实例化  blockPuzzle 滑块拼图   clickWord 文字点选
+    water-font: \u5b8b\u4f53 # 宋体
+    water-mark: shell  #汉字统一使用Unicode,保证程序通过@value读取到是中文，可通过这个在线转换 https://tool.chinaz.com/tools/unicode.aspx 中文转Unicode
+
 
 
 knife4j:
@@ -31,18 +56,19 @@ jwt:
   tokenHead: 'Bearer '  #JWT负载中拿到开头
 
 security:
-  ignoreUrl: /test/**,/swagger-resources/**,/user/**
+  ignoreUrl: /test/**,/user/**
 
-task:
-  pool:
-    # 核心线程池大小
-    core-pool-size: 2
-    # 最大线程数
-    max-pool-size: 4
-    # 活跃时间
-    keep-alive-seconds: 10
-    # 队列容量
-    queue-capacity: 50
+async:
+  task:
+    pool:
+      # 核心线程池大小
+      core-pool-size: 2
+      # 最大线程数
+      max-pool-size: 4
+      # 活跃时间
+      keep-alive-seconds: 10
+      # 队列容量
+      queue-capacity: 50
 
 rest:
   connection:

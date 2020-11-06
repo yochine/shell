@@ -44,7 +44,7 @@ public class MySecurityConfig extends SecurityConfig {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/css/**", "/js/**", "/**/*.html","/**/*.png","/**/*.js","/v2/api-docs",
-                "/img/**", "/fonts/**","/webjars/**", "/favicon.ico", "/verifyCode");
+                "/img/**", "/fonts/**","/webjars/**", "/favicon.ico", "/verifyCode","/swagger-resources/**,");
     }
 
 }

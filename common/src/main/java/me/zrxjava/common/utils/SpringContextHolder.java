@@ -6,6 +6,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.core.env.Environment;
 
 import java.util.ArrayList;
@@ -109,6 +110,9 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
         applicationContext = null;
     }
 
+    /**
+     * 实现DisposableBean接口, 在Context关闭时清理静态变量.
+     */
     @Override
     public void destroy() {
         SpringContextHolder.clearHolder();
@@ -128,4 +132,16 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
         }
         SpringContextHolder.addCallback = false;
     }
+
+    /**
+     * 发布事件
+     * @param event
+     */
+    public static void publishEvent(ApplicationEvent event) {
+        if (applicationContext == null) {
+            return;
+        }
+        applicationContext.publishEvent(event);
+    }
+
 }
