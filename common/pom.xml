@@ -16,8 +16,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <skipTests>true</skipTests>
-        <docker.host>http://192.168.3.101:2375</docker.host>
-        <docker.maven.plugin.version>1.2.2</docker.maven.plugin.version>
         <hutool.version>4.5.7</hutool.version>
         <mybatis-plus.version>3.4.0</mybatis-plus.version>
     </properties>

@@ -38,22 +38,24 @@ import java.lang.reflect.Method;
 public class LogAspect {
 
 
-    @Pointcut("@annotation(log) || execution(* me.zrxjava..*.controller..*(..)) ")
-    public void aspect(Log log) {
+    @Pointcut("@annotation(me.zrxjava.common.annotation.Log) || execution(* me.zrxjava..*.controller..*(..)) ")
+    public void aspect() {
     }
 
-    @Around(value = "aspect(log)", argNames = "pjp,log")
+    @Around(value = "aspect()")
     @SneakyThrows
-    public Object execute(ProceedingJoinPoint pjp, Log log) {
+    public Object execute(ProceedingJoinPoint pjp) {
+
         Long startTime = System.currentTimeMillis();
+        MethodSignature methodSignature = (MethodSignature)pjp.getSignature();
+        Method method = methodSignature.getMethod();
         HttpServletRequest request = ServletUtils.getRequest();
         // 设置操作用户相关信息
         SysLog sysLog = setUserInfo(pjp,request);
+        Log log = method.getAnnotation(Log.class);
         if (null != log){
             sysLog.title(log.title()).businessType(log.businessType().ordinal());
         }else {
-            MethodSignature methodSignature = (MethodSignature)pjp.getSignature();
-            Method method = methodSignature.getMethod();
             if (null != method.getAnnotation(ApiOperation.class)){
                 sysLog.title(method.getAnnotation(ApiOperation.class).value()).businessType(BusinessType.OTHER.ordinal());
             }

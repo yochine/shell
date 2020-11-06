@@ -37,8 +37,8 @@ aj:
     timing-clear: 180  #local定时清除过期缓存(单位秒),设置为0代表不执行
     font-type: \u5b8b\u4f53
     interference-options: 2   #滑动干扰项(0/1/2) 1.2.2版本新增
-    jigsaw: classpath:images/jigsaw  #滑动验证，底图路径，不配置将使用默认图片
-    pic-click: classpath:images/pic-click #点击验证，底图路径，不配置将使用默认图片
+#    jigsaw: classpath:images/jigsaw  #滑动验证，底图路径，不配置将使用默认图片
+#    pic-click: classpath:images/pic-click #点击验证，底图路径，不配置将使用默认图片
     slip-offset: 5  #校验滑动拼图允许误差偏移量(默认5像素)
     type: default #验证码类型default两种都实例化  blockPuzzle 滑块拼图   clickWord 文字点选
     water-font: \u5b8b\u4f53 # 宋体
@@ -81,7 +81,7 @@ rest:
 logging:
   config: classpath:log4j2.xml
   level:
-    root: INFO
+    root: info
 #    javax.activation: info
 #    org.apache.catalina: INFO
 #    org.apache.commons.beanutils.converters: INFO
