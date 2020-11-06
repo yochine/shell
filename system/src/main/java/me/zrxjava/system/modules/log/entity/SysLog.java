@@ -7,9 +7,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-import me.zrxjava.common.base.BaseEntity;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -20,14 +20,14 @@ import java.io.Serializable;
  */
 @Data
 @Accessors(fluent = true)
-@EqualsAndHashCode(callSuper = true)
-@TableName("t_sys_log")
-public class SysLog extends BaseEntity implements Serializable {
+@EqualsAndHashCode
+@TableName("sys_log")
+public class SysLog implements Serializable {
 
 
-	/** 编号 */
-	@TableId(value = "id", type = IdType.AUTO)
-	private Long id;
+	/** 编号 使用mp自带的雪花算法 */
+	@TableId(value = "log_id", type = IdType.ASSIGN_ID)
+	private Long logId;
 
 	/** 操作IP */
 	private String ip;
@@ -73,6 +73,12 @@ public class SysLog extends BaseEntity implements Serializable {
 
 	/** 版本号 */
 	private String version;
+
+	/** 创建人 */
+	private String createBy;
+
+	/** 创建时间 */
+	private LocalDateTime createTime;
 
 
 }

@@ -45,7 +45,6 @@ public class LogAspect {
     @Around(value = "aspect()")
     @SneakyThrows
     public Object execute(ProceedingJoinPoint pjp) {
-
         Long startTime = System.currentTimeMillis();
         MethodSignature methodSignature = (MethodSignature)pjp.getSignature();
         Method method = methodSignature.getMethod();
