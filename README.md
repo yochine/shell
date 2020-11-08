@@ -10,6 +10,11 @@
     * AJ-Captcha 验证码
     * easyexcel 支持注解导出@ResponseExcel
     * springAop 日志、限流、重复提交、多数据源、数据权限
+    * 封装内存工具类
+    * 设置全局json日期格式化
+    * 包装mp的query类
+    * 包装BaseMapper DTO->entity->VO
+    * 完善定时任务
     * 代码生成
     * 引入flyway
     * oss 七牛云 阿里云

@@ -1,9 +1,6 @@
 package me.zrxjava.sercurity.bo;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.validation.annotation.Validated;
 
 import java.io.Serializable;
 
@@ -14,9 +11,15 @@ import java.io.Serializable;
 @Data
 public class LoginUser implements Serializable {
 
-    String userName;
 
-    String password;
+    private String userName;
+
+    private String password;
+
+    /** captcha验证码  */
+    private String captchaVerification;
+
+
 
    // String verifyCode;
 }

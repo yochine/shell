@@ -60,6 +60,18 @@ public class RedisUtil
         return expire(key, timeout, TimeUnit.SECONDS);
     }
 
+
+    /**
+     * key是否存在
+     * @param key
+     * @return
+     */
+    public boolean exitKey(final String key)
+    {
+        return redisTemplate.hasKey(key);
+    }
+
+
     /**
      * 设置有效时间
      *

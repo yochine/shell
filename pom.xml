@@ -100,12 +100,16 @@
             <version>2.9.0</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.0.7.Final</version>
+        </dependency>
 
         <dependency>
-            <groupId>com.diboot</groupId>
-            <artifactId>diboot-core-spring-boot-starter</artifactId>
-            <version>2.1.1</version>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.3</version>
         </dependency>
 
     </dependencies>

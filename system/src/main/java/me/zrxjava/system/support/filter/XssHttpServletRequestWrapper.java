@@ -115,7 +115,6 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper
     /**
      * 是否是Json请求
      * 
-     * @param request
      */
     public boolean isJsonRequest()
     {

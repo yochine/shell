@@ -1,6 +1,9 @@
 package me.zrxjava.system.support.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.anji.captcha.model.common.ResponseModel;
+import com.anji.captcha.model.vo.CaptchaVO;
+import com.anji.captcha.service.CaptchaService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import lombok.extern.log4j.Log4j2;
@@ -35,6 +38,9 @@ public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+    @Autowired
+    private CaptchaService captchaService;
+
     public MyAuthenticationFilter(AuthenticationManager authenticationManager){
         this.setAuthenticationManager(authenticationManager);
         super.setFilterProcessesUrl("/auth/login");
@@ -45,6 +51,18 @@ public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter
         try {
             // 从流中获取登录数据
             LoginUser loginUser = new ObjectMapper().readValue(request.getInputStream(), LoginUser.class);
+            CaptchaVO captchaVO = new CaptchaVO();
+            captchaVO.setCaptchaVerification(loginUser.getCaptchaVerification());
+            ResponseModel responseModel = captchaService.verification(captchaVO);
+            if(!responseModel.isSuccess()){
+                //验证码校验失败，返回信息告诉前端
+                //repCode  0000  无异常，代表成功
+                //repCode  9999  服务器内部异常
+                //repCode  0011  参数不能为空
+                //repCode  6110  验证码已失效，请重新获取
+                //repCode  6111  验证失败
+                //repCode  6112  获取验证码失败,请联系管理员
+            }
             return this.getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(loginUser.getUserName(), loginUser.getPassword(), new ArrayList<>())
             );
