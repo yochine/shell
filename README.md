@@ -12,7 +12,10 @@
     * springAop 日志、限流、重复提交、多数据源、数据权限
     * 封装内存工具类
     * 设置全局json日期格式化
+    * aop 统一的缓存处理。某些操作需要在操作前查缓存、操作后更新缓存。
     * 包装mp的query类
+    * 引入Google开源高效序列化工具ProtostuffUtils OSHI（基于 JNA 的操作系统和硬件信息库）
+    * 使用 Caffeine 来做本地缓存
     * 包装BaseMapper DTO->entity->VO
     * 完善定时任务
     * 代码生成
@@ -40,5 +43,6 @@
     * mq kafka（日志） rabbitMq(消息)&&rocketMq
     * wxjava 公众号
     * 多租户
+    * Yapi接口文档
     
     

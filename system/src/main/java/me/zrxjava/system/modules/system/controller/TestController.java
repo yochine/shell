@@ -1,9 +1,9 @@
 package me.zrxjava.system.modules.system.controller;
 
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import me.zrxjava.common.annotation.AccessLimit;
 import me.zrxjava.common.base.ResponseResult;
-import me.zrxjava.common.exception.BusinessException;
 import me.zrxjava.common.utils.BeanChangeUtils;
 import me.zrxjava.system.modules.system.entity.User;
 import me.zrxjava.system.modules.system.service.IUserService;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/test")
+@Api(value = "测试",tags = "测试服务")
 public class TestController {
 
     @Autowired
