@@ -4,12 +4,13 @@ import com.alibaba.fastjson.annotation.JSONField;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
-import me.zrxjava.system.modules.system.entity.User;
+import me.zrxjava.system.modules.ums.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -24,7 +25,7 @@ public class AdminUserDetails implements UserDetails, Serializable {
     private final User user;
 
     @JSONField(serialize = false)
-    private final Set<Long> dataScopes;
+    private final Map<Integer,Set<Long>> dataScopes;
 
     @JSONField(serialize = false)
     private final Set<GrantedAuthority> grantedAuthorities;

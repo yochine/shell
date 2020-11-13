@@ -16,7 +16,7 @@
     * 包装mp的query类
     * 引入Google开源高效序列化工具ProtostuffUtils OSHI（基于 JNA 的操作系统和硬件信息库）
     * 使用 Caffeine 来做本地缓存
-    * 包装BaseMapper DTO->entity->VO
+    * MapStruct转换 包装BaseMapper DTO->entity->VO 
     * 完善定时任务
     * 代码生成
     * 引入flyway
