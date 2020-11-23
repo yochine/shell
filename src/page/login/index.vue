@@ -4,10 +4,10 @@
       <div class="login-logo">
         <img src="/img/logo.png" alt="">
       </div>
-      <p class="login-tip">{{ website.title}} v 3.10</p>
+      <p class="login-tip">{{ website.title}} v 1.0</p>
       <div class="login-border">
         <div class="login-main">
-          <h4 class="login-title">
+          <!-- <h4 class="login-title">
             <el-select v-model="active"
                        class="login-select animated fadeIn"
                        placeholder="点击请选择租户"
@@ -17,7 +17,7 @@
                          :label="tenant.name"
                          :value="tenant.id"></el-option>
             </el-select>
-          </h4>
+          </h4> -->
           <userLogin v-if="activeName==='user'" />
           <codeLogin v-else-if="activeName==='code'" />
           <thirdLogin v-else-if="activeName==='third'" />
@@ -58,8 +58,8 @@ export default {
   },
   data () {
     return {
-      tenantList: [],
-      active: '',
+      // tenantList: [],
+      // active: '',
       activeName: 'user',
       socialForm: {}
     }
@@ -91,8 +91,8 @@ export default {
   },
   created () {
     this.watermark()
-    this.getTenantList()
-    this.active = getStore({ name: 'tenantId' })
+    // this.getTenantList()
+    // this.active = getStore({ name: 'tenantId' })
   },
   mounted () {
   },

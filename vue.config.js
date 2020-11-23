@@ -2,7 +2,7 @@
  * 配置参考:
  * https://cli.vuejs.org/zh/config/
  */
-const url = 'http://intelligence-gateway:9999'
+const url = 'http://192.168.1.186:9091'
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const productionGzipExtensions = ['js', 'css']
 module.exports = {

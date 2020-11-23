@@ -387,7 +387,7 @@ export default {
         } else {
           this.tipWords = res.repMsg;
         }
-      });
+      }).catch(err =>{console.log(err)});
     },
   },
   watch: {

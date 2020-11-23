@@ -1,19 +1,4 @@
-/*
- *    Copyright (c) 2018-2025, intelligence All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the pig4cloud.com developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: intelligence
- */
+
 import request from '@/router/axios'
 import qs from 'qs'
 
@@ -21,17 +6,18 @@ const scope = 'server'
 
 export const loginByUsername = (username, password, code, randomStr) => {
   let grant_type = 'password'
-  let dataObj = qs.stringify({'username': username, 'password': password})
+  let dataObj = JSON.stringify({'username': username, 'password': password,'captchaVerification':code})
 
   return request({
-    url: '/auth/oauth/token',
+    // url: '/auth/oauth/token',
+    url: '/auth/login',
     headers: {
       isToken: false,
-      'TENANT-ID': '1',
-      'Authorization': 'Basic cGlnOnBpZw=='
+      // 'TENANT-ID': '1',
+      // 'Authorization': 'Basic cGlnOnBpZw=='
     },
     method: 'post',
-    params: {randomStr, code, grant_type},
+    // params: {randomStr, code, grant_type},
     data: dataObj
   })
 }

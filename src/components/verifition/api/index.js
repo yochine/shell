@@ -10,14 +10,14 @@ export function reqGet(data) {
   return request({
     url: '/code',
     method: 'get',
-    data
+    params: data
   })
 }
 
 //滑动或者点选验证
 export function reqCheck(data) {
   return request({
-    url: '/code/check',
+    url: '/code',
     method: 'post',
     params: data
   })

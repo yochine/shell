@@ -54,7 +54,7 @@
 <script>
 import { randomLenNum } from "@/util/util";
 import { mapGetters } from "vuex";
-import { getCode } from "@/api/code";
+// import { getCode } from "@/api/code";
 import Verify from "@/components/verifition/Verify";
 
 export default {
