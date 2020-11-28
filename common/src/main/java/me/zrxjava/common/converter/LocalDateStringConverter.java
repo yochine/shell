@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * LocalDate and string converter
  *
- * @author L.cm
+ * @author void
  */
 public enum LocalDateStringConverter implements Converter<LocalDate> {
 	/**

@@ -12,6 +12,7 @@ import me.zrxjava.sercurity.bo.LoginUser;
 import me.zrxjava.sercurity.utils.JwtTokenUtil;
 import me.zrxjava.system.support.bo.AdminUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,6 +42,12 @@ public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter
     @Autowired
     private CaptchaService captchaService;
 
+    @Value("${login.privateKey}")
+    private String privateKey;
+
+    @Value("${login.publicKey}")
+    private String publicKey;
+
     public MyAuthenticationFilter(AuthenticationManager authenticationManager){
         this.setAuthenticationManager(authenticationManager);
         super.setFilterProcessesUrl("/auth/login");
@@ -63,12 +70,14 @@ public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter
                 //repCode  6111  验证失败
                 //repCode  6112  获取验证码失败,请联系管理员
             }
+
+            //解密
             return this.getAuthenticationManager().authenticate(
-                    new UsernamePasswordAuthenticationToken(loginUser.getUserName(), loginUser.getPassword(), new ArrayList<>())
+                    new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword(), new ArrayList<>())
             );
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("获取登录信息失败",e);
-            throw new AuthenticationServiceException("只接収json格式");
+            throw  new  AuthenticationServiceException("系统错误");
         }
 
     }
