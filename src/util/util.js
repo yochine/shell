@@ -132,6 +132,75 @@ export const encryption = (params) => {
   return result
 }
 
+
+
+/**
+ * 操作员登录密码加密
+ * 方式 SM2(前缀+SM3(账号+SM3(明文密码))+账号+SM3(明文密码)+后缀)
+ * @param account 账号
+ * @param pwd 密码
+ */
+export function loginEncrypt(pwd) {
+  var publicKey = '040471008F95FFD0E1F8AD1CC886E09402F45CC8A935DAE145B88B3768C80BF6E18879AAE458FEFBBB7114F6D9F11192860359FA50B403293F00592A6061B59F8F';
+  const model = 1;
+  // SM2加密
+  var pwdEncrypt,num = 0;
+  do {
+    // pwdEncrypt = sm2Encrypt(pwd, publicKey, model)
+    pwdEncrypt = sm2.doEncrypt(pwd, publicKey, model)
+    console.log(pwdEncrypt)
+    num++
+  } while (pwdEncrypt.length % 2 !== 0 && num < 10)
+  if (pwdEncrypt.length % 2 !== 0) {
+    alert('系统网络异常，请稍后重试！')
+    return false
+  } else {
+    return '04' + pwdEncrypt
+  }
+}
+
+/**
+ * sm2加密
+ * @param {} msgString 
+ */
+export function sm2encrypt(msgString) { 
+  let msg = msgString;
+  if (typeof (msgString) !== 'string') {
+      msg = JSON.stringify(msgString);
+  }
+  const cipherMode = 1; // 1 - C1C3C2，0 - C1C2C3，默认为1
+  const publicKey = '040471008F95FFD0E1F8AD1CC886E09402F45CC8A935DAE145B88B3768C80BF6E18879AAE458FEFBBB7114F6D9F11192860359FA50B403293F00592A6061B59F8F'; // 公钥
+  const privateKey = '3A2C8E1BB7B922FC7CB8E32FE7EFB6C1F3C0BF3ABAFE5560552BF67DA55BFD4B';
+  let sm2 = require('sm-crypto').sm2;
+  let encryptData = sm2.doEncrypt(msg, publicKey, cipherMode); // 加密结果
+  console.log(encryptData);
+  let miwen = '040496f119e9b52e5f062bffe97ebf2c8d644253790252219ebb75dbe47410da426810c238c87559c3595f9a72751cd5c517ae5dac879449d73b5c0d040a68289ff76eca6139404d4c241738d0709a818cd048dbf199fd5e32476fe5e73604c5f1e956fe1dc2985a';
+  let dec = sm2.doDecrypt(miwen, publicKey, cipherMode); // 加密结果
+  console.log(dec);
+  return '04' + encryptData;
+}
+
+/**
+ * sm4加密
+ * @param {} msgString 
+ */
+export function sm4encrypt(msgString) { 
+  let msg = msgString;
+  if (typeof (msgString) !== 'string') {
+      msg = JSON.stringify(msgString);
+  }
+  const sm4 = require('sm-crypto').sm4;
+  let sm4Config = {
+    //配置sm4参数
+    key: "HENG1AN2WEN3YIN4",//这里这个key值是跟后端要的
+    mode: "ecb", // 加密的方式有两种，ecb和cbc两种，也是看后端如何定义的，不过要是cbc的话下面还要加一个iv的参数，ecb不用
+    cipherType: "base64" // 
+  };
+  let Sm4 = new SM4(sm4Config);//这里new一个函数，将上面的sm4Config作为参数传递进去。然后就可以开心的加密了
+  let encryptData = Sm4.encrypt(msgString); //加密
+  return encryptData;
+}
+
 /**
  * 浏览器判断是否全屏
  */

@@ -1,7 +1,7 @@
 import {getStore, setStore} from '@/util/store'
 import {isURL, validatenull} from '@/util/validate'
 import {loginByMobile, loginBySocial, loginByUsername, logout, refreshToken} from '@/api/login'
-import {deepClone, encryption} from '@/util/util'
+import {deepClone, sm2encrypt,loginEncrypt} from '@/util/util'
 import webiste from '@/const/website'
 import {resetRouter} from '@/router/router'
 import {getMenu, getTopMenu} from '@/api/admin/menu'
@@ -54,19 +54,21 @@ const user = {
   actions: {
     // 根据用户名登录
     LoginByUsername({commit}, userInfo) {
-      const user = encryption({
-        data: userInfo,
-        key: 'shell',
-        param: ['password']
-      })
+      userInfo.password = sm2encrypt(userInfo.password)
+      // console.log(userInfo.password)
+      // const user = encryption({
+      //   data: userInfo,
+      //   key: 'shell',
+      //   param: ['password']
+      // })
       return new Promise((resolve, reject) => {
-        loginByUsername(user.username, user.password, user.code, user.randomStr).then(response => {
-          const data = response.data
-          commit('SET_ACCESS_TOKEN', data.access_token)
+        loginByUsername(userInfo.username, userInfo.password, userInfo.code, userInfo.randomStr).then(response => {
+          const data = response.data.data
+          commit('SET_ACCESS_TOKEN', data.token)
           commit('SET_REFRESH_TOKEN', data.refresh_token)
           commit('SET_EXPIRES_IN', data.expires_in)
-          commit('SET_USER_INFO', data.user_info)
-          commit('SET_PERMISSIONS', data.user_info.authorities || [])
+          commit('SET_USER_INFO', data.user)
+          commit('SET_PERMISSIONS', data.authorities || [])
           commit('CLEAR_LOCK')
           resolve()
         }).catch(error => {
@@ -185,6 +187,7 @@ const user = {
   },
   mutations: {
     SET_ACCESS_TOKEN: (state, access_token) => {
+      console.log(access_token)
       state.access_token = access_token
       setStore({
         name: 'access_token',
