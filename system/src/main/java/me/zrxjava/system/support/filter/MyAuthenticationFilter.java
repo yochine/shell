@@ -18,6 +18,7 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -28,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 /**
  * @author void
@@ -100,7 +102,9 @@ public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter
         map.put("token",token);
         map.put("username",authResult.getName());
         map.put("user",adminUserDetails.getUser());
+        map.put("authorities",adminUserDetails.getGrantedAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
         SecurityContextHolder.getContext().setAuthentication(authResult);
+        response.setContentType("application/json;charset=utf-8");
         response.getWriter().write(JSON.toJSONStringWithDateFormat(ResponseResult.success(map),JSON.DEFFAULT_DATE_FORMAT));
     }
 

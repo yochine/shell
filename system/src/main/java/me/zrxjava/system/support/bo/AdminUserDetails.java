@@ -1,6 +1,5 @@
 package me.zrxjava.system.support.bo;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
@@ -24,10 +23,10 @@ public class AdminUserDetails implements UserDetails, Serializable {
 
     private final User user;
 
-    @JSONField(serialize = false)
+//    @JSONField(serialize = false)
     private final Map<Integer,Set<Long>> dataScopes;
 
-    @JSONField(serialize = false)
+//    @JSONField(serialize = false)
     private final Set<GrantedAuthority> grantedAuthorities;
 
 

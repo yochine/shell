@@ -1,24 +1,21 @@
 package me.zrxjava.system.modules.ums.controller;
 
 
-import cn.hutool.core.util.HexUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.crypto.SecureUtil;
-import cn.hutool.crypto.SmUtil;
-import cn.hutool.crypto.asymmetric.KeyType;
-import cn.hutool.crypto.asymmetric.SM2;
-import cn.hutool.crypto.asymmetric.SM2Engine;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import me.zrxjava.common.annotation.ResponseExcel;
 import me.zrxjava.common.base.ResponseResult;
+import me.zrxjava.common.utils.gmhelper.SM2Util;
 import me.zrxjava.common.validated.group.Insert;
 import me.zrxjava.common.validated.group.Update;
 import me.zrxjava.system.modules.ums.criteria.UserCriteria;
 import me.zrxjava.system.modules.ums.dto.UserDto;
 import me.zrxjava.system.modules.ums.entity.User;
 import me.zrxjava.system.modules.ums.service.IUserService;
+import org.bouncycastle.crypto.InvalidCipherTextException;
+import org.bouncycastle.crypto.engines.SM2Engine;
+import org.bouncycastle.pqc.math.linearalgebra.ByteUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,7 +28,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.KeyPair;
+import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 /**
@@ -102,30 +102,20 @@ public class UserController {
         return ResponseResult.setBody(userService.save(user));
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InvalidCipherTextException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
 
-        String text = "我是一段测试aaaa";
-//        String text = "046e8ede5ade80d45160ecb2f2b98fda8e89d9ddb2bf8a008ba4bfd74db7c2885cd6f8b587d6dc45f6286f5092757fc7c40fe3110ac3f98c2796a1eff0d3374aea825b32cd5bc9c5802d0f64b0f1c92c9e008b21c73373e4a71917449982d2fa6ddc2964248d93033280bf";
+        String test = "123456";
+        String content = "049fe8b087656a7501d8cfd22d38cd9bdf47fc0571103b6e889f3c4cd0f77dcae5ad12bfcbf3254011c0f9bd07cbad4d2456bdaaa4756af7e10a6f78c29558b758c9de354933a39efea3c0923846c468e4037dbcabb6e503819edb61f6d871c1a11edc8c471e76";
+        String privateKey = "3A2C8E1BB7B922FC7CB8E32FE7EFB6C1F3C0BF3ABAFE5560552BF67DA55BFD4B";
+        String publicKey = "040471008F95FFD0E1F8AD1CC886E09402F45CC8A935DAE145B88B3768C80BF6E18879AAE458FEFBBB7114F6D9F11192860359FA50B403293F00592A6061B59F8F";
+        byte[] enc = SM2Util.encrypt(SM2Engine.Mode.C1C3C2, publicKey, test.getBytes());
+        String miwen = ByteUtils.toHexString(enc);
+        System.out.println(miwen);
+        content = "0496f119e9b52e5f062bffe97ebf2c8d644253790252219ebb75dbe47410da426810c238c87559c3595f9a72751cd5c517ae5dac879449d73b5c0d040a68289ff76eca6139404d4c241738d0709a818cd048dbf199fd5e32476fe5e73604c5f1e956fe1dc2985a";
+        byte[] dec = SM2Util.decrypt(SM2Engine.Mode.C1C3C2, privateKey, ByteUtils.fromHexString(content));
+        System.out.println(new String(dec, StandardCharsets.UTF_8));
 
-        KeyPair pair = SecureUtil.generateKeyPair("SM2");
-        byte[] privateKey = pair.getPrivate().getEncoded();
-        byte[] publicKey = pair.getPublic().getEncoded();
-//        String pri = HexUtil.encodeHexStr(privateKey);
-        String pri = "148f8ff4c698e18f874c52fc8f1237a5e541535fd70d8dacc034c6f3f81c19cc";
-//        System.out.println(pri);
-//        String pub = HexUtil.encodeHexStr(publicKey);
-        String pub = "04e0749ec558b28aff7d997c6a40fec66f0f120ee8b369dba4b62ff342955f99063b84c5f67a7bef8f30ece2cfb78000714805d3d814453e86ef1cc2ed051b4600";
-//        System.out.println(pub);
 
-//        SM2 sm2 = SmUtil.sm2(privateKey, publicKey);
-        SM2 sm2 = SmUtil.sm2(HexUtil.decodeHex(pri), HexUtil.decodeHex(pub));
-// 公钥加密，私钥解密
-//        SM2 sm2 =  SmUtil.sm2();
-        String encryptStr = sm2.encryptBcd(text, KeyType.PublicKey);
-        System.out.println(encryptStr);
-        sm2.setMode(SM2Engine.SM2Mode.C1C3C2);
-        String decryptStr = StrUtil.utf8Str(sm2.decryptFromBcd(text, KeyType.PrivateKey));
-        System.out.println(decryptStr);
     }
 
 }
