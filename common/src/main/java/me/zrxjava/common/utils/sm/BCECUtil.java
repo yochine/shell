@@ -1,4 +1,4 @@
-package me.zrxjava.common.utils.gmhelper;
+package me.zrxjava.common.utils.sm;
 
 import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1Encoding;
@@ -49,13 +49,14 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
-import static me.zrxjava.common.utils.gmhelper.SM2Util.CURVE;
+import static me.zrxjava.common.utils.sm.Sm2Util.CURVE;
 
 
 /**
  * 这个工具类的方法，也适用于其他基于BC库的ECC算法
+ * @author void
  */
-public class BCECUtil extends GMBaseUtil{
+public class BCECUtil extends GmBaseUtil{
     private static final String ALGO_NAME_EC = "EC";
     private static final String PEM_STRING_PUBLIC = "PUBLIC KEY";
     private static final String PEM_STRING_ECPRIVATEKEY = "EC PRIVATE KEY";

@@ -1,4 +1,4 @@
-package me.zrxjava.common.utils.gmhelper;
+package me.zrxjava.common.utils.sm;
 
 import cn.hutool.core.util.HexUtil;
 import org.bouncycastle.asn1.ASN1Encodable;
@@ -37,8 +37,12 @@ import java.security.spec.ECFieldFp;
 import java.security.spec.EllipticCurve;
 import java.security.spec.InvalidKeySpecException;
 
-public class SM2Util extends GMBaseUtil {
-    //////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * sm3加密工具类
+ * @author void
+ */
+public class Sm2Util extends GmBaseUtil {
     /*
      * 以下为SM2推荐曲线参数
      */
@@ -56,7 +60,6 @@ public class SM2Util extends GMBaseUtil {
     public static final ECDomainParameters DOMAIN_PARAMS = new ECDomainParameters(CURVE, G_POINT,
         SM2_ECC_N, SM2_ECC_H);
     public static final int CURVE_LEN = BCECUtil.getCurveLength(DOMAIN_PARAMS);
-    //////////////////////////////////////////////////////////////////////////////////////
 
     public static final EllipticCurve JDK_CURVE = new EllipticCurve(new ECFieldFp(SM2_ECC_P), SM2_ECC_A, SM2_ECC_B);
     public static final java.security.spec.ECPoint JDK_G_POINT = new java.security.spec.ECPoint(
@@ -64,7 +67,6 @@ public class SM2Util extends GMBaseUtil {
     public static final java.security.spec.ECParameterSpec JDK_EC_SPEC = new java.security.spec.ECParameterSpec(
         JDK_CURVE, JDK_G_POINT, SM2_ECC_N, SM2_ECC_H.intValue());
 
-    //////////////////////////////////////////////////////////////////////////////////////
 
     public static final int SM3_DIGEST_LENGTH = 32;
 
@@ -102,7 +104,8 @@ public class SM2Util extends GMBaseUtil {
      */
     public static byte[] getRawPublicKey(BCECPublicKey publicKey) {
         byte[] src65 = publicKey.getQ().getEncoded(false);
-        byte[] rawXY = new byte[CURVE_LEN * 2];//SM2的话这里应该是64字节
+        //SM2的话这里应该是64字节
+        byte[] rawXY = new byte[CURVE_LEN * 2];
         System.arraycopy(src65, 1, rawXY, 0, rawXY.length);
         return rawXY;
     }
@@ -159,9 +162,10 @@ public class SM2Util extends GMBaseUtil {
 
     /**
      *
-     * @param mode
+     * @param mode C1C3C2/C1C2C3
      * @param sm2PublicKey 十六进制公钥字符串
-     * @param srcData
+     * @param srcData 加密数据
+     * description  和前端对接时 前端需要去除前两位才能解密出来
      * @return
      * @throws InvalidCipherTextException
      */
@@ -225,12 +229,13 @@ public class SM2Util extends GMBaseUtil {
      * @param mode
      * @param sm2PrivateKey 十六进制的字符串私钥
      * @param sm2Cipher
+     * @Description 前端加密的密文需要加上 04开头后端才能解
      * @return
      */
     public static byte[] decrypt(Mode mode, String sm2PrivateKey, byte[] sm2Cipher) throws InvalidCipherTextException {
         //私钥复原
         ECPrivateKeyParameters priKey = new ECPrivateKeyParameters(
-                new BigInteger(ByteUtils.fromHexString(sm2PrivateKey)), SM2Util.DOMAIN_PARAMS);
+                new BigInteger(ByteUtils.fromHexString(sm2PrivateKey)), Sm2Util.DOMAIN_PARAMS);
         return decrypt(mode,priKey,sm2Cipher);
     }
 
@@ -241,7 +246,7 @@ public class SM2Util extends GMBaseUtil {
      * @return
      * @throws Exception
      */
-    public static SM2Cipher parseSM2Cipher(byte[] cipherText) throws Exception {
+    public static Sm2Cipher parseSM2Cipher(byte[] cipherText) throws Exception {
         int curveLength = BCECUtil.getCurveLength(DOMAIN_PARAMS);
         return parseSM2Cipher(Mode.C1C3C2, curveLength, SM3_DIGEST_LENGTH, cipherText);
     }
@@ -253,7 +258,7 @@ public class SM2Util extends GMBaseUtil {
      * @param cipherText
      * @return
      */
-    public static SM2Cipher parseSM2Cipher(Mode mode, byte[] cipherText) throws Exception {
+    public static Sm2Cipher parseSM2Cipher(Mode mode, byte[] cipherText) throws Exception {
         int curveLength = BCECUtil.getCurveLength(DOMAIN_PARAMS);
         return parseSM2Cipher(mode, curveLength, SM3_DIGEST_LENGTH, cipherText);
     }
@@ -265,7 +270,7 @@ public class SM2Util extends GMBaseUtil {
      * @return
      * @throws Exception
      */
-    public static SM2Cipher parseSM2Cipher(int curveLength, int digestLength,
+    public static Sm2Cipher parseSM2Cipher(int curveLength, int digestLength,
         byte[] cipherText) throws Exception {
         return parseSM2Cipher(Mode.C1C3C2, curveLength, digestLength, cipherText);
     }
@@ -279,7 +284,7 @@ public class SM2Util extends GMBaseUtil {
      * @param cipherText   SM2密文
      * @return
      */
-    public static SM2Cipher parseSM2Cipher(Mode mode, int curveLength, int digestLength,
+    public static Sm2Cipher parseSM2Cipher(Mode mode, int curveLength, int digestLength,
         byte[] cipherText) throws Exception {
         byte[] c1 = new byte[curveLength * 2 + 1];
         byte[] c2 = new byte[cipherText.length - c1.length - digestLength];
@@ -296,7 +301,7 @@ public class SM2Util extends GMBaseUtil {
             throw new Exception("Unsupported mode:" + mode);
         }
 
-        SM2Cipher result = new SM2Cipher();
+        Sm2Cipher result = new Sm2Cipher();
         result.setC1(c1);
         result.setC2(c2);
         result.setC3(c3);

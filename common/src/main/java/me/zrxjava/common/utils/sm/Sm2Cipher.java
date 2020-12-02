@@ -1,9 +1,9 @@
-package me.zrxjava.common.utils.gmhelper;
+package me.zrxjava.common.utils.sm;
 
 /**
  * @author void
  */
-public class SM2Cipher {
+public class Sm2Cipher {
     /**
      * ECC密钥
      */
