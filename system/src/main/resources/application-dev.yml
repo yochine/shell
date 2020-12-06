@@ -15,7 +15,7 @@ spring:
       default-property-inclusion: non_null
       time-zone: GMT+8
   redis:
-    database: 2
+    database: 0
     host: 127.0.0.1
     password:
     port: 6379
@@ -64,7 +64,7 @@ knife4j:
 jwt:
   tokenHeader: Authorization #JWT存储的请求头
   secret: shell-admin-secret #JWT加解密使用的密钥
-  expiration: 1800 #JWT的超期限时间(60*30)
+  expiration: 604800 #JWT的超期限时间(60*30)
   tokenHead: 'Bearer '  #JWT负载中拿到开头
   refresh: 900 #15分钟内可续期
 
