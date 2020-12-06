@@ -49,6 +49,18 @@ public class RedisUtil
     }
 
     /**
+     * 有效期默认秒
+     * @param key
+     * @param value
+     * @param timeout
+     * @param <T>
+     */
+    public <T> void setCacheObject(final String key, final T value, final long timeout)
+    {
+        redisTemplate.opsForValue().set(key, value, timeout, TimeUnit.SECONDS);
+    }
+
+    /**
      * 设置有效时间
      *
      * @param key Redis键

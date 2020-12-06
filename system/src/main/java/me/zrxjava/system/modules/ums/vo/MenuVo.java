@@ -1,32 +1,17 @@
-package me.zrxjava.system.modules.ums.entity;
+package me.zrxjava.system.modules.ums.vo;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import me.zrxjava.common.base.BaseEntity;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
- * <p>
- * 系统菜单
- * </p>
- *
  * @author void
- * @since 2020-09-17
+ * @create 2020-12-03
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-@TableName("sys_menu")
-@ApiModel(value="Menu对象", description="系统菜单")
-public class Menu extends BaseEntity {
+public class MenuVo {
 
-    private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "menuId")
-    @TableId(value = "menu_id", type = IdType.ASSIGN_ID)
+    @ApiModelProperty(value = "ID")
     private Integer menuId;
 
     @ApiModelProperty(value = "上级菜单ID")
@@ -56,6 +41,9 @@ public class Menu extends BaseEntity {
     @ApiModelProperty(value = "链接地址")
     private String path;
 
+    @ApiModelProperty(value = "菜单标签")
+    private String label;
+
     @ApiModelProperty(value = "是否外链0不是1是")
     private Boolean iFrame;
 
@@ -67,9 +55,6 @@ public class Menu extends BaseEntity {
 
     @ApiModelProperty(value = "权限")
     private String permission;
-
-    @ApiModelProperty(value = "标签")
-    private String label;
 
     @ApiModelProperty(value = "位置")
     private String position;

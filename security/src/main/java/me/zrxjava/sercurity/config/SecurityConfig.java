@@ -2,8 +2,6 @@ package me.zrxjava.sercurity.config;
 
 import me.zrxjava.sercurity.component.JwtAccessDeniedHandler;
 import me.zrxjava.sercurity.component.JwtAuthenticationEntryPoint;
-import me.zrxjava.sercurity.filter.JwtTokenFilter;
-import me.zrxjava.sercurity.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -50,10 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 授权异常
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint())
-                .accessDeniedHandler(jwtAccessDeniedHandler())
-                .and()
-                // jwt过滤器
-                .addFilter(jwtFilter());
+                .accessDeniedHandler(jwtAccessDeniedHandler());
+
     }
 
 
@@ -63,10 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-    @Bean
-    public JwtTokenFilter jwtFilter() throws Exception {
-        return  new JwtTokenFilter(authenticationManagerBean());
-    }
+
 
     @Bean
     public JwtAccessDeniedHandler jwtAccessDeniedHandler() {
@@ -78,8 +71,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthenticationEntryPoint();
     }
 
-    @Bean
-    public JwtTokenUtil jwtTokenUtil() {
-        return new JwtTokenUtil();
-    }
+
 }

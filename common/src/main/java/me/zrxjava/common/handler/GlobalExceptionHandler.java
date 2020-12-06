@@ -8,6 +8,7 @@ import me.zrxjava.common.exception.BadRequestException;
 import me.zrxjava.common.exception.BusinessException;
 import me.zrxjava.common.exception.EntityExistException;
 import me.zrxjava.common.exception.EntityNotFoundException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -43,6 +44,13 @@ public class GlobalExceptionHandler{
         // 打印堆栈信息
         log.error("RuntimeException ->",e);
         return ResponseResult.failed(BAD_REQUEST.value(),e.getMessage());
+    }
+
+    @ExceptionHandler(value = UsernameNotFoundException.class)
+    public ResponseResult usernameNotFoundException(UsernameNotFoundException e) {
+        // 打印堆栈信息
+        log.error("UsernameNotFoundException ->",e);
+        return ResponseResult.failed(INTERNAL_SERVER_ERROR.value(),e.getMessage());
     }
 
     /**

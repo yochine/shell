@@ -8,13 +8,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import lombok.extern.log4j.Log4j2;
 import me.zrxjava.common.base.ResponseResult;
+import me.zrxjava.common.enums.ResultCode;
+import me.zrxjava.common.utils.ServletUtils;
 import me.zrxjava.sercurity.bo.LoginUser;
-import me.zrxjava.sercurity.utils.JwtTokenUtil;
-import me.zrxjava.system.support.bo.AdminUserDetails;
+import me.zrxjava.system.modules.login.bo.AdminUserDetails;
+import me.zrxjava.system.support.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -72,16 +74,17 @@ public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter
                 //repCode  6111  验证失败
                 //repCode  6112  获取验证码失败,请联系管理员
             }
-
             //解密
             return this.getAuthenticationManager().authenticate(
-                    new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword(), new ArrayList<>())
-            );
-        } catch (Exception e) {
-            log.error("获取登录信息失败",e);
-            throw  new  AuthenticationServiceException("系统错误");
+                    new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword(), new ArrayList<>()));
+        } catch (BadCredentialsException e) {
+            log.error("用户或密码错误",e);
+            ServletUtils.renderString(response, ResultCode.FAILED.getCode(), JSON.toJSONString(ResponseResult.failed("用户或密码错误")));
+        } catch (Exception e){
+            log.error("系统内部错误",e);
+            ServletUtils.renderString(response, ResultCode.FAILED.getCode(), JSON.toJSONString(ResponseResult.failed("系统内部错误")));
         }
-
+            return null;
     }
 
     /**
@@ -95,17 +98,15 @@ public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter
      */
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        response.setCharacterEncoding("UTF-8");
         HashMap<String,Object> map = Maps.newHashMap();
         AdminUserDetails adminUserDetails = (AdminUserDetails)authResult.getPrincipal();
-        String token = jwtTokenUtil.generateToken(authResult);
+        String token = jwtTokenUtil.generateToken(adminUserDetails);
         map.put("token",token);
         map.put("username",authResult.getName());
         map.put("user",adminUserDetails.getUser());
         map.put("authorities",adminUserDetails.getGrantedAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
         SecurityContextHolder.getContext().setAuthentication(authResult);
-        response.setContentType("application/json;charset=utf-8");
-        response.getWriter().write(JSON.toJSONStringWithDateFormat(ResponseResult.success(map),JSON.DEFFAULT_DATE_FORMAT));
+        ServletUtils.renderString(response, ResultCode.SUCCESS.getCode(), JSON.toJSONStringWithDateFormat(ResponseResult.success(map),JSON.DEFFAULT_DATE_FORMAT));
     }
 
     /**

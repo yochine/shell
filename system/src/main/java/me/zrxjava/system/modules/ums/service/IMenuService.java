@@ -2,8 +2,11 @@ package me.zrxjava.system.modules.ums.service;
 
 import me.zrxjava.system.modules.ums.entity.Menu;
 import com.baomidou.mybatisplus.extension.service.IService;
+import me.zrxjava.system.modules.ums.vo.MenuTree;
+import me.zrxjava.system.modules.ums.vo.MenuVo;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -20,5 +23,14 @@ public interface IMenuService extends IService<Menu> {
      * @param roleId
      * @return
      */
-    List<Menu> getByRoleId(Long roleId);
+    List<MenuVo> getByRoleId(Long roleId);
+
+    /**
+     * 查询菜单
+     * @param menus
+     * @param type
+     * @param parentId
+     * @return
+     */
+    List<MenuTree> buildMenuTree(Set<MenuVo> menus, String type, Integer parentId);
 }

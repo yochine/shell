@@ -1,9 +1,9 @@
 
-package me.zrxjava.common.mp;
+package me.zrxjava.system.support.mp;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import lombok.extern.slf4j.Slf4j;
-import me.zrxjava.common.utils.SecurityUtils;
+import me.zrxjava.system.support.util.SecurityUtil;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 
@@ -20,13 +20,13 @@ public class MybatisMetaObjectHandler implements MetaObjectHandler {
 	@Override
 	public void insertFill(MetaObject metaObject) {
 		this.setFieldValByName("createTime", LocalDateTime.now(),metaObject);
-		this.setFieldValByName("createBy", SecurityUtils.getCurrentUsername(),metaObject);
+		this.setFieldValByName("createBy", SecurityUtil.getCurrentUsername(),metaObject);
 	}
 
 	@Override
 	public void updateFill(MetaObject metaObject) {
 		this.setFieldValByName("updateTime", LocalDateTime.now(),metaObject);
-		this.setFieldValByName("updatedBy", SecurityUtils.getCurrentUsername(),metaObject);
+		this.setFieldValByName("updatedBy", SecurityUtil.getCurrentUsername(),metaObject);
 	}
 
 }

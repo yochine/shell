@@ -51,6 +51,9 @@ login:
   enableCache: true
   publicKey: 040471008F95FFD0E1F8AD1CC886E09402F45CC8A935DAE145B88B3768C80BF6E18879AAE458FEFBBB7114F6D9F11192860359FA50B403293F00592A6061B59F8F
   privateKey: 3A2C8E1BB7B922FC7CB8E32FE7EFB6C1F3C0BF3ABAFE5560552BF67DA55BFD4B
+  user:
+    admin: 'ums:admin'
+    expire: 86400 # 24小时
 
 
 
@@ -61,8 +64,9 @@ knife4j:
 jwt:
   tokenHeader: Authorization #JWT存储的请求头
   secret: shell-admin-secret #JWT加解密使用的密钥
-  expiration: 604800 #JWT的超期限时间(60*60*24*7)
+  expiration: 1800 #JWT的超期限时间(60*30)
   tokenHead: 'Bearer '  #JWT负载中拿到开头
+  refresh: 900 #15分钟内可续期
 
 security:
   ignoreUrl: /test/**,/ums/user/**,/code

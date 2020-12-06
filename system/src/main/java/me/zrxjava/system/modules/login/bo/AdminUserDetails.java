@@ -1,4 +1,4 @@
-package me.zrxjava.system.support.bo;
+package me.zrxjava.system.modules.login.bo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -23,12 +22,11 @@ public class AdminUserDetails implements UserDetails, Serializable {
 
     private final User user;
 
-//    @JSONField(serialize = false)
-    private final Map<Integer,Set<Long>> dataScopes;
+    private final Set<Long> dataScopes;
 
-//    @JSONField(serialize = false)
     private final Set<GrantedAuthority> grantedAuthorities;
 
+    private final Set<Long> roleIds;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,7 +1,6 @@
-package me.zrxjava.sercurity.utils;
+package me.zrxjava.system.support.util;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Maps;
 import io.jsonwebtoken.Claims;
@@ -9,27 +8,19 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 /**
  * jwt生成的工具类
+ * @author void
  */
 @Slf4j
 public class JwtTokenUtil {
     private static final String CLAIM_KEY_USERNAME = "sub";
-    private static final String CLAIM_KEY_AUTH= "auth";
     private static final String CLAIM_KEY_CREATED = "created";
     @Value("${jwt.secret}")
     private String secret;
@@ -93,41 +84,35 @@ public class JwtTokenUtil {
     /**
      * 根据用户信息生成token
      */
-    public String generateToken(Authentication authentication) {
+    public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = Maps.newHashMap();
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
-        claims.put(CLAIM_KEY_AUTH, authorities);
         claims.put(CLAIM_KEY_CREATED, new Date());
-        claims.put(CLAIM_KEY_USERNAME, authentication.getName());
+        claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
         return generateToken(claims);
     }
 
-    public Authentication getAuthentication(String token) {
-        token = token.substring(tokenHead.length());
-        Claims claims = getClaimsFromToken(token);
-        Object authoritiesStr = claims.get(CLAIM_KEY_AUTH);
-        Collection<? extends GrantedAuthority> authorities =
-                ObjectUtil.isNotEmpty(authoritiesStr) ?
-                        Arrays.stream(authoritiesStr.toString().split(","))
-                                .map(SimpleGrantedAuthority::new)
-                                .collect(Collectors.toList()) : Collections.emptyList();
-
-        User principal = new User((String) claims.get(CLAIM_KEY_USERNAME), "******", authorities);
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+    /**
+     * 从token中获取登录用户名
+     */
+    public String getUserNameFromToken(String token) {
+        String username;
+        try {
+            Claims claims = getClaimsFromToken(token);
+            username = (String) claims.get(CLAIM_KEY_USERNAME);
+        } catch (Exception e) {
+            username = null;
+        }
+        return username;
     }
 
     /**
      * 当原来的token没过期时是可以刷新的
      *
-     * @param oldToken 带tokenHead的token
      */
-    public String refreshHeadToken(String oldToken) {
-        if(StrUtil.isEmpty(oldToken)){
+    public String refreshHeadToken(String token) {
+        if(StrUtil.isEmpty(token)){
             return null;
         }
-        String token = oldToken.substring(tokenHead.length());
         if(StrUtil.isEmpty(token)){
             return null;
         }
