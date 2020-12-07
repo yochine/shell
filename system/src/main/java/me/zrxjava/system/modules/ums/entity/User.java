@@ -1,19 +1,20 @@
 package me.zrxjava.system.modules.ums.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import me.zrxjava.common.base.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import me.zrxjava.common.base.BaseEntity;
+
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -64,6 +65,7 @@ public class User extends BaseEntity {
 
     @ApiModelProperty(value = "密码")
     @JSONField(serialize = false)
+    @JsonIgnore
     private String password;
 
     @ApiModelProperty(value = "是否为admin账号")

@@ -30,7 +30,7 @@ public class MenuVo {
     private String componentName;
 
     @ApiModelProperty(value = "组件路径")
-    private String componentPath;
+    private String path;
 
     @ApiModelProperty(value = "排序")
     private Integer sort;
@@ -39,7 +39,7 @@ public class MenuVo {
     private String icon;
 
     @ApiModelProperty(value = "链接地址")
-    private String path;
+    private String linkPath;
 
     @ApiModelProperty(value = "菜单标签")
     private String label;

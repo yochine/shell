@@ -5,13 +5,13 @@ import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Sets;
 import lombok.RequiredArgsConstructor;
 import me.zrxjava.common.enums.DataScopeEnum;
+import me.zrxjava.sercurity.bo.UserGrantedAuthority;
 import me.zrxjava.system.modules.ums.entity.Role;
 import me.zrxjava.system.modules.ums.service.IDeptService;
 import me.zrxjava.system.modules.ums.service.IMenuService;
 import me.zrxjava.system.modules.ums.service.IRolesDeptsService;
 import me.zrxjava.system.modules.ums.vo.MenuVo;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -79,7 +79,7 @@ public class AuthorityService
         Set<String> sets = Sets.newHashSet();
         if (isAdmin){
             sets.add("Super_Admin");
-            return sets.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+            return sets.stream().map(UserGrantedAuthority::new).collect(Collectors.toSet());
         }
         roles.forEach(role -> {
             List<MenuVo> menus = menuService.getByRoleId(role.getRoleId());
@@ -88,6 +88,6 @@ public class AuthorityService
                         .map(MenuVo::getPermission).collect(Collectors.toSet()));
             }
         });
-        return sets.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+        return sets.stream().map(UserGrantedAuthority::new).collect(Collectors.toSet());
     }
 }

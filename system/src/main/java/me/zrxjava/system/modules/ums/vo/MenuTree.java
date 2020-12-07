@@ -34,7 +34,7 @@ public class MenuTree extends TreeNode implements Serializable {
 	 * 前端路由标识路径
 	 */
 	@ApiModelProperty(value = "前端路由标识路径")
-	private String componentPath;
+	private String path;
 
 	/**
 	 * 路由缓冲
@@ -86,7 +86,7 @@ public class MenuTree extends TreeNode implements Serializable {
 		this.pid = menuVo.getPid();
 		this.icon = menuVo.getIcon();
 		this.name = menuVo.getName();
-		this.componentPath = menuVo.getComponentPath();
+		this.path = menuVo.getPath();
 		this.type = menuVo.getType();
 		this.permission = menuVo.getPermission();
 		this.label = menuVo.getLabel();

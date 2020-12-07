@@ -1,11 +1,10 @@
 package me.zrxjava.system.modules.ums.controller;
 
+import cn.hutool.core.util.RandomUtil;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import me.zrxjava.common.annotation.AccessLimit;
 import me.zrxjava.common.base.ResponseResult;
-import me.zrxjava.common.utils.BeanChangeUtils;
-import me.zrxjava.system.modules.ums.entity.User;
 import me.zrxjava.system.modules.ums.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,11 +45,12 @@ public class TestController {
 
 
     public static void main(String[] args) {
-        User old = User.builder().username("张三").userId(123L).build();
-        User fast = User.builder().username("李四").userId(234L).build();
-        String log = BeanChangeUtils.contrastObj(old,fast,null);
-        System.out.println(log);
+//        User old = User.builder().username("张三").userId(123L).build();
+//        User fast = User.builder().username("李四").userId(234L).build();
+//        String log = BeanChangeUtils.contrastObj(old,fast,null);
+//        System.out.println(log);
 
+        System.out.println(RandomUtil.randomString("hjvbytimhmgkqweasdsawetwr",14));
 
     }
 }

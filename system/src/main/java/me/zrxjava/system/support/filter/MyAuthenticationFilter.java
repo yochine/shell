@@ -10,7 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import me.zrxjava.common.base.ResponseResult;
 import me.zrxjava.common.enums.ResultCode;
 import me.zrxjava.common.utils.ServletUtils;
-import me.zrxjava.sercurity.bo.LoginUser;
+import me.zrxjava.system.modules.login.bo.LoginUser;
 import me.zrxjava.system.modules.login.bo.AdminUserDetails;
 import me.zrxjava.system.support.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;

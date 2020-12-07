@@ -45,7 +45,7 @@ public class Menu extends BaseEntity {
     private String componentName;
 
     @ApiModelProperty(value = "组件路径")
-    private String componentPath;
+    private String path;
 
     @ApiModelProperty(value = "排序")
     private Integer sort;
@@ -54,7 +54,7 @@ public class Menu extends BaseEntity {
     private String icon;
 
     @ApiModelProperty(value = "链接地址")
-    private String path;
+    private String linkPath;
 
     @ApiModelProperty(value = "是否外链0不是1是")
     private Boolean iFrame;

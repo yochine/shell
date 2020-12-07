@@ -1,7 +1,9 @@
 package me.zrxjava.system.modules.login.bo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import me.zrxjava.system.modules.ums.entity.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,22 +20,25 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor
 @ToString
+@NoArgsConstructor
 public class AdminUserDetails implements UserDetails, Serializable {
 
-    private final User user;
+    private  User user;
 
-    private final Set<Long> dataScopes;
+    private  Set<Long> dataScopes;
 
-    private final Set<GrantedAuthority> grantedAuthorities;
+    private  Set<GrantedAuthority> grantedAuthorities;
 
-    private final Set<Long> roleIds;
+    private  Set<Long> roleIds;
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.grantedAuthorities;
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return user.getPassword();
     }

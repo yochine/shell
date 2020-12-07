@@ -1,4 +1,4 @@
-package me.zrxjava.sercurity.bo;
+package me.zrxjava.system.modules.login.bo;
 
 import lombok.Data;
 

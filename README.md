@@ -16,13 +16,13 @@
     * 包装mp的query类
     * 引入Google开源高效序列化工具ProtostuffUtils OSHI（基于 JNA 的操作系统和硬件信息库）
     * 使用 Caffeine 来做本地缓存
-    * MapStruct转换 包装BaseMapper DTO->entity->VO 
+    * MapStruct转换 包装BaseMapper DTO->entity->VO  修改entity 不会重新build问题
     * Spring Retry
     * 完善定时任务
     * 代码生成
     * 引入flyway
     * oss 七牛云 阿里云
-    * DB 区分主从
+    * DB 区分主从 
     
 > 二期计划
 

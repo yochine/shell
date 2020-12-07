@@ -16,8 +16,12 @@
 
 package me.zrxjava.system.config;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
@@ -51,8 +55,9 @@ public class RedisTemplateConfig {
         template.setConnectionFactory(factory);
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         ObjectMapper om = new ObjectMapper();
-        // 序列化JSON串时，在值上打印出对象类型
-//        om.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        //必须设置，否则无法将JSON转化为对象，会转化成Map类型
+        om.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL);
         //美化JSON输出
         om.enable(SerializationFeature.INDENT_OUTPUT);
         //定制化关于时间格式序列化问题
@@ -61,6 +66,9 @@ public class RedisTemplateConfig {
         javaTimeModule.addSerializer(LocalDateTime.class,new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         javaTimeModule.addDeserializer(LocalDateTime.class,new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         om.registerModule(javaTimeModule);
+        // 反序列化时,遇到未知属性(那些没有对应的属性来映射的属性,并且没有任何setter或handler来处理这样的属性)时，是否引起结果失败(通过抛JsonMappingException异常)
+        // 默认是启用的(意味着,如果遇到未知属性时会抛一个JsonMappingException)
+        om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         jackson2JsonRedisSerializer.setObjectMapper(om);
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
         // key采用String的序列化方式
