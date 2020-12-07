@@ -174,8 +174,8 @@ export function sm2encrypt(msgString) {
   let sm2 = require('sm-crypto').sm2;
   let encryptData = sm2.doEncrypt(msg, publicKey, cipherMode); // 加密结果
   console.log(encryptData);
-  let miwen = '040496f119e9b52e5f062bffe97ebf2c8d644253790252219ebb75dbe47410da426810c238c87559c3595f9a72751cd5c517ae5dac879449d73b5c0d040a68289ff76eca6139404d4c241738d0709a818cd048dbf199fd5e32476fe5e73604c5f1e956fe1dc2985a';
-  let dec = sm2.doDecrypt(miwen, publicKey, cipherMode); // 加密结果
+  let miwen = '0469552f58ca5b85f4aa0a1c2762fc3faedcdfc161bfb6e73a2e4efd1b09b793ccf890854e6d01fdd83ebc181c05a463d7886529954502db99bb387bfdca0171137b096bc6924f524a434053f8fcc9b18dc17ead2eeafcefee955d3dfe6818ea4e03dfd4d9e3c0';
+  let dec = sm2.doDecrypt(miwen, privateKey, cipherMode); // 加密结果
   console.log(dec);
   return '04' + encryptData;
 }

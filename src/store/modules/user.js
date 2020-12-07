@@ -54,13 +54,7 @@ const user = {
   actions: {
     // 根据用户名登录
     LoginByUsername({commit}, userInfo) {
-      userInfo.password = sm2encrypt(userInfo.password)
-      // console.log(userInfo.password)
-      // const user = encryption({
-      //   data: userInfo,
-      //   key: 'shell',
-      //   param: ['password']
-      // })
+      // userInfo.password = sm2encrypt(userInfo.password)
       return new Promise((resolve, reject) => {
         loginByUsername(userInfo.username, userInfo.password, userInfo.code, userInfo.randomStr).then(response => {
           const data = response.data.data
@@ -72,6 +66,7 @@ const user = {
           commit('CLEAR_LOCK')
           resolve()
         }).catch(error => {
+          console.log(error)
           reject(error)
         })
       })
@@ -187,7 +182,6 @@ const user = {
   },
   mutations: {
     SET_ACCESS_TOKEN: (state, access_token) => {
-      console.log(access_token)
       state.access_token = access_token
       setStore({
         name: 'access_token',

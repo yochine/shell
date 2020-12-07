@@ -2,8 +2,8 @@
  * 配置参考:
  * https://cli.vuejs.org/zh/config/
  */
-const url = 'http://192.168.1.129:9091'
-// const url = 'http://192.168.135.193:9091'
+// const url = 'http://192.168.1.153:9091'
+const url = 'http://127.0.0.1:9091'
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const productionGzipExtensions = ['js', 'css']
 module.exports = {

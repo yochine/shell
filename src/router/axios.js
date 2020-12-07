@@ -53,7 +53,7 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(res => {
   NProgress.done()
   const status = Number(res.status) || 200
-  const message = res.data.msg || errorCode[status] || errorCode['default']
+  const message = res.data.msg || res.data.message || errorCode[status] || errorCode['default']
   if (status === 401) {
     Message({
       message: message,
@@ -70,13 +70,13 @@ axios.interceptors.response.use(res => {
       message: message,
       type: 'error'
     })
-    return Promise.reject(new Error(message))
+    return Promise.reject(message)
   }
 
   return res
 }, error => {
   NProgress.done()
-  return Promise.reject(new Error(error))
+  return Promise.reject(error)
 })
 
 export default axios

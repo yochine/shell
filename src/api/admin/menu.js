@@ -19,7 +19,7 @@ import request from '@/router/axios'
 
 export function getMenu(id) {
   return request({
-    url: '/admin/menu',
+    url: '/ums/menu/list',
     params: {parentId: id},
     method: 'get'
   })
@@ -27,7 +27,7 @@ export function getMenu(id) {
 
 export function getTopMenu() {
   return request({
-    url: '/admin/menu',
+    url: '/ums/menu/list',
     params: {type: 'top'},
     method: 'get'
   })
