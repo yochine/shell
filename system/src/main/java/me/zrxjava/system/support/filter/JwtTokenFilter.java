@@ -1,10 +1,8 @@
 package me.zrxjava.system.support.filter;
 
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import me.zrxjava.common.base.ResponseResult;
-import me.zrxjava.common.enums.ResultCode;
 import me.zrxjava.common.utils.ServletUtils;
 import me.zrxjava.system.support.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +51,7 @@ public class JwtTokenFilter extends BasicAuthenticationFilter {
         if (token != null && token.startsWith(this.tokenHead)) {
             token = token.substring(tokenHead.length());
             if (StrUtil.isEmpty(jwtTokenUtil.refreshHeadToken(token))) {
-                ServletUtils.renderString(response, ResultCode.FAILED.getCode(), JSON.toJSONString(ResponseResult.failed("非法请求")));
+                ServletUtils.renderString(response,ResponseResult.failed("非法请求"));
                 return;
             }
             String username = jwtTokenUtil.getUserNameFromToken(token);

@@ -38,7 +38,6 @@ public class AdminUserDetails implements UserDetails, Serializable {
     }
 
     @Override
-    @JsonIgnore
     public String getPassword() {
         return user.getPassword();
     }

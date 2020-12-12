@@ -5,6 +5,7 @@ package me.zrxjava.system.modules.ums.vo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
@@ -12,6 +13,7 @@ import java.io.Serializable;
  * @author void
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "菜单树")
 public class MenuTree extends TreeNode implements Serializable {
 

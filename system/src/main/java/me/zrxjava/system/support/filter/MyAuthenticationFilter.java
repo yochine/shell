@@ -1,6 +1,5 @@
 package me.zrxjava.system.support.filter;
 
-import com.alibaba.fastjson.JSON;
 import com.anji.captcha.model.common.ResponseModel;
 import com.anji.captcha.model.vo.CaptchaVO;
 import com.anji.captcha.service.CaptchaService;
@@ -8,10 +7,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import lombok.extern.log4j.Log4j2;
 import me.zrxjava.common.base.ResponseResult;
-import me.zrxjava.common.enums.ResultCode;
 import me.zrxjava.common.utils.ServletUtils;
-import me.zrxjava.system.modules.login.bo.LoginUser;
 import me.zrxjava.system.modules.login.bo.AdminUserDetails;
+import me.zrxjava.system.modules.login.bo.LoginUser;
 import me.zrxjava.system.support.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -79,10 +77,10 @@ public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter
                     new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword(), new ArrayList<>()));
         } catch (BadCredentialsException e) {
             log.error("用户或密码错误",e);
-            ServletUtils.renderString(response, ResultCode.FAILED.getCode(), JSON.toJSONString(ResponseResult.failed("用户或密码错误")));
+            ServletUtils.renderString(response, ResponseResult.failed("用户或密码错误"));
         } catch (Exception e){
             log.error("系统内部错误",e);
-            ServletUtils.renderString(response, ResultCode.FAILED.getCode(), JSON.toJSONString(ResponseResult.failed("系统内部错误")));
+            ServletUtils.renderString(response, ResponseResult.failed("系统内部错误"));
         }
             return null;
     }
@@ -93,11 +91,9 @@ public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter
      * @param response
      * @param chain
      * @param authResult
-     * @throws IOException
-     * @throws ServletException
      */
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) {
         HashMap<String,Object> map = Maps.newHashMap();
         AdminUserDetails adminUserDetails = (AdminUserDetails)authResult.getPrincipal();
         String token = jwtTokenUtil.generateToken(adminUserDetails);
@@ -106,7 +102,7 @@ public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter
         map.put("user",adminUserDetails.getUser());
         map.put("authorities",adminUserDetails.getGrantedAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
         SecurityContextHolder.getContext().setAuthentication(authResult);
-        ServletUtils.renderString(response, ResultCode.SUCCESS.getCode(), JSON.toJSONStringWithDateFormat(ResponseResult.success(map),JSON.DEFFAULT_DATE_FORMAT));
+        ServletUtils.renderString(response, ResponseResult.success(map));
     }
 
     /**
@@ -121,7 +117,7 @@ public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         response.setCharacterEncoding("UTF-8");
         log.error("登录失败：{}",failed.getMessage());
-        response.getWriter().write(failed.getMessage());
+        ServletUtils.renderString(response, ResponseResult.failed(failed.getMessage()));
 
     }
 }

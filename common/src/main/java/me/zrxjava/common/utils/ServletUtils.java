@@ -1,6 +1,8 @@
 package me.zrxjava.common.utils;
 
 import cn.hutool.core.convert.Convert;
+import com.alibaba.fastjson.JSON;
+import me.zrxjava.common.base.ResponseResult;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -82,31 +84,19 @@ public class ServletUtils
 
     /**
      * 将字符串渲染到客户端
-     * 
-     * @param response 渲染对象
-     * @param string 待渲染的字符串
-     * @return null
-     */
-    public static String renderString(HttpServletResponse response, String string)
-    {
-        return renderString(response,200,string);
-    }
-
-    /**
-     * 将字符串渲染到客户端
      *
      * @param response 渲染对象
-     * @param string 待渲染的字符串
+     * @param result 待渲染的字符串
      * @return null
      */
-    public static String renderString(HttpServletResponse response, int status, String string)
+    public static String renderString(HttpServletResponse response, ResponseResult result)
     {
         try
         {
-            response.setStatus(status);
+            response.setStatus(result.getCode());
             response.setContentType("application/json");
             response.setCharacterEncoding("utf-8");
-            response.getWriter().print(string);
+            response.getWriter().print(JSON.toJSONString(result));
         }
         catch (IOException e)
         {
