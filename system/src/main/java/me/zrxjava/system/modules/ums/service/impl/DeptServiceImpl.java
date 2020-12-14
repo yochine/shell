@@ -2,11 +2,13 @@ package me.zrxjava.system.modules.ums.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Sets;
 import me.zrxjava.system.modules.ums.entity.Dept;
 import me.zrxjava.system.modules.ums.mapper.DeptMapper;
 import me.zrxjava.system.modules.ums.service.IDeptService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import me.zrxjava.system.modules.ums.vo.DeptTree;
+import me.zrxjava.system.support.util.SecurityUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,6 +42,13 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements ID
             });
         }
         return sets;
+    }
+
+    @Override
+    public List<DeptTree> buildTree() {
+        List<Dept> depts = this.list();
+        Set<Long> deptIds = SecurityUtil.getCurrentUserDataScopes();
+        return null;
     }
 
 }

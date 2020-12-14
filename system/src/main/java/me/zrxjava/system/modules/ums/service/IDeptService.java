@@ -2,7 +2,9 @@ package me.zrxjava.system.modules.ums.service;
 
 import me.zrxjava.system.modules.ums.entity.Dept;
 import com.baomidou.mybatisplus.extension.service.IService;
+import me.zrxjava.system.modules.ums.vo.DeptTree;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -22,4 +24,9 @@ public interface IDeptService extends IService<Dept> {
      */
     Set<Long> getChildDepts(Long deptId);
 
+    /**
+     * 构建组织树
+     * @return
+     */
+    List<DeptTree> buildTree();
 }
