@@ -3,12 +3,14 @@ package me.zrxjava.system.modules.ums.vo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author void
  * @create 2020-12-03
  */
 @Data
-public class MenuVo {
+public class MenuVo implements Serializable {
 
     @ApiModelProperty(value = "ID")
     private Integer menuId;

@@ -35,7 +35,7 @@ public class NoRepeatSubmitAspect {
     public void aspect(NoRepeatSubmit noRepeatSubmit) {
     }
 
-    @Around(value = "aspect(noRepeatSubmit)")
+    @Around(value = "aspect(noRepeatSubmit)", argNames = "pjp,noRepeatSubmit")
     public Object execute(ProceedingJoinPoint pjp, NoRepeatSubmit noRepeatSubmit) throws Throwable {
 
         HttpServletRequest request = ServletUtils.getRequest();

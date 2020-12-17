@@ -8,7 +8,9 @@ import me.zrxjava.system.modules.ums.service.IMenuService;
 import me.zrxjava.system.modules.ums.transfer.MenuTransfer;
 import me.zrxjava.system.modules.ums.vo.MenuTree;
 import me.zrxjava.system.modules.ums.vo.MenuVo;
+import me.zrxjava.system.support.constants.CacheConstants;
 import me.zrxjava.system.support.util.TreeUtil;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -33,6 +35,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     private final MenuTransfer menuTransfer;
 
     @Override
+    @Cacheable(value = CacheConstants.MENU_INFO, key = "#roleId", unless = "#result.isEmpty()")
     public List<MenuVo> getByRoleId(Long roleId) {
         return menuTransfer.toVos(menuMapper.getByRoleId(roleId));
     }

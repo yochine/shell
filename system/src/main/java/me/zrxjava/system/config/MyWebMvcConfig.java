@@ -1,5 +1,6 @@
 package me.zrxjava.system.config;
 
+import me.zrxjava.system.support.filter.RepeatableFilter;
 import me.zrxjava.system.support.filter.XssFilter;
 import me.zrxjava.system.support.intercept.TraceInterceptor;
 import org.apache.commons.lang3.StringUtils;
@@ -54,7 +55,7 @@ public class MyWebMvcConfig implements WebMvcConfigurer {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Bean
-    public FilterRegistrationBean xssFilterRegistration()
+    public FilterRegistrationBean xssFilter()
     {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setDispatcherTypes(DispatcherType.REQUEST);
@@ -62,10 +63,22 @@ public class MyWebMvcConfig implements WebMvcConfigurer {
         registration.addUrlPatterns(StringUtils.split(urlPatterns, ","));
         registration.setName("xssFilter");
         registration.setOrder(FilterRegistrationBean.HIGHEST_PRECEDENCE);
-        Map<String, String> initParameters = new HashMap<String, String>();
+        Map<String, String> initParameters = new HashMap<>();
         initParameters.put("excludes", excludes);
         initParameters.put("enabled", enabled);
         registration.setInitParameters(initParameters);
+        return registration;
+    }
+
+    @Bean
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public FilterRegistrationBean repeatableFilter()
+    {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(new RepeatableFilter());
+        registration.addUrlPatterns("/*");
+        registration.setName("repeatableFilter");
+        registration.setOrder(FilterRegistrationBean.LOWEST_PRECEDENCE);
         return registration;
     }
 
