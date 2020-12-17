@@ -10,7 +10,6 @@ import lombok.Data;
 @Data
 public class MenuVo {
 
-
     @ApiModelProperty(value = "ID")
     private Integer menuId;
 
