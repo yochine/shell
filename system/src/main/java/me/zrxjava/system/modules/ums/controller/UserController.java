@@ -4,8 +4,10 @@ package me.zrxjava.system.modules.ums.controller;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import me.zrxjava.common.annotation.Log;
 import me.zrxjava.common.annotation.ResponseExcel;
 import me.zrxjava.common.base.ResponseResult;
+import me.zrxjava.common.enums.BusinessType;
 import me.zrxjava.common.validated.group.Insert;
 import me.zrxjava.common.validated.group.Update;
 import me.zrxjava.system.modules.ums.criteria.UserCriteria;
@@ -56,8 +58,7 @@ public class UserController {
     @PreAuthorize("@ps.check('ums:user:export')")
     @ResponseExcel(name = "user",password = "123")
     public List<User> export(UserCriteria criteria){
-        List<User> users =  userService.list();
-        return users;
+        return userService.list();
     }
 
     @PostMapping
@@ -87,6 +88,7 @@ public class UserController {
     }
 
     @DeleteMapping
+    @Log(title = "用户管理",businessType = BusinessType.DELETE)
     @ApiOperation("删除用户")
     @PreAuthorize("@ps.check('ums:user:delete')")
     public ResponseResult<Boolean> delete(Long userId){
