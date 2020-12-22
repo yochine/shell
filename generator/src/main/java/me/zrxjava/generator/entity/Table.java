@@ -26,7 +26,7 @@ public class Table extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "编号")
-    @TableId(value = "table_id", type = IdType.AUTO)
+    @TableId(value = "table_id", type = IdType.ASSIGN_ID)
     private Long tableId;
 
     @ApiModelProperty(value = "表名称")

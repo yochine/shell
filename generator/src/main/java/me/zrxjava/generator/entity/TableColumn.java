@@ -30,7 +30,7 @@ public class TableColumn extends BaseEntity {
     private Long columnId;
 
     @ApiModelProperty(value = "归属表编号")
-    private String tableId;
+    private Long tableId;
 
     @ApiModelProperty(value = "列名称")
     private String columnName;
@@ -64,6 +64,12 @@ public class TableColumn extends BaseEntity {
 
     @ApiModelProperty(value = "是否列表字段（1是）")
     private String isList;
+
+    @ApiModelProperty(value = "是否导出字段（1是）")
+    private String isExport;
+
+    @ApiModelProperty(value = "是否导入字段（1是）")
+    private String isImport;
 
     @ApiModelProperty(value = "是否查询字段（1是）")
     private String isQuery;

@@ -1,7 +1,10 @@
 package me.zrxjava.generator.mapper;
 
-import me.zrxjava.generator.entity.Table;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import me.zrxjava.generator.entity.Table;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,19 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface TableMapper extends BaseMapper<Table> {
 
+    /**
+     * 查询数据库列表
+     *
+     * @param page
+     * @param tableName
+     * @return
+     */
+    Page<Table> selectDbList(Page<Table> page, String tableName);
+
+    /**
+     * 根据表名查询数据库表
+     * @param tableNames
+     * @return
+     */
+    List<Table> selectDbListByTableNames(String[] tableNames);
 }
