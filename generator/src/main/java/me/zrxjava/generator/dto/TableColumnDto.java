@@ -1,34 +1,16 @@
-package me.zrxjava.generator.entity;
+package me.zrxjava.generator.dto;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import me.zrxjava.common.base.BaseEntity;
-import me.zrxjava.generator.constants.GenConstants;
-import org.apache.commons.lang3.StringUtils;
 
 /**
- * <p>
- * 代码生成业务表字段
- * </p>
- *
  * @author void
- * @since 2020-12-21
+ * @create 2020-12-23
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-@TableName("gen_table_column")
-@ApiModel(value="TableColumn对象", description="代码生成业务表字段")
-public class TableColumn extends BaseEntity {
-
-    private static final long serialVersionUID = 1L;
+public class TableColumnDto {
 
     @ApiModelProperty(value = "编号")
-    @TableId(value = "column_id", type = IdType.ASSIGN_ID)
     private Long columnId;
 
     @ApiModelProperty(value = "归属表编号")
@@ -88,26 +70,4 @@ public class TableColumn extends BaseEntity {
     @ApiModelProperty(value = "排序")
     private Integer sort;
 
-    @ApiModelProperty(value = "更新者")
-    private String updateBy;
-
-
-    public boolean isSuperColumn()
-    {
-        return isSuperColumn(this.javaField);
-    }
-
-    public static boolean isSuperColumn( String javaField)
-    {
-        return StringUtils.equalsAnyIgnoreCase(javaField, GenConstants.BASE_ENTITY);
-    }
-    public boolean isList()
-    {
-        return isList(this.isList);
-    }
-
-    public boolean isList(String isList)
-    {
-        return isList != null && StringUtils.equals("1", isList);
-    }
 }

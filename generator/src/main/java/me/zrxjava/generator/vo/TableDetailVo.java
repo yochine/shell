@@ -2,8 +2,6 @@ package me.zrxjava.generator.vo;
 
 import lombok.Builder;
 import lombok.Data;
-import me.zrxjava.generator.entity.Table;
-import me.zrxjava.generator.entity.TableColumn;
 
 import java.util.List;
 
@@ -15,7 +13,7 @@ import java.util.List;
 @Builder
 public class TableDetailVo {
 
-    private Table table;
+    private TableVo table;
 
-    private List<TableColumn> tableColumns;
+    private List<TableColumnVo> tableColumns;
 }

@@ -1,0 +1,64 @@
+package ${packageName}.service;
+
+import java.util.List;
+import ${packageName}.dto.${ClassName}Dto;
+import ${packageName}.vo.${ClassName}Vo;
+import ${packageName}.entity.${ClassName};
+import ${packageName}.criteria.${ClassName}Criteria;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+/**
+ * ${functionName}Service接口
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+public interface I${ClassName}Service extends IService<${ClassName}>
+{
+    /**
+     * 查询${functionName}
+     * 
+     * @param ${pkColumn.javaField} ${functionName}ID
+     * @return ${functionName}
+     */
+    public ${ClassName}Vo detail(${pkColumn.javaType} ${pkColumn.javaField});
+
+
+    /**
+     * 查询${functionName}列表
+     * 
+     * @param ${className}ListCriteria criteria
+     * @return ${functionName}集合
+     */
+    #if($table.crud)
+        public Page<${ClassName}Vo> selectPage(${ClassName}Criteria criteria);
+    #elseif($table.tree)
+        public List<${ClassName}Vo> selectList(${ClassName}Criteria criteria);
+    #end
+
+    /**
+     * 新增${functionName}
+     * 
+     * @param ${className} ${functionName}
+     * @return 结果
+     */
+    public Boolean add(${ClassName}Dto dto);
+
+    /**
+     * 修改${functionName}
+     * 
+     * @param ${className} ${functionName}
+     * @return 结果
+     */
+    public Boolean edit(${ClassName}Dto dto);
+
+    /**
+     * 批量删除${functionName}
+     * 
+     * @param ${pkColumn.javaField}s 需要删除的${functionName}ID
+     * @return 结果
+     */
+    public Boolean delete(Set<${pkColumn.javaType}> ids);
+
+
+}

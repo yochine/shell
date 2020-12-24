@@ -36,12 +36,12 @@ public class GenUtils
     /**
      * 初始化列属性字段
      */
-    public static void initColumnField(TableColumn column, Table table)
+    public static void initColumnField(TableColumn column, Long tableId, String createBy)
     {
         String dataType = getDbType(column.getColumnType());
         String columnName = column.getColumnName();
-        column.setTableId(table.getTableId());
-        column.setCreateBy(table.getCreateBy());
+        column.setTableId(tableId);
+        column.setCreateBy(createBy);
         // 设置java字段名
         column.setJavaField(StrUtil.upperFirst(StrUtil.toCamelCase(columnName)));
 

@@ -1,6 +1,6 @@
 
 
-package me.zrxjava.system.modules.ums.vo;
+package me.zrxjava.common.base;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

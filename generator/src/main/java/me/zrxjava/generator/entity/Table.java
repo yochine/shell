@@ -1,13 +1,16 @@
 package me.zrxjava.generator.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import me.zrxjava.common.base.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import me.zrxjava.common.base.BaseEntity;
+import me.zrxjava.generator.constants.GenConstants;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * <p>
@@ -65,11 +68,43 @@ public class Table extends BaseEntity {
     @ApiModelProperty(value = "其它生成选项")
     private String options;
 
-    @ApiModelProperty(value = "更新者")
-    private String updateBy;
-
     @ApiModelProperty(value = "备注")
     private String remark;
 
 
+
+    public boolean isTree()
+    {
+        return isTree(this.tplCategory);
+    }
+
+    public static boolean isTree(String tplCategory)
+    {
+        return tplCategory != null && StringUtils.equals(GenConstants.TPL_TREE, tplCategory);
+    }
+
+    public boolean isCrud()
+    {
+        return isCrud(this.tplCategory);
+    }
+
+    public static boolean isCrud(String tplCategory)
+    {
+        return tplCategory != null && StringUtils.equals(GenConstants.TPL_CRUD, tplCategory);
+    }
+
+    public boolean isSuperColumn(String javaField)
+    {
+        return isSuperColumn(this.tplCategory, javaField);
+    }
+
+    public static boolean isSuperColumn(String tplCategory, String javaField)
+    {
+        if (isTree(tplCategory))
+        {
+            return StringUtils.equalsAnyIgnoreCase(javaField,
+                    ArrayUtils.addAll(GenConstants.TREE_ENTITY, GenConstants.BASE_ENTITY));
+        }
+        return StringUtils.equalsAnyIgnoreCase(javaField, GenConstants.BASE_ENTITY);
+    }
 }

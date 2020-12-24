@@ -1,0 +1,97 @@
+package ${packageName}.service.impl;
+
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import me.zrxjava.common.utils.QueryHelper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
+import ${packageName}.transfer.${ClassName}Transfer;
+import ${packageName}.mapper.${ClassName}Mapper;
+import ${packageName}.dto.${ClassName}Dto;
+import ${packageName}.vo.${ClassName}Vo;
+import ${packageName}.entity.${ClassName};
+import ${packageName}.criteria.${ClassName}Criteria;
+import ${packageName}.service.I${ClassName}Service;
+import org.springframework.transaction.annotation.Transactional;
+/**
+ * ${functionName}Service业务层处理
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Service
+@RequiredArgsConstructor
+public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${ClassName}> implements I${ClassName}Service {
+
+    private final ${ClassName}Mapper ${className}Mapper;
+    private final ${ClassName}Transfer ${className}transfer;
+
+    /**
+     * 查询${functionName}
+     * 
+     * @param ${pkColumn.javaField} ${functionName}ID
+     * @return ${functionName}
+     */
+    @Override
+    public ${ClassName}Vo detail(${pkColumn.javaType} ${pkColumn.javaField}) {
+        return ${className}transfer.toVo(${className}Mapper.selectById(${pkColumn.javaField}));
+    }
+
+    /**
+     * 查询${functionName}列表
+     * 
+     * @param ${className} ${functionName}
+     * @return ${functionName}
+     */
+    @Override
+    #if($table.crud)
+    public Page<${ClassName}Vo> selectPage(${ClassName}Criteria criteria){
+        Page<${ClassName}> page = new Page<>(criteria.getCurrent(), criteria.getSize());
+        return ${className}transfer.toPageVo(this.page(page, QueryHelper.getQueryWrapper(criteria,${ClassName}.class)));
+    }
+    #elseif($table.tree)
+    public List<${ClassName}Vo> selectList(${ClassName}Criteria criteria){
+        List<${ClassName}Vo> vos =  ${className}transfer.toVos(this.list(QueryHelper.getQueryWrapper(criteria,${ClassName}.class)));
+        return TreeUtil.buildByRecursive(vos,parentId);
+    }
+    #end
+
+    /**
+     * 新增${functionName}
+     * 
+     * @param ${className} ${functionName}
+     * @return 结果
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean add(${ClassName}AddDto dto) {
+        return ${className}Mapper.insert(${className}transfer.toEntity(dto));
+    }
+
+    /**
+     * 修改${functionName}
+     * 
+     * @param ${className} ${functionName}
+     * @return 结果
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean edit(${ClassName}AddDto dto) {
+        return ${className}Mapper.updateById(${className}transfer.toEntity(dto));
+    }
+
+    /**
+     * 批量删除${functionName}
+     * 
+     * @param ${pkColumn.javaField}s 需要删除的${functionName}ID
+     * @return 结果
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean delete(Set<${pkColumn.javaType}> ids) {
+        return ${className}Mapper.deleteBatchIds(ids);
+    }
+
+}

@@ -12,6 +12,14 @@
     <artifactId>generator</artifactId>
 
     <dependencies>
+
+        <!--velocity代码生成使用模板 -->
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>1.7</version>
+        </dependency>
+
         <dependency>
             <groupId>me.zrxjava</groupId>
             <artifactId>common</artifactId>

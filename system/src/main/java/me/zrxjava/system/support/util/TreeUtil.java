@@ -2,7 +2,7 @@
 package me.zrxjava.system.support.util;
 
 import lombok.experimental.UtilityClass;
-import me.zrxjava.system.modules.ums.vo.TreeNode;
+import me.zrxjava.common.base.TreeNode;
 
 import java.util.ArrayList;
 import java.util.List;

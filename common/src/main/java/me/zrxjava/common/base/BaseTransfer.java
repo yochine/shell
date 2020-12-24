@@ -1,6 +1,8 @@
 
 package me.zrxjava.common.base;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
 import java.util.List;
 
 /**
@@ -37,4 +39,12 @@ public interface BaseTransfer<D,E,V> {
      * @return /
      */
     List <V> toVos(List<E> entityList);
+
+    /**
+     * entity转分页Vo
+     * @param smsPage
+     * @return
+     */
+    Page<V> toPageVo(Page<E> smsPage);
+
 }

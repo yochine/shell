@@ -6,11 +6,9 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import me.zrxjava.common.base.BaseEntity;
 
 import java.time.LocalDateTime;
@@ -26,8 +24,6 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Builder(toBuilder = true)
-@NoArgsConstructor
-@AllArgsConstructor
 @TableName("sys_user")
 @ApiModel(value="User对象", description="系统用户")
 public class User extends BaseEntity {

@@ -43,6 +43,11 @@ public enum BusinessType
     IMPORT,
 
     /**
+     * 同步
+     */
+    SYNC,
+
+    /**
      * 强退
      */
     FORCE,
