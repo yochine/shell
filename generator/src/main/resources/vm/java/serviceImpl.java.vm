@@ -54,6 +54,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
     #elseif($table.tree)
     public List<${ClassName}Vo> selectList(${ClassName}Criteria criteria){
         List<${ClassName}Vo> vos =  ${className}transfer.toVos(this.list(QueryHelper.getQueryWrapper(criteria,${ClassName}.class)));
+        Integer parentId = parentId == null ? 0 : parentId;
         return TreeUtil.buildByRecursive(vos,parentId);
     }
     #end
@@ -66,7 +67,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean add(${ClassName}AddDto dto) {
+    public Boolean add(${ClassName}Dto dto) {
         return ${className}Mapper.insert(${className}transfer.toEntity(dto));
     }
 
@@ -78,7 +79,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean edit(${ClassName}AddDto dto) {
+    public Boolean edit(${ClassName}Dto dto) {
         return ${className}Mapper.updateById(${className}transfer.toEntity(dto));
     }
 

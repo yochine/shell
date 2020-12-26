@@ -21,9 +21,9 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @Data
 @ApiModel(value=" ${tableName}dto对象", description="${tableComment}")
-public class ${ClassName}Dto
-        {
-private static final long serialVersionUID = 1L;
+public class ${ClassName}Dto implements Serializable{
+
+    private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)
     #if(!$table.isSuperColumn($column.javaField) && ($column.isInsert == '1' || $column.isEdit == '1'))

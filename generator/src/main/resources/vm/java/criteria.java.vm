@@ -14,14 +14,14 @@ import me.zrxjava.common.base.BasePage;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * ${functionName}Vo对象 ${tableName}
+ * ${functionName}查询对象 ${tableName}
  *
  * @author ${author}
  * @date ${datetime}
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value=" ${tableName}Vo对象", description="${tableComment}")
+@ApiModel(value=" ${tableName}查询对象", description="${tableComment}")
 public class ${ClassName}Criteria extends BasePage implements Serializable{
 
     private static final long serialVersionUID = 1L;

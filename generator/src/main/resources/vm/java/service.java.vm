@@ -27,13 +27,13 @@ public interface I${ClassName}Service extends IService<${ClassName}>
     /**
      * 查询${functionName}列表
      * 
-     * @param ${className}ListCriteria criteria
+     * @param ${className}Criteria criteria
      * @return ${functionName}集合
      */
     #if($table.crud)
-        public Page<${ClassName}Vo> selectPage(${ClassName}Criteria criteria);
+     public Page<${ClassName}Vo> selectPage(${ClassName}Criteria criteria);
     #elseif($table.tree)
-        public List<${ClassName}Vo> selectList(${ClassName}Criteria criteria);
+     public List<${ClassName}Vo> selectList(${ClassName}Criteria criteria);
     #end
 
     /**

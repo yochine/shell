@@ -28,6 +28,7 @@ import ${packageName}.service.I${ClassName}Service;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import me.zrxjava.common.annotation.ResponseExcel;
 
 
 #if($table.crud)
@@ -61,7 +62,7 @@ public class ${ClassName}Controller
         return ResponseResult.success(${className}Service.selectPage(criteria));
     }
 #elseif($table.tree)
-    public ResponseResult<List<${ClassName}Vo>> list(${ClassName}ListCriteria criteria){
+    public ResponseResult<List<${ClassName}Vo>> list(${ClassName}Criteria criteria){
         return ResponseResult.success(${className}Service.selectList(criteria));
     }
 #end
@@ -69,14 +70,12 @@ public class ${ClassName}Controller
     /**
      * 导出${functionName}列表
      */
-    @PreAuthorize("@ss.hasPermi('${permissionPrefix}:export')")
+    @PreAuthorize("@ps.hasPermi('${permissionPrefix}:export')")
     @Log(title = "${functionName}", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
-    public AjaxResult export(${ClassName} ${className})
-    {
-        List<${ClassName}> list = ${className}Service.select${ClassName}List(${className});
-        ExcelUtil<${ClassName}> util = new ExcelUtil<${ClassName}>(${ClassName}.class);
-        return util.exportExcel(list, "${businessName}");
+    @ResponseExcel(name = "${className}")
+    public ResponseResult<List<${ClassName}Vo>> list(${ClassName}Criteria criteria){
+        return ResponseResult.success(${className}Service.selectList(criteria));
     }
 
     /**
@@ -104,7 +103,7 @@ public class ${ClassName}Controller
      * 修改${functionName}
      */
     @ApiOperation("${functionName}修改")
-    @PreAuthorize("@ss.hasPermi('${permissionPrefix}:edit')")
+    @PreAuthorize("@ps.hasPermi('${permissionPrefix}:edit')")
     @Log(title = "${functionName}", businessType = BusinessType.UPDATE)
     @PutMapping
     public ResponseResult<Boolean> edit(@RequestBody @Validated(Update.class) ${ClassName}Dto dto){
@@ -115,7 +114,7 @@ public class ${ClassName}Controller
      * 删除${functionName}
      */
     @ApiOperation("${functionName}删除")
-    @PreAuthorize("@ss.hasPermi('${permissionPrefix}:delete')")
+    @PreAuthorize("@ps.hasPermi('${permissionPrefix}:delete')")
     @Log(title = "${functionName}", businessType = BusinessType.DELETE)
 	@DeleteMapping
     public ResponseResult<Boolean> delete(@NotEmpty(message = "缺少参数")  Set<${pkColumn.javaType}> ids){
