@@ -23,10 +23,13 @@ import me.zrxjava.generator.vo.TableVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.zip.ZipOutputStream;
 
 /**
  * <p>
@@ -135,6 +138,34 @@ public class TableServiceImpl extends ServiceImpl<TableMapper, Table> implements
         List<TableColumn> tableColumns = tableColumnService.list(Wrappers.<TableColumn>lambdaQuery()
                                         .eq(TableColumn::getTableId,tableId));
         return VelocityUtils.startRendering(table,tableColumns);
+    }
+
+    @Override
+    public Boolean generate(Set<Long> ids) {
+        for(Long id : ids){
+            Table table = this.getById(id);
+            List<TableColumn> tableColumns = tableColumnService.list(Wrappers.<TableColumn>lambdaQuery()
+                    .eq(TableColumn::getTableId,id));
+            VelocityUtils.generate(table,tableColumns);
+        }
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public byte[] downLoad(Set<Long> ids) {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             ZipOutputStream zip = new ZipOutputStream(outputStream)) {
+            for(Long id : ids){
+                Table table = this.getById(id);
+                List<TableColumn> tableColumns = tableColumnService.list(Wrappers.<TableColumn>lambdaQuery()
+                        .eq(TableColumn::getTableId,id));
+                VelocityUtils.download(table,tableColumns,zip);
+            }
+            return outputStream.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

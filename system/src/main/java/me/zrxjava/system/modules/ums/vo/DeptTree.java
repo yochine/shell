@@ -5,6 +5,7 @@ package me.zrxjava.system.modules.ums.vo;
 import cn.hutool.core.lang.tree.TreeNode;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +14,10 @@ import java.util.List;
  * 部门树对象
  * @author void
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 //@Builder(toBuilder = true)
 //@SuperBuilder(toBuilder = true)
-
 @ApiModel(value = "部门树")
 public class DeptTree extends TreeNode<Integer> {
 

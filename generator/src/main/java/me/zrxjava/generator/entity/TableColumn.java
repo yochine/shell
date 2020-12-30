@@ -88,9 +88,6 @@ public class TableColumn extends BaseEntity {
     @ApiModelProperty(value = "排序")
     private Integer sort;
 
-    @ApiModelProperty(value = "更新者")
-    private String updateBy;
-
 
     public boolean isSuperColumn()
     {

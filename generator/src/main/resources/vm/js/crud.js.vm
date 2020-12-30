@@ -1,17 +1,27 @@
 export const tableOption = {
-  "border": true,
   "index": true,
   "indexLabel": "序号",
   "stripe": true,
   "menuAlign": "center",
   "align": "center",
   "searchMenuSpan": 6,
+  "viewBtn":true,
   "column": [
 #foreach ($column in $columns)
 	  {
-      "type": "input",
+      "type": "$column.htmlType",
       "label": "$column.comments",
       "prop": "$column.lowerAttrName",
+    #if($column.isQuery == '1')
+      "search":true,
+    #end
+    #if($column.isRequired == '1')
+        "rules": [{
+            "required": true,
+            "message": "请输入$column.comments",
+            "trigger": "blur"
+        }]
+    #end
       "span": 12
     }#if($foreach.hasNext),#end
 #end

@@ -81,4 +81,17 @@ public interface ITableService extends IService<Table> {
     Map<String, String> preview(Long tableId);
 
 
+    /**
+     * 生成代码
+     * @param ids
+     * @return
+     */
+    Boolean generate(Set<Long> ids);
+
+    /**
+     * 下载生成代码
+     * @param ids
+     * @return
+     */
+    byte[] downLoad(Set<Long> ids);
 }

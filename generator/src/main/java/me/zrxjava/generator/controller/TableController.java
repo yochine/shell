@@ -13,6 +13,7 @@ import me.zrxjava.generator.dto.UpdateTableDto;
 import me.zrxjava.generator.service.ITableService;
 import me.zrxjava.generator.vo.TableDetailVo;
 import me.zrxjava.generator.vo.TableVo;
+import org.apache.commons.io.IOUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
@@ -23,9 +24,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
@@ -102,7 +105,7 @@ public class TableController {
     @ApiOperation("数据库表删除")
     @PreAuthorize("@ps.check('tool:gen:delete')")
     @Log(title = "系统工具",businessType = BusinessType.DELETE)
-    public ResponseResult<Boolean> delete(@NotEmpty(message = "缺少参数")  Set<Long> ids){
+    public ResponseResult<Boolean> delete(@NotEmpty(message = "id不能为空")  Set<Long> ids){
         return ResponseResult.setBody(tableService.delete(ids));
     }
 
@@ -110,10 +113,32 @@ public class TableController {
     @ApiOperation("代码生成预览")
     @PreAuthorize("@ps.check('tool:gen:preview')")
     @Log(title = "系统工具",businessType = BusinessType.OTHER)
-    public ResponseResult<Map<String, String>> preview(@NotEmpty(message = "缺少参数") Long tableId){
+    public ResponseResult<Map<String, String>> preview(@NotNull(message = "缺少参数") Long tableId){
         return ResponseResult.success(tableService.preview(tableId));
     }
 
+    @GetMapping("/generate")
+    @ApiOperation("代码生成")
+    @PreAuthorize("@ps.check('tool:gen:generate')")
+    @Log(title = "系统工具",businessType = BusinessType.GENCODE)
+    public ResponseResult<Map<String, String>> generate(@NotEmpty(message = "id不能为空")  Set<Long> ids){
+        return ResponseResult.setBody(tableService.generate(ids));
+    }
+
+    @GetMapping("/downLoad")
+    @ApiOperation("代码生成下载")
+    @PreAuthorize("@ps.check('tool:gen:downLoad')")
+    @Log(title = "系统工具",businessType = BusinessType.DOWNLOAD)
+    public void downLoad(HttpServletResponse response,@NotEmpty(message = "id不能为空")  Set<Long> ids) throws IOException {
+        byte[] data = tableService.downLoad(ids);
+        response.reset();
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Expose-Headers", "Content-Disposition");
+        response.setHeader("Content-Disposition", "attachment; filename=\"shell.zip\"");
+        response.addHeader("Content-Length", "" + data.length);
+        response.setContentType("application/octet-stream; charset=UTF-8");
+        IOUtils.write(data, response.getOutputStream());
+    }
 
 
 }

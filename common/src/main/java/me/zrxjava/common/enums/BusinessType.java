@@ -38,6 +38,11 @@ public enum BusinessType
     EXPORT,
 
     /**
+     * 下载
+     */
+    DOWNLOAD,
+
+    /**
      * 导入
      */
     IMPORT,

@@ -2,14 +2,19 @@ package me.zrxjava.generator.util;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
+import me.zrxjava.common.exception.BusinessException;
 import me.zrxjava.generator.constants.GenConstants;
 import me.zrxjava.generator.entity.Table;
 import me.zrxjava.generator.entity.TableColumn;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * 模板处理工具类
@@ -49,8 +56,7 @@ public class VelocityUtils
         VelocityContext context = prepareContext(table,columns);
         // 获取模板列表
         List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
-        for (String template : templates)
-        {
+        for (String template : templates) {
             // 渲染模板
             StringWriter sw = new StringWriter();
             Template tpl = Velocity.getTemplate(template, "utf-8");
@@ -61,6 +67,73 @@ public class VelocityUtils
 
     }
 
+    /**
+     * 生成代码到指定路径
+     * @param table
+     * @param tableColumns
+     */
+    public static void generate(Table table, List<TableColumn> tableColumns) {
+        VelocityInitializer.initVelocity();
+        VelocityContext context = prepareContext(table,tableColumns);
+        // 获取模板列表
+        List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
+        for (String template : templates) {
+            // 渲染模板
+            try (StringWriter sw = new StringWriter()){
+
+                Template tpl = Velocity.getTemplate(template, "utf-8");
+                tpl.merge(context, sw);
+                String path = getGenPath(table, template);
+                FileUtils.writeStringToFile(new File(path), sw.toString(), "utf-8");
+            } catch (IOException e) {
+                throw new BusinessException("渲染模板失败，表名：" + table.getTableName());
+            }
+        }
+    }
+
+    /**
+     * 下载生成代码
+     * @param table
+     * @param tableColumns
+     * @param zip
+     */
+    public static void download(Table table, List<TableColumn> tableColumns, ZipOutputStream zip) {
+        VelocityInitializer.initVelocity();
+        VelocityContext context = prepareContext(table,tableColumns);
+        // 获取模板列表
+        List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
+        for (String template : templates) {
+            // 渲染模板
+            try(StringWriter sw = new StringWriter()) {
+                Template tpl = Velocity.getTemplate(template, "utf-8");
+                tpl.merge(context, sw);
+                // 添加到zip
+                zip.putNextEntry(new ZipEntry(VelocityUtils.getFileName(template, table)));
+                IOUtils.write(sw.toString(), zip, "utf-8");
+                zip.flush();
+                zip.closeEntry();
+            } catch (IOException e) {
+                throw new BusinessException("渲染模板失败，表名：" + table.getTableName());
+            }
+        }
+    }
+
+    /**
+     * 获取代码生成地址
+     *
+     * @param table 业务表信息
+     * @param template 模板文件路径
+     * @return 生成地址
+     */
+    public static String getGenPath(Table table, String template)
+    {
+        String genPath = table.getGenPath();
+        if (StringUtils.equals(genPath, "/"))
+        {
+            return System.getProperty("user.dir") + File.separator + "src" + File.separator + VelocityUtils.getFileName(template, table);
+        }
+        return genPath + File.separator + VelocityUtils.getFileName(template, table);
+    }
 
     /**
      * 设置模板变量信息
@@ -193,7 +266,23 @@ public class VelocityUtils
 
         if (template.contains("entity.java.vm"))
         {
-            fileName = String.format("%s/domain/%s.java", javaPath, className);
+            fileName = String.format("%s/entity/%s.java", javaPath, className);
+        }
+        else if (template.contains("dto.java.vm"))
+        {
+            fileName = String.format("%s/dto/%sDto.java", javaPath, className);
+        }
+        else if (template.contains("vo.java.vm"))
+        {
+            fileName = String.format("%s/vo/%sVo.java", javaPath, className);
+        }
+        else if (template.contains("transfer.java.vm"))
+        {
+            fileName = String.format("%s/transfer/%sTransfer.java", javaPath, className);
+        }
+        else if (template.contains("criteria.java.vm"))
+        {
+            fileName = String.format("%s/criteria/%sCriteria.java", javaPath, className);
         }
         else if (template.contains("mapper.java.vm"))
         {
@@ -345,4 +434,6 @@ public class VelocityUtils
         }
         return num;
     }
+
+
 }
