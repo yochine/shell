@@ -17,7 +17,7 @@
 package me.zrxjava.common.utils;
 
 /**
- * @author: liaojinlong
+ * @author: void
  * @date: 2020/6/9 17:02
  * @since: 1.0
  * @see {@link SpringContextHolder}

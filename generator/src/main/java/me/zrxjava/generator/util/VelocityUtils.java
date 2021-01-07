@@ -30,7 +30,7 @@ import java.util.zip.ZipOutputStream;
 /**
  * 模板处理工具类
  * 
- * @author ruoyi
+ * @author void
  */
 public class VelocityUtils
 {
