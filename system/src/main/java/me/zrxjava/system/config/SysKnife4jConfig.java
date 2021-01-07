@@ -30,7 +30,7 @@ public class SysKnife4jConfig extends Knife4jConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 //分组名称
-                .groupName("1.X版本")
+                .groupName("1.X")
                 .select()
                 //这里指定Controller扫描包路径
                 .apis(RequestHandlerSelectors.basePackage("me.zrxjava.system.modules"))

@@ -26,6 +26,8 @@
     * 自定义mp的sql注入器 如：查询包括逻辑删除数据 物理删除 查询不带租户
     * 自定义实现数据权限 mp sql注入器
     * 轻量级http客户端 retrofit
+    * 引入dynamic-datasource-spring-boot-starter 
+    * 使用goole的Jib 一键部署docker
     
 > 二期计划
 
