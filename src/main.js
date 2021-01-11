@@ -15,15 +15,24 @@ import { iconfontUrl, iconfontVersion } from '@/config/env'
 import * as filters from './filters' // 全局filter
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import i18n from './lang' // Internationalization
 import './styles/common.scss'
 import AvueFormDesign from '@sscfaith/avue-form-design'
 import basicContainer from './components/basic-container/main'
+// import crudCommon from '@/mixins/crud.js'
+// window.$crudCommon = crudCommon
 // 插件 json 展示
 Vue.use(router)
 
 Vue.use(AvueFormDesign);
 
 Vue.use(VueAxios, axios)
+Vue.use(ElementUI, {
+  i18n: (key, value) => i18n.t(key, value)
+})
+Vue.use(window.AVUE, {
+  i18n: (key, value) => i18n.t(key, value)
+})
 
 Vue.use(ElementUI, {
   size: 'small',
@@ -58,5 +67,6 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
+  i18n,
   render: h => h(App)
 }).$mount('#app')

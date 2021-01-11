@@ -4,8 +4,10 @@ import website from '@/const/website'
 const common = {
 
   state: {
+    language: getStore({ name: 'language' }) || 'en',
     isCollapse: false,
     isFullScreen: false,
+    isMenu: true,
     isShade: false,
     screen: -1,
     isLock: getStore({ name: 'isLock' }) || false,
@@ -25,11 +27,21 @@ const common = {
   },
   actions: {},
   mutations: {
+    SET_LANGUAGE: (state, language) => {
+      state.language = language
+      setStore({
+        name: 'language',
+        content: state.language
+      })
+    },
     SET_SHADE: (state, active) => {
       state.isShade = active
     },
     SET_COLLAPSE: (state) => {
       state.isCollapse = !state.isCollapse
+    },
+    SET_IS_MENU: (state, menu) => {
+      state.isMenu = menu;
     },
     SET_FULLSCREEN: (state) => {
       state.isFullScreen = !state.isFullScreen

@@ -74,7 +74,7 @@
       </el-tooltip>
       <el-tooltip
         v-if="showFullScreen"
-        :content="isFullScren?$t('navbar.screenfullF'):$t('navbar.screenfull')"
+        :content="isFullScreen?$t('navbar.screenfullF'):$t('navbar.screenfull')"
         effect="dark"
         placement="bottom">
         <div class="top-bar__item">
@@ -119,6 +119,7 @@
   </div>
 </template>
 <script>
+import { resetRouter } from '@/router/router'
 import { mapGetters, mapState } from 'vuex'
 import { fullscreenToggel, handleImg, listenfullscreen } from '@/util/util'
 import topLock from './top-lock'

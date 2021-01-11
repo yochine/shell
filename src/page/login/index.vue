@@ -21,13 +21,16 @@
           <userLogin v-if="activeName==='user'" />
           <codeLogin v-else-if="activeName==='code'" />
           <thirdLogin v-else-if="activeName==='third'" />
+          <faceLogin v-else-if="activeName==='face'"></faceLogin>
           <div class="login-menu">
             <a href="#"
-               @click.stop="activeName='user'">账号密码</a>
+               @click.stop="activeName='user'">{{ $t('login.userLogin') }}</a>
             <a href="#"
-               @click.stop="activeName='code'">手机号登录</a>
+               @click.stop="activeName='code'">{{ $t('login.phoneLogin') }}</a>
             <a href="#"
-               @click.stop="activeName='third'">第三方登录</a>
+               @click.stop="activeName='third'">{{ $t('login.thirdLogin') }}</a>
+                 <a href="#"
+               @click.stop="activeName='face'">{{ $t('login.faceLogin') }}</a>
           </div>
         </div>
 
@@ -44,9 +47,12 @@ import {fetchList} from '@/api/admin/tenant'
 import userLogin from './userlogin'
 import codeLogin from './codelogin'
 import thirdLogin from './thirdlogin'
+import faceLogin from "./facelogin";
+import { validatenull } from '@/util/validate'
 import { mapGetters } from 'vuex'
 import { getStore, setStore } from '@/util/store'
 import topColor from '@/page/index/top/top-color'
+import topLang from "@/page/index/top/top-lang";
 
 export default {
   name: 'Login',
@@ -54,6 +60,8 @@ export default {
     userLogin,
     codeLogin,
     thirdLogin,
+    faceLogin,
+    topLang,
     topColor
   },
   data () {

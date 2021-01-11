@@ -1,5 +1,6 @@
 const getters = {
   tag: state => state.tags.tag,
+  language: state => state.common.language,
   website: state => state.common.website,
   userInfo: state => state.user.userInfo,
   theme: state => state.common.theme,
@@ -10,6 +11,7 @@ const getters = {
   screen: state => state.common.screen,
   isLock: state => state.common.isLock,
   isFullScreen: state => state.common.isFullScreen,
+  isMenu: state => state.common.isMenu,
   lockPasswd: state => state.common.lockPasswd,
   tagList: state => state.tags.tagList,
   tagWel: state => state.tags.tagWel,

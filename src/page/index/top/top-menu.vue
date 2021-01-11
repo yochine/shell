@@ -11,7 +11,7 @@
           @click.native="openMenu(item)">
           <template slot="title">
             <i :class="item.icon"/>
-            <span>{{ item.label }}</span>
+            <span>{{generateTitle(item)}}</span>
           </template>
         </el-menu-item>
       </template>
@@ -44,6 +44,12 @@ export default {
     },
     openMenu(item) {
       this.Index.openMenu(item)
+    },
+    generateTitle (item) {
+      return this.$router.$avueRouter.generateTitle(
+        item.label,
+        (item.meta || {}).i18n
+      );
     }
   }
 }

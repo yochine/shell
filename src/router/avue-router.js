@@ -26,6 +26,17 @@ RouterPlugin.install = function(router, store) {
       title = title ? `${title}——${this.$website.title}` : this.$website.title
       document.title = title
     },
+    generateTitle: (title, key) => {
+      if (!key) return title;
+      const hasKey = this.$vue.$te('route.' + key)
+      if (hasKey) {
+        // $t :this method from vue-i18n, inject in @/lang/index.js
+        const translatedTitle = this.$vue.$t('route.' + key)
+
+        return translatedTitle
+      }
+      return title
+    },
     closeTag: (value) => {
       const tag = value || this.$store.getters.tag
       this.$store.commit('DEL_TAG', tag)

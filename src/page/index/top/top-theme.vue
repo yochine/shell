@@ -22,7 +22,7 @@
 
     <span>
       <i
-        class="el-icon-view"
+        class="icon-zhuti"
         @click="open"/>
     </span>
   </div>
@@ -47,20 +47,40 @@ export default {
           value: 'theme-white'
         },
         {
+          name: "黑色",
+          value: "theme-dark"
+        },
+        {
+          name: "hey",
+          value: "theme-hey"
+        },
+        {
           name: '炫彩',
           value: 'theme-star'
         },
         {
-          name: 'iview主题',
+          name: "vip尊贵",
+          value: "theme-vip"
+        },
+        {
+          name: "智能工厂",
+          value: "theme-bule"
+        },
+        {
+          name: 'iview',
           value: 'theme-iview'
         },
         {
-          name: 'd2主题',
+          name: "cool",
+          value: "theme-cool"
+        },
+        {
+          name: 'd2',
           value: 'theme-d2'
         },
         {
-          name: 'hey主题',
-          value: 'theme-hey'
+          name: "renren",
+          value: "theme-renren"
         }
       ]
     }

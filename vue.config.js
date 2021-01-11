@@ -43,7 +43,7 @@ module.exports = {
   // 配置转发代理
   devServer: {
     disableHostCheck: true,
-    port: 8080,
+    port: 8085,
     proxy: {
       '/': {
         target: url,

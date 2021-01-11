@@ -10,11 +10,11 @@
       class="avue-tags__contentmenu">
       <div
         class="item"
-        @click="closeOthersTags">关闭其他
+        @click="closeOthersTags">{{$t('tagsView.closeOthers')}}
       </div>
       <div
         class="item"
-        @click="closeAllTags">关闭全部
+        @click="closeAllTags">{{$t('tagsView.closeAll')}}
       </div>
     </div>
     <div
@@ -30,7 +30,7 @@
         <el-tab-pane
           v-for="item in tagList"
           :key="item.value"
-          :label="item.label"
+          :label="generateTitle(item)"
           :name="item.value"/>
 
       </el-tabs>
@@ -42,8 +42,9 @@
           <i class="el-icon-arrow-down el-icon--right"/>
         </el-button>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item @click.native="closeOthersTags">关闭其他</el-dropdown-item>
-          <el-dropdown-item @click.native="closeAllTags">关闭全部</el-dropdown-item>
+          <el-dropdown-item @click.native="$parent.isSearch=true">{{$t('tagsView.search')}}</el-dropdown-item>
+          <el-dropdown-item @click.native="closeOthersTags">{{$t('tagsView.closeOthers')}}</el-dropdown-item>
+          <el-dropdown-item @click.native="closeAllTags">{{$t('tagsView.closeAll')}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -86,6 +87,12 @@
       }
     },
     methods: {
+      generateTitle (item) {
+        return this.$router.$avueRouter.generateTitle(
+          item.label,
+          (item.meta || {}).i18n
+      );
+    },
       watchContextmenu() {
         if (!this.$el.contains(event.target) || event.button !== 0) {
           this.contextmenuFlag = false

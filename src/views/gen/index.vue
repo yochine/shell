@@ -1,40 +1,8 @@
-<!--
-  -    Copyright (c) 2018-2025, intelligence All rights reserved.
-  -
-  - Redistribution and use in source and binary forms, with or without
-  - modification, are permitted provided that the following conditions are met:
-  -
-  - Redistributions of source code must retain the above copyright notice,
-  - this list of conditions and the following disclaimer.
-  - Redistributions in binary form must reproduce the above copyright
-  - notice, this list of conditions and the following disclaimer in the
-  - documentation and/or other materials provided with the distribution.
-  - Neither the name of the pig4cloud.com developer nor the names of its
-  - contributors may be used to endorse or promote products derived from
-  - this software without specific prior written permission.
-  - Author: intelligence
-  -->
 
 <template>
   <div class="execution">
     <basic-container>
       <el-row :gutter="20">
-        <el-col :span="4">
-          <div class="grid-content bg-purple">
-            <el-select v-model="q.dsName" placeholder="请选择数据源" @change="search">
-              <el-option
-                v-for="item in dataSourceList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.name"/>
-            </el-select>
-          </div>
-        </el-col>
-        <el-col :span="4">
-          <div class="grid-content bg-purple">
-            <el-input v-model="q.tableName" placeholder="表名称"/>
-          </div>
-        </el-col>
         <el-col :span="12">
           <div class="grid-content bg-purple">
             <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
@@ -46,19 +14,23 @@
         ref="crud"
         :page="page"
         :data="tableData"
+        :permission="permissionList"
         :table-loading="tableLoading"
         :option="tableOption"
         @on-load="getList"
+        @search-change="searchChange"
         @size-change="sizeChange"
         @current-change="currentChange"
-        @refresh-change="refreshChange">
+        @refresh-change="refreshChange"
+        @row-update="handleUpdate"
+        @row-del="rowDel">
         <template
           slot-scope="scope"
           slot="menu">
           <el-button
             type="text"
             icon="el-icon-view"
-            @click="handleTable(scope.row,scope.index)">字段
+            @click="handleTable(scope.row,scope.index)">预览
           </el-button>
           <el-button
             type="text"
@@ -68,7 +40,7 @@
           <el-button
             type="text"
             icon="el-icon-edit"
-            @click="handleDesign(scope.row,scope.index)">设计
+            @click="handleDesign(scope.row,scope.index)">同步
           </el-button>
         </template>
       </avue-crud>
@@ -100,6 +72,7 @@
           </avue-form>
         </div>
       </el-dialog>
+
       <el-dialog
         :visible.sync="boxBatch"
         title="批量生成"
@@ -119,6 +92,7 @@
     <el-dialog :title="preview.title" :visible.sync="preview.open" width="80%" top="5vh" append-to-body>
       <Preview :queryData="this.formData" v-if="preview.open"/>
     </el-dialog>
+    
     <!--表字段-->
     <el-dialog :title="table.title" :visible.sync="table.open" width="80%" top="5vh" append-to-body>
       <Table :queryData="this.formData" v-if="table.open"/>

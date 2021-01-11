@@ -10,7 +10,7 @@
         <i :class="item[iconKey]"/>
         <span
           slot="title"
-          :alt="item[pathKey]">{{ item[labelKey] }}</span>
+          :alt="item[pathKey]">{{generateTitle(item)}}</span>
       </el-menu-item>
       <el-submenu
         v-else-if="!validatenull(item[childrenKey])&&vaildRoles(item)"
@@ -20,7 +20,7 @@
           <i :class="item[iconKey]"/>
           <span
             slot="title"
-            :class="{'el-menu--display':collapse && first}">{{ item[labelKey] }}</span>
+            :class="{'el-menu--display':collapse && first}">{{generateTitle(item)}}</span>
         </template>
         <template v-for="(child,cindex) in item[childrenKey]">
           <el-menu-item
@@ -30,7 +30,7 @@
             :key="child[labelKey]"
             @click="open(child)">
             <i :class="child[iconKey]"/>
-            <span slot="title">{{ child[labelKey] }}</span>
+            <span slot="title">{{generateTitle(child)}}</span>
           </el-menu-item>
           <sidebar-item
             v-else
@@ -97,6 +97,12 @@ export default {
     }
   },
   methods: {
+     generateTitle (item) {
+      return this.$router.$avueRouter.generateTitle(
+        item[this.labelKey],
+        (item.meta || {}).i18n
+      );
+    },
     vaildAvtive(item) {
       const groupFlag = (item['group'] || []).some(ele =>
         this.$route.path.includes(ele)
