@@ -4,13 +4,17 @@ import cn.hutool.core.util.RandomUtil;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import me.zrxjava.common.annotation.AccessLimit;
+import me.zrxjava.common.annotation.RedisLock;
 import me.zrxjava.common.base.ResponseResult;
 import me.zrxjava.system.modules.ums.service.IUserService;
+import me.zrxjava.system.support.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * @author void
@@ -25,6 +29,9 @@ public class TestController {
     @Autowired
     private IUserService userService;
 
+    @Resource
+    private UserDetailsServiceImpl userDetailsService;
+
     @GetMapping("/1")
     @AccessLimit(perSecond = 0.1,timeOut = 3000)
     public ResponseResult test(String name){
@@ -34,7 +41,14 @@ public class TestController {
     }
 
     @GetMapping("/2")
+    @RedisLock(key = "#name",lockTime = 3000)
     public ResponseResult test1(String name){
+        log.info("进入test/2方法，name：{}",name);
+        try {
+            Thread.sleep(6000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return ResponseResult.success(name);
     }
 

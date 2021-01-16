@@ -1,6 +1,7 @@
 package me.zrxjava.generator.controller;
 
 
+import cn.hutool.core.convert.Convert;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,7 +22,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -61,15 +64,15 @@ public class TableController {
     @ApiOperation("导入表结构")
     @Log(title = "系统工具",businessType = BusinessType.IMPORT)
     @PreAuthorize("@ps.check('tool:gen:import')")
-    public ResponseResult<Boolean> importTable(@NotBlank String[] tableNames,
+    public ResponseResult<Boolean> importTable(@RequestParam(name = "tableNames") @NotBlank String tableNames,
                                                Authentication authentication){
-        return ResponseResult.setBody(tableService.importTable(tableNames,authentication.getName()));
+        return ResponseResult.setBody(tableService.importTable(Convert.toStrArray(tableNames),authentication.getName()));
     }
 
-    @GetMapping("/list")
+    @GetMapping("/page")
     @ApiOperation("代码生成列表")
-    @PreAuthorize("@ps.check('tool:gen:list')")
-    public ResponseResult<Page<TableVo>> list(TableListCriteria criteria){
+    @PreAuthorize("@ps.check('tool:gen:page')")
+    public ResponseResult<Page<TableVo>> page(TableListCriteria criteria){
         return ResponseResult.success(tableService.selectPage(criteria));
     }
 
@@ -105,7 +108,7 @@ public class TableController {
     @ApiOperation("数据库表删除")
     @PreAuthorize("@ps.check('tool:gen:delete')")
     @Log(title = "系统工具",businessType = BusinessType.DELETE)
-    public ResponseResult<Boolean> delete(@NotEmpty(message = "id不能为空")  Set<Long> ids){
+    public ResponseResult<Boolean> delete(@RequestBody  @NotEmpty(message = "id不能为空") Set<Long> ids){
         return ResponseResult.setBody(tableService.delete(ids));
     }
 

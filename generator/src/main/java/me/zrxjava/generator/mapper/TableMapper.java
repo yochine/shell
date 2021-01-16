@@ -30,5 +30,5 @@ public interface TableMapper extends BaseMapper<Table> {
      * @param tableNames
      * @return
      */
-    List<Table> selectDbListByTableNames(String[] tableNames);
+    List<Table> selectDbListByTableNames(String[]tableNames);
 }

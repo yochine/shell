@@ -20,6 +20,7 @@ spring:
     password:
     port: 6379
     timeout: 6000
+    
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml

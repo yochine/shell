@@ -47,7 +47,9 @@ public class TableServiceImpl extends ServiceImpl<TableMapper, Table> implements
     private final ITableColumnService tableColumnService;
     private final TableTransfer tableTransfer;
     private final TableColumnTransfer tableColumnTransfer;
+
     private final GenConfig genConfig;
+
 
     @Override
     public Page<TableVo> selectDbList(String tableName) {

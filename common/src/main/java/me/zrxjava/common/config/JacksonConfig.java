@@ -2,6 +2,7 @@ package me.zrxjava.common.config;
 
 import cn.hutool.core.date.DatePattern;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -51,6 +52,9 @@ public class JacksonConfig {
             javaTimeModule.addDeserializer(LocalDate.class,new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             javaTimeModule.addDeserializer(LocalTime.class,new LocalTimeDeserializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
             builder.modules(javaTimeModule);
+            // long型序列化转string防止精度丢失
+            builder.serializerByType(Long.class, ToStringSerializer.instance)
+                    .serializerByType(Long.TYPE, ToStringSerializer.instance);
         };
     }
 

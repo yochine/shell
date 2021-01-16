@@ -5,8 +5,10 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.params.SetParams;
 
 import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
 /**
  * redis分布式锁
@@ -14,7 +16,7 @@ import java.util.Collections;
  * @create 2020-11-04
  */
 @Component
-public class RedisLock {
+public class RedisLockUtil {
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -45,7 +47,10 @@ public class RedisLock {
              * expireTime 过期时间
              * 设置key 和 有效期 是两步操作  放在这里能保证原子性 不会因为某一步失败发生死锁
              */
-            String result = jedis.set(key, value, SET_IF_NOT_EXIST, SET_WITH_EXPIRE_TIME, expireTime);
+            SetParams params = new SetParams();
+            params.px(expireTime);
+            params.nx();
+            String result = jedis.set(key, value, params);
             if (LOCK_SUCCESS.equals(result)) {
                 return true;
             }
@@ -74,5 +79,24 @@ public class RedisLock {
         });
     }
 
+    /**
+     * 尝试获取
+     * @param key
+     * @return
+     */
+    public Object tryAcquire(String key){
+        return redisTemplate.opsForValue().get(key);
+    }
+
+    /**
+     * 续期
+     * @param key
+     * @param time
+     * @param timeUnit
+     * @return
+     */
+    public boolean tryRenew(String key , long time, TimeUnit timeUnit){
+        return redisTemplate.expire(key, time, timeUnit);
+    }
 
 }

@@ -1,6 +1,7 @@
 package me.zrxjava.common.utils;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
@@ -29,6 +30,8 @@ public class QueryHelper {
     public static ThreadLocal<QueryWrapper> queryWrapperThreadLocal = new ThreadLocal<>();
     protected static Map<String, List<Field>> FIELD_CACHE = new ConcurrentHashMap<>(16);
     protected static Map<String, String> COLUMN_CACHE = new ConcurrentHashMap<>(16);
+
+    public static final String[] pageParams= {"size","current","isAsc"};
 
     /**
      * Mybatis Plus  查询构建
@@ -67,6 +70,10 @@ public class QueryHelper {
             value = field.get(criteria);
             // 值为空直接返回
             if (Objects.isNull(value)) {
+                return;
+            }
+            // 分页字段直接返回
+            if (StrUtil.containsAny(field.getName(),pageParams)){
                 return;
             }
             attributeName = getTableColumnFromField(tableInfo, clazz.getName(), field.getName());
@@ -119,7 +126,10 @@ public class QueryHelper {
                     between = new ArrayList<>((List<Object>) value);
                     queryWrapper.in(attributeName, between.toArray());
                     break;
-                    // todo 扩展 groupby orderby or having leftlike rightlike
+                case ORDER_BY:
+                    queryWrapper.orderByAsc(attributeName);
+                    break;
+                    // todo 扩展 groupby  or having leftlike rightlike
                 default:
                     break;
             }

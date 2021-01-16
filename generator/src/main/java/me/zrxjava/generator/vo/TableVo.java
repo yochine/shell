@@ -3,6 +3,8 @@ package me.zrxjava.generator.vo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * @author void
  * @create 2020-12-23
@@ -51,4 +53,10 @@ public class TableVo {
 
     @ApiModelProperty(value = "备注")
     private String remark;
+
+    @ApiModelProperty(value = "创建时间")
+    private LocalDateTime createTime;
+
+    @ApiModelProperty(value = "修改时间")
+    private LocalDateTime updateTime;
 }

@@ -15,7 +15,7 @@
     * aop 统一的缓存处理。某些操作需要在操作前查缓存、操作后更新缓存。
     * 包装mp的query类
     * 引入Google开源高效序列化工具ProtostuffUtils OSHI（基于 JNA 的操作系统和硬件信息库）
-    * 使用 Caffeine 来做本地缓存
+    * 使用 Caffine Cache 来做本地缓存 
     * MapStruct转换 包装BaseMapper DTO->entity->VO  修改entity 不会重新build问题
     * Spring Retry
     * 完善定时任务
@@ -27,8 +27,10 @@
     * 自定义实现数据权限 mp sql注入器
     * 轻量级http客户端 retrofit
     * 引入dynamic-datasource-spring-boot-starter 
+    * MyBatis 流式查询
     * 使用goole的Jib 一键部署docker
-    
+    * 反射拷贝对象使用hutool封装cglib的BeanCopier的CglibUtil，高性能拷贝工具类
+    * 抛弃jwt集成sa-token
 > 二期计划
 
     * 分布式版 shell-warm
