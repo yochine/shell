@@ -24,9 +24,6 @@ public class MenuVo implements Serializable {
     @ApiModelProperty(value = "菜单类型0目录1菜单2按钮")
     private Integer type;
 
-    @ApiModelProperty(value = "菜单标题")
-    private String name;
-
     @ApiModelProperty(value = "组件名称")
     private String componentName;
 
@@ -42,7 +39,7 @@ public class MenuVo implements Serializable {
     @ApiModelProperty(value = "链接地址")
     private String linkPath;
 
-    @ApiModelProperty(value = "菜单标签")
+    @ApiModelProperty(value = "菜单标题")
     private String label;
 
     @ApiModelProperty(value = "是否外链0不是1是")

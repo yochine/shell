@@ -31,6 +31,7 @@
     * 使用goole的Jib 一键部署docker
     * 反射拷贝对象使用hutool封装cglib的BeanCopier的CglibUtil，高性能拷贝工具类
     * 抛弃jwt集成sa-token
+    * 引入wepush推送消息
 > 二期计划
 
     * 分布式版 shell-warm
@@ -54,5 +55,6 @@
     * Yapi接口文档
     * SkyWalking 分布式链路追踪 flink
     * smart-doc 接口生成文档 降低代码侵入
+    * 分布式监控WGCLOUD
     
     

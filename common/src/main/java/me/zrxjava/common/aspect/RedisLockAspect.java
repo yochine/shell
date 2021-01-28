@@ -58,7 +58,6 @@ public class RedisLockAspect {
     {
         // 两秒执行一次「续时」操作
         SCHEDULER.scheduleAtFixedRate(() -> {
-            // 这里记得加 try-catch，否者报错后定时任务将不会再执行=-=
             Iterator<RedisLockHolder> iterator = HOLDER_LIST.iterator();
             while (iterator.hasNext()) {
                 RedisLockHolder holder = iterator.next();
@@ -101,18 +100,18 @@ public class RedisLockAspect {
             EvaluationContext context = this.bindParam(targetMethod, pjp.getArgs());
             Expression expression = parser.parseExpression(keyName);
             Object value = expression.getValue(context);
-            // key = 类名::参数名::参数值 value= 到期时间
+            // key = 类名::参数名::参数值
             businessKey = className + "::" + keyName + "::" + value;
         }else {
             // 非spel表达式 key = 类名::key
             businessKey = className + "::" + keyName;
         }
         String uniqueValue = UUID.randomUUID().toString();
-        // 加锁
         Object result;
         try {
             boolean isSuccess;
             for (int i = 0; i < redisLock.tryCount(); i++) {
+                // 加锁
                 isSuccess = redisLockUtil.tryLock(businessKey,uniqueValue,redisLock.lockTime());
                 if (isSuccess){
                     break;

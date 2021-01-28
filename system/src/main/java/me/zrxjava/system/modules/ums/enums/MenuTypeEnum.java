@@ -10,30 +10,30 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum MenuEnum {
+public enum MenuTypeEnum {
 
     /**
-     * 左侧菜单
+     * 目录
      */
-    LEFT_MENU(0, "left"),
+    CATALOG(0, "left"),
 
     /**
-     * 顶部菜单
+     * 菜单
      */
-    TOP_MENU(2, "top"),
+    MENU(1, "top"),
 
     /**
      * 按钮
      */
-    BUTTON(1, "button");
+    BUTTON(2, "button");
 
     /**
      * 类型
      */
-    private Integer type;
+    private final Integer type;
 
     /**
      * 描述
      */
-    private String description;
+    private final String description;
 }

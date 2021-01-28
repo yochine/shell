@@ -30,7 +30,6 @@ public class QueryHelper {
     public static ThreadLocal<QueryWrapper> queryWrapperThreadLocal = new ThreadLocal<>();
     protected static Map<String, List<Field>> FIELD_CACHE = new ConcurrentHashMap<>(16);
     protected static Map<String, String> COLUMN_CACHE = new ConcurrentHashMap<>(16);
-
     public static final String[] pageParams= {"size","current","isAsc"};
 
     /**
@@ -146,7 +145,6 @@ public class QueryHelper {
      * @return /
      */
     public static String getTableColumnFromField(TableInfo tableInfo, String className, String field) {
-        // todo  排除分页等参数
         String columnName = null;
         final String key = className + "_" + field;
         if (FIELD_CACHE.containsKey(key)) {

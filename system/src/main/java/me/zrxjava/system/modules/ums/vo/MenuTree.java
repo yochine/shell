@@ -1,5 +1,3 @@
-
-
 package me.zrxjava.system.modules.ums.vo;
 
 import io.swagger.annotations.ApiModel;
@@ -24,12 +22,6 @@ public class MenuTree extends TreeNode implements Serializable {
 	 */
 	@ApiModelProperty(value = "菜单图标")
 	private String icon;
-
-	/**
-	 * 菜单名称
-	 */
-	@ApiModelProperty(value = "菜单名称")
-	private String name;
 
 	private boolean spread = false;
 
@@ -88,7 +80,7 @@ public class MenuTree extends TreeNode implements Serializable {
 		this.id = menuVo.getMenuId();
 		this.pid = menuVo.getPid();
 		this.icon = menuVo.getIcon();
-		this.name = menuVo.getName();
+		this.label = menuVo.getLabel();
 		this.path = menuVo.getPath();
 		this.type = menuVo.getType();
 		this.permission = menuVo.getPermission();

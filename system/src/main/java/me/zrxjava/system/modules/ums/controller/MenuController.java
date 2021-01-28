@@ -38,16 +38,16 @@ public class MenuController {
 
     /**
      * 返回当前用户的树形菜单集合
-     * @param type 类型
+     * @param position 位置
      * @param parentId 父节点ID
      * @return 当前用户的树形菜单
      */
     @GetMapping("/list")
     @ApiOperation("查询用户菜单")
     @PreAuthorize("@ps.check('ums:menu:list')")
-    public ResponseResult<List<MenuTree>> list(String type, Integer parentId){
+    public ResponseResult<List<MenuTree>> list(String position, Integer parentId){
         Set<MenuVo> menus = Sets.newHashSet();
         SecurityUtil.getCurrentUserRoleIds().forEach(roleId -> menus.addAll(menuService.getByRoleId(roleId)));
-        return ResponseResult.success(menuService.buildMenuTree(menus, type, parentId));
+        return ResponseResult.success(menuService.buildMenuTree(menus, position, parentId));
     }
 }

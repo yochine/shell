@@ -28,9 +28,9 @@ public interface IMenuService extends IService<Menu> {
     /**
      * 查询菜单
      * @param menus
-     * @param type
+     * @param position
      * @param parentId
      * @return
      */
-    List<MenuTree> buildMenuTree(Set<MenuVo> menus, String type, Integer parentId);
+    List<MenuTree> buildMenuTree(Set<MenuVo> menus, String position, Integer parentId);
 }

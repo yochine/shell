@@ -20,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -76,10 +77,10 @@ public class TableController {
         return ResponseResult.success(tableService.selectPage(criteria));
     }
 
-    @GetMapping("/detail")
+    @GetMapping("/detail/{id}")
     @ApiOperation("数据库表详情")
     @PreAuthorize("@ps.check('tool:gen:detail')")
-    public ResponseResult<TableDetailVo> detail(@NotNull(message = "表id不能为空")  Long tableId){
+    public ResponseResult<TableDetailVo> detail(@NotNull(message = "表id不能为空") @PathVariable(name = "id") Long tableId){
         return ResponseResult.success(tableService.detail(tableId));
     }
 
@@ -88,7 +89,7 @@ public class TableController {
     @ApiOperation("数据库表修改")
     @PreAuthorize("@ps.check('tool:gen:update')")
     @Log(title = "系统工具",businessType = BusinessType.UPDATE)
-    public ResponseResult<Boolean> update(@Validated UpdateTableDto dto){
+    public ResponseResult<Boolean> update(@Validated @RequestBody UpdateTableDto dto){
         //todo 参数增加valid校验
         return ResponseResult.setBody(tableService.updateTableAndColumn(dto));
     }
