@@ -26,7 +26,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value=" ${tableName}Vo对象", description="${tableComment}" )
+@ApiModel(value=" ${functionName}Vo对象", description="${tableComment}" )
 public class ${ClassName}Vo extends $Entity implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -89,9 +89,9 @@ public class TableColumn extends BaseEntity {
     private Integer sort;
 
 
-    public boolean isSuperColumn()
+    public boolean isNotSuperColumn()
     {
-        return isSuperColumn(this.javaField);
+        return !isSuperColumn(this.javaField);
     }
 
     public static boolean isSuperColumn( String javaField)

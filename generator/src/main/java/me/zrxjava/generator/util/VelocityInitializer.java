@@ -20,7 +20,7 @@ public class VelocityInitializer
         try
         {
             // 加载classpath目录下的vm文件
-            p.setProperty("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+            p.setProperty("resource.loader.file.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
             // 定义字符集
             p.setProperty(Velocity.ENCODING_DEFAULT, "utf-8");
             p.setProperty(Velocity.OUTPUT_ENCODING, "utf-8");

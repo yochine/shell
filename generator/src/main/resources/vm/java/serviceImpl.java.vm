@@ -42,7 +42,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
     /**
      * 查询${functionName}列表
      * 
-     * @param ${className} ${functionName}
+     * @param criteria
      * @return ${functionName}
      */
     @Override
@@ -62,7 +62,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
     /**
      * 新增${functionName}
      * 
-     * @param ${className} ${functionName}
+     * @param dto
      * @return 结果
      */
     @Override
@@ -74,7 +74,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
     /**
      * 修改${functionName}
      * 
-     * @param ${className} ${functionName}
+     * @param dto
      * @return 结果
      */
     @Override
@@ -86,7 +86,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
     /**
      * 批量删除${functionName}
      * 
-     * @param ${pkColumn.javaField}s 需要删除的${functionName}ID
+     * @param ids 需要删除的${functionName}ID
      * @return 结果
      */
     @Override

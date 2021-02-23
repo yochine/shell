@@ -41,7 +41,7 @@ public class ResponseResult<T> implements Serializable {
      * @param data 获取的数据
      */
     public static <T> ResponseResult<T> success(T data) {
-        return new ResponseResult<T>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), data);
+        return new ResponseResult<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), data);
     }
 
     /**

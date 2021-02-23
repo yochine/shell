@@ -30,9 +30,9 @@ public class ${ClassName} extends BaseEntity
     /** $column.columnComment */
        #if($column.isPk == '1')
           #if($isIncrement == "1")
-    @TableId(value = "$columnName", type = IdType.AUTO)
+    @TableId(value = "$column.columnName", type = IdType.AUTO)
           #else
-    @TableId(value = "$columnName", type = IdType.ASSIGN_ID)
+    @TableId(value = "$column.columnName", type = IdType.ASSIGN_ID)
           #end
        #end
     private $column.javaType $column.javaField;

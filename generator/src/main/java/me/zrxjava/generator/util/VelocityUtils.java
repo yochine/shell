@@ -104,12 +104,14 @@ public class VelocityUtils
         List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
         for (String template : templates) {
             // 渲染模板
-            try(StringWriter sw = new StringWriter()) {
+            try {
+                StringWriter sw = new StringWriter();
                 Template tpl = Velocity.getTemplate(template, "utf-8");
                 tpl.merge(context, sw);
                 // 添加到zip
                 zip.putNextEntry(new ZipEntry(VelocityUtils.getFileName(template, table)));
                 IOUtils.write(sw.toString(), zip, "utf-8");
+                IOUtils.closeQuietly(sw);
                 zip.flush();
                 zip.closeEntry();
             } catch (IOException e) {
@@ -174,13 +176,10 @@ public class VelocityUtils
      * @param columns
      * @return
      */
-    private static Optional<TableColumn> getPkColumn(List<TableColumn> columns) {
+    private static TableColumn getPkColumn(List<TableColumn> columns) {
         Optional<TableColumn> tableColumn = columns.stream().filter(column -> column.getIsPk().equals(DEFAULT_TRUE)).findFirst();
-        if (tableColumn.isPresent()){
-            return tableColumn;
-        }
+        return tableColumn.orElseGet(() -> columns.get(0));
 
-        return Optional.of(columns.get(0));
     }
 
     public static void setMenuVelocityContext(VelocityContext context, Table genTable)
@@ -220,7 +219,7 @@ public class VelocityUtils
      */
     public static List<String> getTemplateList(String tplCategory)
     {
-        List<String> templates = new ArrayList<String>();
+        List<String> templates = new ArrayList<>();
         templates.add("vm/java/entity.java.vm");
         templates.add("vm/java/dto.java.vm");
         templates.add("vm/java/vo.java.vm");
@@ -236,10 +235,18 @@ public class VelocityUtils
         if (GenConstants.TPL_CRUD.equals(tplCategory))
         {
             templates.add("vm/avue/index.vue.vm");
-        }
-        else if (GenConstants.TPL_TREE.equals(tplCategory))
+        } else if (GenConstants.TPL_TREE.equals(tplCategory))
         {
             templates.add("vm/avue/index-tree.vue.vm");
+        }else if (GenConstants.TPL_RELATION.equals(tplCategory)){
+            templates.remove("vm/java/dto.java.vm");
+            templates.remove("vm/java/vo.java.vm");
+            templates.remove("vm/java/criteria.java.vm");
+            templates.remove("vm/java/transfer.java.vm");
+            templates.remove("vm/java/controller.java.vm");
+            templates.remove("vm/sql/sql.vm");
+            templates.remove("vm/js/api.js.vm");
+
         }
         return templates;
     }
@@ -331,15 +338,15 @@ public class VelocityUtils
      */
     public static HashSet<String> getImportList(List<TableColumn> columns)
     {
-        HashSet<String> importList = new HashSet<String>();
+        HashSet<String> importList = new HashSet<>();
         for (TableColumn column : columns)
         {
-            if (!column.isSuperColumn() && GenConstants.TYPE_DATE.equals(column.getJavaType()))
+            if (column.isNotSuperColumn() && GenConstants.TYPE_DATE.equals(column.getJavaType()))
             {
                 importList.add("java.time.LocalDateTime");
                 importList.add("com.fasterxml.jackson.annotation.JsonFormat");
             }
-            else if (!column.isSuperColumn() && GenConstants.TYPE_BIGDECIMAL.equals(column.getJavaType()))
+            else if (column.isNotSuperColumn() && GenConstants.TYPE_BIGDECIMAL.equals(column.getJavaType()))
             {
                 importList.add("java.math.BigDecimal");
             }

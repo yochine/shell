@@ -2,6 +2,7 @@ package me.zrxjava.generator.controller;
 
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.io.IoUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,7 +15,6 @@ import me.zrxjava.generator.dto.UpdateTableDto;
 import me.zrxjava.generator.service.ITableService;
 import me.zrxjava.generator.vo.TableDetailVo;
 import me.zrxjava.generator.vo.TableVo;
-import org.apache.commons.io.IOUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
@@ -113,11 +113,11 @@ public class TableController {
         return ResponseResult.setBody(tableService.delete(ids));
     }
 
-    @GetMapping("/preview")
+    @GetMapping("/preview/{id}")
     @ApiOperation("代码生成预览")
     @PreAuthorize("@ps.check('tool:gen:preview')")
     @Log(title = "系统工具",businessType = BusinessType.OTHER)
-    public ResponseResult<Map<String, String>> preview(@NotNull(message = "缺少参数") Long tableId){
+    public ResponseResult<Map<String, String>> preview(@NotNull(message = "缺少参数") @PathVariable(name = "id") Long tableId){
         return ResponseResult.success(tableService.preview(tableId));
     }
 
@@ -125,7 +125,7 @@ public class TableController {
     @ApiOperation("代码生成")
     @PreAuthorize("@ps.check('tool:gen:generate')")
     @Log(title = "系统工具",businessType = BusinessType.GENCODE)
-    public ResponseResult<Map<String, String>> generate(@NotEmpty(message = "id不能为空")  Set<Long> ids){
+    public ResponseResult<Boolean> generate(@RequestParam(value = "ids") @NotEmpty(message = "id不能为空")  Set<Long> ids){
         return ResponseResult.setBody(tableService.generate(ids));
     }
 
@@ -133,7 +133,7 @@ public class TableController {
     @ApiOperation("代码生成下载")
     @PreAuthorize("@ps.check('tool:gen:downLoad')")
     @Log(title = "系统工具",businessType = BusinessType.DOWNLOAD)
-    public void downLoad(HttpServletResponse response,@NotEmpty(message = "id不能为空")  Set<Long> ids) throws IOException {
+    public void downLoad(HttpServletResponse response,@RequestParam(value = "ids") @NotEmpty(message = "id不能为空")  Set<Long> ids) throws IOException {
         byte[] data = tableService.downLoad(ids);
         response.reset();
         response.addHeader("Access-Control-Allow-Origin", "*");
@@ -141,7 +141,8 @@ public class TableController {
         response.setHeader("Content-Disposition", "attachment; filename=\"shell.zip\"");
         response.addHeader("Content-Length", "" + data.length);
         response.setContentType("application/octet-stream; charset=UTF-8");
-        IOUtils.write(data, response.getOutputStream());
+        IoUtil.write(response.getOutputStream(), Boolean.TRUE, data);
+
     }
 
 

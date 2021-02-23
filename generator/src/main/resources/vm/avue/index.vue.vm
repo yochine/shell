@@ -45,9 +45,9 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.vaildData(this.permissions.${moduleName}_${pathName}_add, false),
-                    delBtn: this.vaildData(this.permissions.${moduleName}_${pathName}_del, false),
-                    editBtn: this.vaildData(this.permissions.${moduleName}_${pathName}_edit, false)
+                    addBtn: this.vaildData(this.permissions.${moduleName}:${pathName}:add, false),
+                    delBtn: this.vaildData(this.permissions.${moduleName}:${pathName}:del, false),
+                    editBtn: this.vaildData(this.permissions.${moduleName}:${pathName}:edit, false)
                 };
             }
         },

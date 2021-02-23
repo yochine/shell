@@ -10,17 +10,27 @@ export const tableOption = {
 #foreach ($column in $columns)
 	  {
       "type": "$column.htmlType",
-      "label": "$column.comments",
-      "prop": "$column.lowerAttrName",
+      "label": "$column.columnComment",
+      "prop": "$column.javaField",
+
     #if($column.isQuery == '1')
       "search":true,
     #end
+    #if($column.isInsert == '0')
+      "addDisplay":false,
+    #end
+    #if($column.isEdit == '0')
+      "editDisplay":false,
+    #end
+    #if($column.isList == '0')
+      "overHidden":true,
+    #end
     #if($column.isRequired == '1')
-        "rules": [{
-            "required": true,
-            "message": "请输入$column.comments",
-            "trigger": "blur"
-        }]
+      "rules": [{
+        "required": true,
+        "message": "请输入$column.columnComment",
+        "trigger": "blur"
+      }],
     #end
       "span": 12
     }#if($foreach.hasNext),#end

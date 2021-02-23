@@ -48,7 +48,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 授权异常
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint())
-                .accessDeniedHandler(jwtAccessDeniedHandler());
+                .accessDeniedHandler(jwtAccessDeniedHandler())
+                .and()
+                .headers().frameOptions().disable();
 
     }
 

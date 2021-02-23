@@ -20,7 +20,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @date ${datetime}
  */
 @Data
-@ApiModel(value=" ${tableName}dto对象", description="${tableComment}")
+@ApiModel(value=" ${functionName}dto对象", description="${tableComment}")
 public class ${ClassName}Dto implements Serializable{
 
     private static final long serialVersionUID = 1L;

@@ -43,7 +43,7 @@ public class GenUtils
         column.setTableId(tableId);
         column.setCreateBy(createBy);
         // 设置java字段名
-        column.setJavaField(StrUtil.upperFirst(StrUtil.toCamelCase(columnName)));
+        column.setJavaField(StrUtil.lowerFirst(StrUtil.toCamelCase(columnName)));
 
         if (ArrayUtil.containsAny(GenConstants.COLUMNTYPE_STR, dataType))
         {

@@ -1,6 +1,7 @@
 package me.zrxjava.generator.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.io.IoUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -24,7 +25,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -99,7 +99,7 @@ public class TableServiceImpl extends ServiceImpl<TableMapper, Table> implements
     public Boolean updateTableAndColumn(UpdateTableDto dto) {
         Table table = tableTransfer.toEntity(dto.getTable());
         List<TableColumn> columns = tableColumnTransfer.toEntities(dto.getTableColumns());
-        return save(table) && tableColumnService.saveBatch(columns);
+        return updateById(table) && tableColumnService.saveOrUpdateBatch(columns);
     }
 
     @Override
@@ -155,19 +155,16 @@ public class TableServiceImpl extends ServiceImpl<TableMapper, Table> implements
 
     @Override
     public byte[] downLoad(Set<Long> ids) {
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-             ZipOutputStream zip = new ZipOutputStream(outputStream)) {
-            for(Long id : ids){
-                Table table = this.getById(id);
-                List<TableColumn> tableColumns = tableColumnService.list(Wrappers.<TableColumn>lambdaQuery()
-                        .eq(TableColumn::getTableId,id));
-                VelocityUtils.download(table,tableColumns,zip);
-            }
-            return outputStream.toByteArray();
-        } catch (IOException e) {
-            e.printStackTrace();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ZipOutputStream zip = new ZipOutputStream(outputStream);
+        for(Long id : ids){
+            Table table = this.getById(id);
+            List<TableColumn> tableColumns = tableColumnService.list(Wrappers.<TableColumn>lambdaQuery()
+                    .eq(TableColumn::getTableId,id));
+            VelocityUtils.download(table,tableColumns,zip);
         }
-        return null;
+        IoUtil.close(zip);
+        return outputStream.toByteArray();
     }
 
 }
