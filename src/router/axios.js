@@ -1,3 +1,11 @@
+/**
+ * 全站http配置
+ *
+ * axios参数说明
+ * isSerialize是否开启form表单提交
+ * isToken是否需要token
+ */
+import axios from 'axios'
 import { serialize } from '@/util/util'
 import { getStore } from '../util/store'
 import NProgress from 'nprogress' // progress bar
@@ -31,7 +39,6 @@ axios.interceptors.request.use(config => {
   if (TENANT_ID) {
     config.headers['TENANT-ID'] = TENANT_ID // 租户ID
   }
-
   // headers中配置serialize为true开启序列化
   if (config.method === 'post' && config.headers.serialize) {
     config.data = serialize(config.data)
@@ -64,13 +71,20 @@ axios.interceptors.response.use(res => {
     })
     return
   }
+  if (status === 200 && res.data.code !== 200) {
+    Message({
+      message: message,
+      type: 'error'
+    })
+    return Promise.reject(message)
+  }
 
   if (status !== 200 || res.data.code === 1) {
     Message({
       message: message,
       type: 'error'
     })
-    return Promise.reject(message)
+    return Promise.reject(new Error(message))
   }
 
   return res

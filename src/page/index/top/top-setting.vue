@@ -9,8 +9,8 @@
       class="setting__content">
       <div class="setting__header">版权信息</div>
       <div class="setting__body setting__about">
-        <p>Version：intelligence 3.10.0</p>
-        <p>Copyright: intelligence ©2018-2025</p>
+        <p>Version：shell 1.0</p>
+        <p>Copyright: shell ©2020-2025</p>
       </div>
       <div class="setting__header">设置
         <small>(滑动鼠标下面还有更多设置)</small>

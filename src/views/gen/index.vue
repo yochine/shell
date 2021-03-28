@@ -1,123 +1,113 @@
-
 <template>
   <div class="execution">
     <basic-container>
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <div class="grid-content bg-purple">
-            <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
-            <el-button type="primary" icon="el-icon-download" @click="openBatch">批量生成</el-button>
-          </div>
-        </el-col>
-      </el-row>
       <avue-crud
         ref="crud"
         :page="page"
         :data="tableData"
-        :permission="permissionList"
         :table-loading="tableLoading"
         :option="tableOption"
-        @on-load="getList"
         @search-change="searchChange"
+        @on-load="getList"
         @size-change="sizeChange"
         @current-change="currentChange"
         @refresh-change="refreshChange"
-        @row-update="handleUpdate"
-        @row-del="rowDel">
+        @row-del="rowDel"
+        >
+        <template
+          slot-scope="scope"
+          slot="menuLeft">
+          <el-button
+            icon="el-icon-download"
+            type="primary"
+            size="small"
+            @click="handleDown(scope.row,scope.index)">生成代码
+          </el-button>
+          <el-button
+            icon="el-icon-add"
+            type="primary"
+            size="small"
+            @click="openDbTable()">导入
+          </el-button>
+        </template>
         <template
           slot-scope="scope"
           slot="menu">
           <el-button
             type="text"
-            icon="el-icon-view"
-            @click="handleTable(scope.row,scope.index)">预览
+            size="small"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row,scope.index)">编辑
           </el-button>
           <el-button
             type="text"
-            icon="el-icon-check"
+            size="small"
+            icon="el-icon-view"
+            @click="handlePreview(scope.row,scope.index)">预览
+          </el-button>
+          <el-button
+            type="text"
+            size="small"
+            icon="el-icon-download"
             @click="handleDown(scope.row,scope.index)">生成
           </el-button>
           <el-button
             type="text"
-            icon="el-icon-edit"
-            @click="handleDesign(scope.row,scope.index)">同步
+            size="small"
+            icon="el-icon-refresh"
+            @click="syncTable(scope.row,scope.index)">同步
           </el-button>
         </template>
       </avue-crud>
-
-      <el-dialog
-        :visible.sync="box"
-        title="生成配置"
-        width="50%"
-        lock-scroll>
-        <div class="pull-auto">
-          <avue-form
-            ref="formData"
-            :option="formOption"
-            v-model="formData">
-            <template slot-scope="scope" slot="menuForm">
-              <el-button type="primary"
-                         icon="el-icon-view"
-                         plain
-                         @click="handleView()"
-              >预览
-              </el-button>
-              <el-button type="info"
-                         icon="el-icon-check"
-                         plain
-                         @click="gen()"
-              >下载
-              </el-button>
-            </template>
-          </avue-form>
-        </div>
-      </el-dialog>
-
-      <el-dialog
-        :visible.sync="boxBatch"
-        title="批量生成"
-        width="50%"
-        lock-scroll>
-        <div class="pull-auto">
-          <avue-form
-            ref="formBatchData"
-            :option="formBatchOption"
-            v-model="formBatchData"
-            @submit="batchGen"/>
-        </div>
-      </el-dialog>
-
     </basic-container>
+
+     <!-- 编辑页面 -->
+    <el-dialog
+      v-dialogDrag 
+      :visible.sync="edit.open"
+      title="生成配置"
+      width="70%">
+      <EditTable v-if="edit.open" :tableId = edit.tableId @editOk="editOk" />
+    </el-dialog>
+
     <!-- 预览界面 -->
-    <el-dialog :title="preview.title" :visible.sync="preview.open" width="80%" top="5vh" append-to-body>
+    <el-dialog 
+      :title="preview.title" 
+      :visible.sync="preview.open"
+       width="80%" 
+       top="5vh" 
+       append-to-body>
       <Preview :queryData="this.formData" v-if="preview.open"/>
     </el-dialog>
     
-    <!--表字段-->
-    <el-dialog :title="table.title" :visible.sync="table.open" width="80%" top="5vh" append-to-body>
-      <Table :queryData="this.formData" v-if="table.open"/>
+    <!--db表页面-->
+    <el-dialog 
+      v-dialogDrag 
+      :title="table.title" 
+      :visible.sync="table.open"
+       width="65%" 
+       append-to-body>
+      <Table  v-if="table.open"  @ok="searchChange"/>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import {fetchList, fetchSelectDsList, handleDown} from '@/api/gen/gen'
-  import {formBatchOption, formOption, tableOption} from '@/const/crud/gen/gen'
+  import {fetchList, handleDown,delObj,syncTable} from '@/api/gen/gen'
+  import { tableOption} from '@/const/crud/gen/gen'
   import Preview from './preview'
   import Table from './table'
+  import EditTable from './editTable'
 
   export default {
     name: 'CodeGenerator',
-    components: {Preview, Table},
+    components: {Preview, Table,EditTable},
     data() {
       return {
         q: {},
         dataSourceList: [],
         tableData: [],
         formData: {},
-        formBatchData: {},
-        box: false,
-        boxBatch: false,
         page: {
           total: 0, // 总页数
           currentPage: 1, // 当前页数
@@ -125,8 +115,6 @@
         },
         tableLoading: false,
         tableOption: tableOption,
-        formOption: formOption,
-        formBatchOption: formBatchOption,
         // 预览参数
         preview: {
           open: false,
@@ -134,13 +122,15 @@
         },
         table: {
           open: false,
-          title: "字段预览"
+          title: "导入数据库表"
+        },
+        edit: {
+          open: false,
+          tableId: null
         }
       }
     },
-    created() {
-      this.getdataSourceList()
-    },
+    created() {},
     methods: {
       getList(page) {
         this.tableLoading = true
@@ -153,13 +143,45 @@
           this.tableLoading = false
         })
       },
+      openDbTable(){
+        this.table.open = true
+      },
+      handleUpdate(row){
+        this.edit.open = true
+        this.edit.tableId = row.tableId
+      },
+      editOk(form, done){
+        this.edit.open = false
+        this.q = form
+        this.page.currentPage = 1
+        this.getList(this.page, form)
+        done()
+      },
+      searchChange(form, done) {
+        this.table.open = false
+        this.q = form
+        this.page.currentPage = 1
+        this.getList(this.page, form)
+        done()
+      },
+      rowDel: function (row, index) {
+        this.$confirm('是否确认删除表名为' + row.tableName + '吗？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+        }).then(function () {
+          let ids = new Array()
+          ids.push(row.tableId)
+          return delObj(ids)
+        }).then(data => {
+            this.$message.success('删除成功')
+            this.getList(this.page)
+        }).catch(err=>{console.log(err)})
+      },
       handleView: function () {
         this.formData.dsName = this.q.dsName
         this.preview.open = true
         this.table.open = false
-      },
-      handleDesign: function (row) {
-        this.$router.push({path: '/gen/design', query: {tableName: row.tableName, dsName: this.q.dsName}})
       },
       handleTable: function (row) {
         this.formData.tableName = row.tableName
@@ -170,6 +192,13 @@
       handleDown: function (row) {
         this.formData.tableName = row.tableName
         this.box = true
+      },
+      syncTable: function (row){
+        syncTable(row.tableName,row.tableId)
+          .then(res => {
+          this.$message.success('同步成功')
+          this.getList(this.page)
+        }).catch(err=>{console.log(err)})
       },
       sizeChange(pageSize) {
         this.page.pageSize = pageSize
@@ -186,31 +215,10 @@
           this.box = false
         })
       },
-      getdataSourceList() {
-        fetchSelectDsList().then(response => {
-          this.dataSourceList = response.data.data
-        })
-      },
-      search() {
-        this.getList(this.page)
-      },
-      openBatch() {
-        if (this.$refs.crud.tableSelect.length <= 1 || this.$refs.crud.tableSelect.length > 10) {
-          this.$message.error('选中表数量不合法，数量最少2个或最多为10个')
-          return false
-        }
-        let tableName = []
-        for (const table of this.$refs.crud.tableSelect) {
-          tableName.push(table.tableName)
-        }
-        this.formBatchData.tableName = tableName.join('-')
-        this.boxBatch = true
-      },
       batchGen(form, done) {
         this.formBatchData.dsName = this.q.dsName
         handleDown(this.formBatchData).then(() => {
           done()
-          this.boxBatch = false
         }).catch(() => {
           done()
         })

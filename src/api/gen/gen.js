@@ -35,21 +35,30 @@ export function addObj(obj) {
 
 export function getObj(id) {
   return request({
-    url: '/gen/dsconf/' + id,
+    url: '/tool/gen/detail/' + id,
     method: 'get'
   })
 }
 
-export function delObj(id) {
+export function delObj(ids) {
   return request({
-    url: '/gen/dsconf/' + id,
+    url: '/tool/gen',
+    data: ids,
     method: 'delete'
+  })
+}
+
+export function syncTable(tableName, tableId) {
+  return request({
+    url: '/tool/gen/sync',
+    params: Object.assign({tableName, tableId}),
+    method: 'post'
   })
 }
 
 export function putObj(obj) {
   return request({
-    url: '/gen/dsconf/',
+    url: '/tool/gen/update',
     method: 'put',
     data: obj
   })
@@ -89,6 +98,22 @@ export function getGenTable(query) {
     url: '/gen/generator/table',
     params: query,
     method: 'get'
+  })
+}
+
+export function getDbTable(query) {
+  return request({
+    url: '/tool/gen/dbList',
+    params: query,
+    method: 'get'
+  })
+}
+
+export function importTable(obj) {
+  return request({
+    url: '/tool/gen/import',
+    params: {'tableNames':obj},
+    method: 'post'
   })
 }
 

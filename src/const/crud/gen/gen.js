@@ -1,14 +1,22 @@
+
+// 生成表分页配置
 export const tableOption = {
+  menuWidth:300,
   selection: true,
-  rowKey: 'tableName',
+  rowKey: 'tableId',
   index: true,
   indexLabel: '序号',
   stripe: true,
   menuAlign: 'center',
   align: 'center',
   addBtn: false,
-  searchMenuSpan: 6,
+  editBtn: false,
+  searchMenuSpan: 8,
   column: [{
+    label: 'id',
+    prop: 'tableId',
+    hide: true
+  },{
     label: '表名称',
     prop: 'tableName',
     search: true,
@@ -20,7 +28,7 @@ export const tableOption = {
     align: 'center'
   }, {
     label: '表实体',
-    prop: 'tableCollation',
+    prop: 'className',
     align: 'center'
   }, {
     type: 'datetime',
@@ -39,149 +47,307 @@ export const tableOption = {
   }]
 }
 
-export const formOption = {
-  submitBtn:false,
+export const basicOption = {
   emptyBtn:false,
+  submitBtn:false,
   column: [
     {
-      label: '表名称',
+      label: '表名',
       prop: 'tableName',
       disabled: true
     }, {
-      label: '包名',
-      prop: 'packageName',
-      placeholder: '可为空，加载系统默认配置'
+      label: '表注释',
+      prop: 'tableComment',
+      disabled: true
+    }, {
+      label: '实体类名',
+      prop: 'className',
+      rules: [{
+        required: true,
+        message: '请输入实体类名',
+        trigger: 'blur'
+      }]
     }, {
       label: '作者',
-      prop: 'author',
-      placeholder: '可为空，加载系统默认配置'
+      prop: 'functionAuthor',
+      rules: [{
+        required: true,
+        message: '请输入作者',
+        trigger: 'blur'
+      }]
     }, {
-      label: '模块',
-      prop: 'moduleName',
-      placeholder: '可为空，加载系统默认配置'
-    }, {
-      label: '表前缀',
-      prop: 'tablePrefix',
-      placeholder: '可为空，加载系统默认配置'
-    }, {
-      label: '注释',
-      prop: 'comments',
-      placeholder: '可为空，加载表备注'
+      label: '备注',
+      prop: 'remark',
+    }
+ ]
+}
+
+export const columnOption = {
+  rowKey: 'columnId',
+  page:false,
+  addBtn:false,
+  refreshBtn:false,
+  columnBtn:false,
+  menu:false,
+  cellBtn:true,
+  indexFixed:false,
+  column: [
+    {
+      label: '字段id',
+      prop: 'columnId',
+      hide: true
     },{
-      label: '前端风格',
-      prop: 'style',
-      type: 'radio',
-      slot: true,
-      border:true,
-      span: 24,
-      dicUrl: '/admin/dict/type/style_type',
+      label: '字段列名',
+      minWidth: 95,
+      prop: 'columnName'
+    },{
+      label: '字段注释',
+      minWidth: 95,
+      prop: 'columnComment'
+    },{
+      label: 'db类型',
+      minWidth: 95,
+      prop: 'columnType'
+    },{
+      label: 'java类型',
+      prop: 'javaType',
+      type:'select',
+      cell: true,
+      minWidth: 155,
+      rules: [{
+        required: true,
+        message: '请选择java类型',
+        trigger: 'blur'
+      }],
+      dicData:[
+        {
+          label:'Long',
+          value:'Long'
+        },{
+          label:'String',
+          value:'String'
+        },{
+          label:'Integer',
+          value:'Integer'
+        },{
+          label:'Double',
+          value:'Double'
+        },{
+          label:'BigDecimal',
+          value:'BigDecimal'
+        },{
+          label:'Date',
+          value:'LocalDateTime'
+        }
+      ]
+    },{
+      label: 'java属性',
+      prop: 'javaField',
+      type:'input',
+      minWidth: 155,
+      rules: [{
+        required: true,
+        message: '请输入java属性',
+        trigger: 'blur'
+      }],
+      cell: true
+    },{
+      label: '插入',
+      prop: 'isInsert',
+      type:'switch',
+      cell: true
+    },{
+      label: '编辑',
+      prop: 'isEdit',
+      type:'switch',
+      cell: true
+    },{
+      label: '列表',
+      prop: 'isList',
+      type:'switch',
+      cell: true
+    },{
+      label: '查询',
+      prop: 'isQuery',
+      type:'switch',
+      cell: true
+    },{
+      label: '查询方式',
+      prop: 'queryType',
+      type:'select',
+      minWidth: 115,
+      cell: true,
+      rules: [{
+        required: true,
+        message: '请选择查询方式',
+        trigger: 'blur'
+      }],
+      dicData:[
+        {
+          label:'=',
+          value:'EQ'
+        },{
+          label:'!=',
+          value:'NE'
+        },{
+          label:'>',
+          value:'GT'
+        },{
+          label:'<',
+          value:'LT'
+        },{
+          label:'>=',
+          value:'GE'
+        },{
+          label:'<=',
+          value:'LE'
+        },{
+          label:'LIKE',
+          value:'LIKE'
+        },{
+          label:'BETWEEN',
+          value:'BETWEEN'
+        }
+      ]
+    },{
+      label: '必填',
+      prop: 'isRequired',
+      type:'switch',
+      cell: true
+    },{
+      label: '显示类型',
+      prop: 'htmlType',
+      type: 'select',
+      cell: true,
+      minWidth: 155,
+      rules: [{
+        required: true,
+        message: '请选择显示类型',
+        trigger: 'blur'
+      }],
+      dicData:[
+        {
+          label:'文本框',
+          value:'input'
+        },{
+          label:'文本域',
+          value:'textarea'
+        },{
+          label:'下拉框',
+          value:'select'
+        },{
+          label:'单选框',
+          value:'radio'
+        },{
+          label:'复选框',
+          value:'checkbox'
+        },{
+          label:'日期控件',
+          value:'datetime'
+        },{
+          label:'上传控件',
+          value:'uploadImage'
+        },{
+          label:'富文本控件',
+          value:'editor'
+        }
+      ]
+    },{
+      label: '字典类型',
+      prop: 'text1',
+      type: 'select',
+      minWidth: 155,
+      cell: true,
+      // dicUrl: "/admin/hadoop/not_auth/subType",
+      // dicMethod: "post",
+      // props: { label: "value", value: "key" },
+      filterable: true   
     }
   ]
 }
-export const formBatchOption = {
-  submitText: '生成',
+
+export const infoOption = {
+  emptyBtn:false,
+  submitBtn:false,
   column: [
     {
-      label: '表名称',
-      prop: 'tableName',
-      disabled: true,
-      minRows: 2,
-      type: 'textarea',
-      row: true,
-      span: 24
-    },
-    {
-      label: '包名',
+      label: '模板',
+      prop: 'tplCategory',
+      type: 'select',
+      dicData:[
+        {
+          label:'单表(增删改查)',
+          value:'crud'
+        },{
+          label:'树表(增删改查)',
+          value:'tree'
+        },{
+          label:'关联表',
+          value:'relation'
+        }
+      ],
+      rules: [{
+        required: true,
+        message: '请选择模板',
+        trigger: 'blur'
+      }],
+    },{
+      label: '包路径',
       prop: 'packageName',
-      placeholder: '可为空，加载系统默认配置'
-    }, {
-      label: '作者',
-      prop: 'author',
-      placeholder: '可为空，加载系统默认配置'
-    }, {
-      label: '模块',
+      rules: [{
+        required: true,
+        message: '请输入包路径',
+        trigger: 'blur'
+      }],
+    },{
+      label: '模块名',
       prop: 'moduleName',
-      placeholder: '可为空，加载系统默认配置'
-    }, {
-      label: '注释',
-      prop: 'comments',
-      placeholder: '可为空，加载表备注'
+      rules: [{
+        required: true,
+        message: '请选择模板',
+        trigger: 'blur'
+      }],
+    },{
+      label: '业务名',
+      prop: 'businessName',
+      rules: [{
+        required: true,
+        message: '请选择模板',
+        trigger: 'blur'
+      }],
+    },{
+      label: '功能名',
+      prop: 'functionName',
+      rules: [{
+        required: true,
+        message: '请选择模板',
+        trigger: 'blur'
+      }],
+    },{
+      label: '生成路径',
+      prop: 'genPath',
+      rules: [{
+        required: true,
+        message: '请选择模板',
+        trigger: 'blur'
+      }],
+    },{
+      label: '上级菜单',
+      prop: 'text1',
+      type: 'select',
+      // dicUrl: "/admin/hadoop/not_auth/subType",
+      // dicMethod: "post",
+      // props: { label: "value", value: "key" },
+      filterable: true   //开启搜索功能
     }
   ]
 }
 
-export const tableDsOption = {
-  border: true,
-  index: true,
-  indexLabel: '序号',
-  stripe: true,
-  menuAlign: 'center',
-  align: 'center',
-  column: [
-    {
-      label: '主键',
-      prop: 'id',
-      hide: true,
-      addDisplay: false,
-      editDisplay: false
-    },
-    {
-      label: '名称',
-      prop: 'name',
-      rules: [
-        { required: true, message: '请输入名称', trigger: 'blur' },
-        { max: 32, message: '长度在 32 个字符', trigger: 'blur' }
-      ]
-    },
-    {
-      label: 'jdbcUrl',
-      prop: 'url',
-      type: 'textarea',
-      span: 24,
-      row: true,
-      minRows: 2,
-      overHidden: true,
-      rules: [
-        { required: true, message: '请输入jdbcUrl', trigger: 'blur' }
-      ]
-    },
-    {
-      label: '用户名',
-      prop: 'username',
-      rules: [
-        { required: true, message: '请输入用户名', trigger: 'blur' },
-        { max: 32, message: '长度在 32 个字符', trigger: 'blur' }
-      ]
-    },
-    {
-      label: '密码',
-      prop: 'password',
-      rules: [
-        { required: true, message: '请输入密码', trigger: 'blur' },
-        { max: 32, message: '长度在 32 个字符', trigger: 'blur' }
-      ]
-    },
-    {
-      label: '创建时间',
-      prop: 'createDate',
-      addDisplay: false,
-      editDisplay: false,
-      overHidden: true
-    },
-    {
-      label: '更新时间',
-      prop: 'updateDate',
-      overHidden: true,
-      addDisplay: false,
-      editDisplay: false
-    }
-  ]
-}
-
-export const tableColumnOption = {
+// db表分页配置
+export const dbTableOption = {
+  selection: true,
   rowKey: 'tableName',
   border: true,
-  index: true,
   stripe: true,
   menuAlign: 'center',
   align: 'center',
@@ -189,20 +355,22 @@ export const tableColumnOption = {
   addBtn: false,
   searchMenuSpan: 6,
   column: [{
-    label: '字段名',
-    prop: 'columnName',
+    label: '表字段名',
+    prop: 'tableName',
+    align: 'center',
+    search: true
+  }, {
+    label: '表注释',
+    prop: 'tableComment',
+    align: 'center',
+    search: true
+  }, {
+    label: '创建时间',
+    prop: 'createTime',
     align: 'center'
   }, {
-    label: '注释',
-    prop: 'comments',
-    align: 'center'
-  }, {
-    label: '字段类型',
-    prop: 'columnType',
-    align: 'center'
-  }, {
-    label: 'JAVA类型',
-    prop: 'javaType',
+    label: '更新时间',
+    prop: 'updateTime',
     align: 'center'
   }]
 }

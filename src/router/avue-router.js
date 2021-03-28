@@ -1,30 +1,43 @@
-const RouterPlugin = function() {
-  this.$router = null
-  this.$store = null
-}
-RouterPlugin.install = function(router, store) {
-  this.$router = router
-  this.$store = store
-  function isURL(s) {
+
+let RouterPlugin = function () {
+  this.$router = null;
+  this.$store = null;
+
+};
+RouterPlugin.install = function (vue, option = {}) {
+  this.$router = option.router;
+  this.$store = option.store;
+  this.$vue = new vue({ i18n: option.i18n });
+  function isURL (s) {
+    if (s.includes('html')) return true;
     return /^http[s]?:\/\/.*/.test(s)
   }
-  function objToform(obj) {
-    const result = []
+  function objToform (obj) {
+    let result = [];
     Object.keys(obj).forEach(ele => {
-      result.push(`${ele}=${obj[ele]}`)
+      result.push(`${ele}=${obj[ele]}`);
     })
-    return result.join('&')
+    return result.join('&');
   }
   this.$router.$avueRouter = {
-    // 全局配置
+    //全局配置
     $website: this.$store.getters.website,
     routerList: [],
     group: '',
+    meta: {},
     safe: this,
     // 设置标题
-    setTitle: function(title) {
-      title = title ? `${title}——${this.$website.title}` : this.$website.title
-      document.title = title
+    setTitle: (title) => {
+      const defaultTitle = this.$vue.$t('title');
+      title = title ? `${title}——${defaultTitle}` : defaultTitle;
+      document.title = title;
+    },
+    closeTag: (value) => {
+      let tag = value || this.$store.getters.tag;
+      if (typeof value === 'string') {
+        tag = this.$store.getters.tagList.filter(ele => ele.value === value)[0]
+      }
+      this.$store.commit('DEL_TAG', tag)
     },
     generateTitle: (title, key) => {
       if (!key) return title;
@@ -37,49 +50,46 @@ RouterPlugin.install = function(router, store) {
       }
       return title
     },
-    closeTag: (value) => {
-      const tag = value || this.$store.getters.tag
-      this.$store.commit('DEL_TAG', tag)
-    },
-    // 处理路由
-    getPath: function(params) {
-      const { src } = params
-      let result = src || '/'
-      if (src.includes('http') || src.includes('https')) {
-        result = `/myiframe/urlPath?${objToform(params)}`
+    //处理路由
+    getPath: function (params = {}, meta = {}) {
+      let { src } = params;
+      let result = src || '/';
+      if (isURL(src)) {
+        result = `/myiframe/urlPath?${objToform(Object.assign(meta, params))}`;
       }
-      return result
+      return result;
     },
-    // 正则处理路由
-    vaildPath: function(list, path) {
-      let result = false
+    //正则处理路由
+    vaildPath: function (list, path) {
+      let result = false;
       list.forEach(ele => {
-        if (new RegExp('^' + ele + '.*', 'g').test(path)) {
+        if (new RegExp("^" + ele + ".*", "g").test(path)) {
           result = true
         }
+
       })
-      return result
+      return result;
     },
-    // 设置路由值
-    getValue: function(route) {
-      let value = ''
+    //设置路由值
+    getValue: function (route) {
+      let value = "";
       if (route.query.src) {
-        value = route.query.src
+        value = route.query.src;
       } else {
-        value = route.path
+        value = route.path;
       }
-      return value
+      return value;
     },
-    // 动态路由
-    formatRoutes: function(aMenu = [], first) {
+    //动态路由
+    formatRoutes: function (aMenu = [], first) {
       const aRouter = []
-      const propsConfig = this.$website.menu.props
+      const propsConfig = this.$website.menu.props;
       const propsDefault = {
         label: propsConfig.label || 'label',
         path: propsConfig.path || 'path',
         icon: propsConfig.icon || 'icon',
         children: propsConfig.children || 'children',
-        meta: propsConfig.meta || 'meta'
+        meta: propsConfig.meta || 'meta',
       }
       if (aMenu.length === 0) return
       for (let i = 0; i < aMenu.length; i++) {
@@ -94,31 +104,26 @@ RouterPlugin.install = function(router, store) {
             return oMenu[propsDefault.path]
           }
         })()
-
-        //特殊处理组件
+         //特殊处理组件
         const component = 'views' + oMenu.path
-
         const name = oMenu[propsDefault.label]
-
         const icon = oMenu[propsDefault.icon]
-
         const children = oMenu[propsDefault.children]
-
         const meta = {
           keepAlive: Number(oMenu['keepAlive']) === 1
         }
         const isChild = children.length !== 0
         const oRouter = {
           path: path,
-          component(resolve) {
+          component (resolve) {
             // 判断是否为首路由
             if (first) {
               require(['../page/index'], resolve)
-
+              return
               // 判断是否为多层路由
             } else if (isChild && !first) {
               require(['../page/index/layout'], resolve)
-
+              return
               // 判断是否为最终的页面视图
             } else {
               require([`../${component}.vue`], resolve)
@@ -129,21 +134,21 @@ RouterPlugin.install = function(router, store) {
           meta: meta,
           redirect: (() => {
             if (!isChild && first && !isURL(path)) return `${path}/index`
-            else return ''
+            else return '';
           })(),
           // 处理是否为一级路由
           children: !isChild ? (() => {
             if (first) {
-              if (!isURL(path)) oMenu[propsDefault.path] = `${path}/index`
+              if (!isURL(path)) oMenu[propsDefault.path] = `${path}/index`;
               return [{
-                component(resolve) { require([`../${component}.vue`], resolve) },
+                component (resolve) { require([`../${component}.vue`], resolve) },
                 icon: icon,
                 name: name,
                 meta: meta,
                 path: 'index'
               }]
             }
-            return []
+            return [];
           })() : (() => {
             return this.formatRoutes(children, false)
           })()
@@ -158,7 +163,8 @@ RouterPlugin.install = function(router, store) {
       } else {
         return aRouter
       }
+
     }
   }
 }
-export default RouterPlugin
+export default RouterPlugin;

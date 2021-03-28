@@ -7,6 +7,8 @@ import App from './App'
 import './permission' // 权限
 import './error' // 日志
 import './cache'//页面缓冲
+// 引入自定义指令
+import './util/dialogdrag';
 import router from './router/router'
 import store from './store'
 import { loadStyle } from './util/util'

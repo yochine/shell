@@ -5,25 +5,33 @@
                :data="tableData"
                :table-loading="tableLoading"
                :option="tableOption"
+               @search-change="searchChange"
                @on-load="getList"
                @refresh-change="refreshChange"
                @size-change="sizeChange"
                @current-change="currentChange">
+    <template 
+      slot="menuLeft">
+      <el-button  
+        type="primary"
+        size="small"
+        @click="importTable()">导入
+      </el-button>
+    </template>
     </avue-crud>
   </basic-container>
 
 </template>
 <script>
-  import {getGenTable} from '@/api/gen/gen'
-  import {tableColumnOption} from '@/const/crud/gen/gen'
+  import {getDbTable} from '@/api/gen/gen'
+  import {importTable} from '@/api/gen/gen'
+  import {dbTableOption} from '@/const/crud/gen/gen'
 
   export default {
-    name: "GenEdit",
-    props: {
-      queryData: {}
-    },
+    name: "dbTable",
     data() {
       return {
+        queryData: {},
         tableData: [],
         page: {
           total: 0, // 总页数
@@ -31,13 +39,13 @@
           pageSize: 20 // 每页显示多少条
         },
         tableLoading: false,
-        tableOption: tableColumnOption
+        tableOption: dbTableOption
       };
     },
     methods: {
       getList(page) {
         this.tableLoading = true
-        getGenTable(Object.assign({
+        getDbTable(Object.assign({
           current: page.currentPage,
           size: page.pageSize
         }, this.queryData)).then(response => {
@@ -48,6 +56,12 @@
           this.tableLoading = false
         })
       },
+      searchChange(form, done) {
+        this.queryData = form
+        this.page.currentPage = 1
+        this.getList(this.page, form)
+        done()
+      },
       sizeChange(pageSize) {
         this.page.pageSize = pageSize
       },
@@ -56,6 +70,22 @@
       },
       refreshChange() {
         this.getList(this.page)
+      },
+      importTable(){
+         if (this.$refs.crud.tableSelect.length <= 0 ) {
+          this.$message.error('请选择至少一条记录')
+          return false
+        }
+        var tableNames = new Array()
+        for (const table of this.$refs.crud.tableSelect) {
+          tableNames.push(table.tableName)
+        }
+        importTable(tableNames.join(',')).then(response => {
+          this.$message.success(response.data.message);
+          if (response.data.code === 200) {
+            this.$emit("ok");
+          }
+        })
       }
     }
   };
