@@ -1,25 +1,9 @@
-/*
- *    Copyright (c) 2018-2025, intelligence All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the pig4cloud.com developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: intelligence
- */
 
 import request from '@/router/axios'
 
 export function getMenu(id) {
   return request({
-    url: '/ums/menu/list',
+    url: '/ums/menu/tree',
     params: {parentId: id},
     method: 'get'
   })
@@ -27,45 +11,45 @@ export function getMenu(id) {
 
 export function getTopMenu() {
   return request({
-    url: '/ums/menu/list',
+    url: '/ums/menu/tree',
     params: {type: 'top'},
     method: 'get'
   })
 }
-
-export function fetchMenuTree(lazy, parentId) {
+export function fetchList(query) {
   return request({
-    url: '/admin/menu/tree',
+    url: '/ums/menu/list',
     method: 'get',
-    params: {lazy: lazy, parentId: parentId}
+    params: query
   })
 }
 
 export function addObj(obj) {
   return request({
-    url: '/admin/menu',
+    url: '/ums/menu',
     method: 'post',
     data: obj
   })
 }
 
-export function getObj(id) {
+export function getObj(menuId) {
   return request({
-    url: '/admin/menu/' + id,
+    url: '/ums/menu/' + menuId,
     method: 'get'
   })
 }
 
-export function delObj(id) {
+export function delObj(ids) {
   return request({
-    url: '/admin/menu/' + id,
+    url: '/ums/menu',
+    data: ids,
     method: 'delete'
   })
 }
 
 export function putObj(obj) {
   return request({
-    url: '/admin/menu',
+    url: '/ums/menu',
     method: 'put',
     data: obj
   })

@@ -61,7 +61,7 @@ axios.interceptors.response.use(res => {
   NProgress.done()
   const status = Number(res.status) || 200
   const message = res.data.msg || res.data.message || errorCode[status] || errorCode['default']
-  if (status === 401) {
+  if (status === 401 || res.data.code == 401) {
     Message({
       message: message,
       type: 'error'
@@ -71,6 +71,7 @@ axios.interceptors.response.use(res => {
     })
     return
   }
+
   if (status === 200 && res.data.code !== 200) {
     Message({
       message: message,

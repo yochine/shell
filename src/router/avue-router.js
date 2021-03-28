@@ -112,7 +112,16 @@ RouterPlugin.install = function (vue, option = {}) {
         const meta = {
           keepAlive: Number(oMenu['keepAlive']) === 1
         }
-        const isChild = children.length !== 0
+
+        meta = Object.assign(meta, (function () {
+          if (option.keepAlive === true) {
+            return {
+              keepAlive: true
+            }
+          }
+        })());
+        const isChild = children && children.length !== 0;
+
         const oRouter = {
           path: path,
           component (resolve) {

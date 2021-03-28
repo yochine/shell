@@ -50,6 +50,7 @@
         readOnly: true
       })
       this.editor.setSize('auto', this.height)
+      this.editor.setOption('overflow', 'hidden')
       this.editor.setValue(this.value)
     },
     methods: {
@@ -74,5 +75,8 @@
   }
   .json-editor >>> .cm-s-rubyblue span.cm-string {
     color: #F08047;
+  }
+  .CodeMirror cm-s-idea CodeMirror-wrap{
+    overflow-y:hidden;
   }
 </style>

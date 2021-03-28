@@ -72,7 +72,7 @@
         this.getList(this.page)
       },
       importTable(){
-         if (this.$refs.crud.tableSelect.length <= 0 ) {
+        if (this.$refs.crud.tableSelect.length <= 0 ) {
           this.$message.error('请选择至少一条记录')
           return false
         }

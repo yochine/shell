@@ -2,6 +2,11 @@
 
 import request from '@/router/axios'
 
+const mimeMap = {
+  xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  zip: 'application/zip'
+}
+
 export function fetchList(query) {
   return request({
     url: '/tool/gen/page',
@@ -64,21 +69,21 @@ export function putObj(obj) {
   })
 }
 
-export function preview(table) {
+export function preview(id) {
   return request({
-    url: '/gen/generator/preview',
+    url: '/tool/gen/preview/' + id,
     method: 'get',
-    params: table
   })
 }
 
-export function handleDown(table) {
+export function handleDown(ids) {
   return request({
-    url: '/gen/generator/code',
-    method: 'post',
-    data: table,
+    url: 'tool/gen/downLoad',
+    method: 'get',
+    params: {ids:ids},
     responseType: 'arraybuffer'
   }).then((response) => { // 处理返回的文件流
+    console.log(5555)
     const blob = new Blob([response.data], {type: 'application/zip'})
     const filename = table.tableName + '.zip'
     const link = document.createElement('a')
@@ -90,13 +95,14 @@ export function handleDown(table) {
       URL.revokeObjectURL(blob)
       document.body.removeChild(link)
     }, 0)
+    // resolveBlob(res, mimeMap.zip)
   })
 }
 
-export function getGenTable(query) {
+export function generate(id) {
   return request({
-    url: '/gen/generator/table',
-    params: query,
+    url: '/tool/gen/generate',
+    params: {ids:id},
     method: 'get'
   })
 }
@@ -117,10 +123,10 @@ export function importTable(obj) {
   })
 }
 
-export function getForm(tableName, dsName) {
+export function getForm(tableId, dsName) {
   return request({
-    url: '/gen/form/info',
-    params: {tableName: tableName, dsName: dsName},
+    url: '/gen/form/conf',
+    params: {tableId: tableId, dsName: dsName},
     method: 'get'
   })
 }
@@ -131,4 +137,26 @@ export function postForm(formInfo, tableName, dsId) {
     method: 'post',
     data: Object.assign({formInfo, tableName, dsId})
   })
+}
+
+/**
+ * 解析blob响应内容并下载
+ * @param {*} res blob响应内容
+ * @param {String} mimeType MIME类型
+ */
+export function resolveBlob(res, mimeType) {
+  console.log(22)
+  const aLink = document.createElement('a')
+  var blob = new Blob([res.data], { type: mimeType })
+  // //从response的headers中获取filename, 后端response.setHeader("Content-disposition", "attachment; filename=xxxx.docx") 设置的文件名;
+  var patt = new RegExp('filename=([^;]+\\.[^\\.;]+);*')
+  var contentDisposition = decodeURI(res.headers['content-disposition'])
+  var result = patt.exec(contentDisposition)
+  var fileName = result[1]
+  fileName = fileName.replace(/\"/g, '')
+  aLink.href = URL.createObjectURL(blob)
+  aLink.setAttribute('download', fileName) // 设置下载文件名称
+  document.body.appendChild(aLink)
+  aLink.click()
+  document.body.appendChild(aLink)
 }

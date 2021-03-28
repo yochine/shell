@@ -17,6 +17,9 @@ export default [{
   children: [{
     path: 'index',
     name: '首页',
+    meta: {
+      i18n: 'dashboard'
+    },
     component: () =>
       import(/* webpackChunkName: "views" */ '@/page/wel')
   }]

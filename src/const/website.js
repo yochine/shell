@@ -20,7 +20,7 @@ export default {
   menu: {
     iconDefault: 'icon-caidan',
     props: {
-      label: 'name',
+      label: 'label',
       path: 'path',
       icon: 'icon',
       children: 'children'

@@ -3,13 +3,13 @@
   <el-card>
    <el-tabs v-model="activeName">
     <el-tab-pane label="基本信息" name="basic">
-        <avue-form ref="form" :option="basicOption" v-model="table" />
+        <avue-form ref="basic" :option="basicOption" v-model="table" />
     </el-tab-pane>
     <el-tab-pane label="字段信息" name="column">
-        <avue-crud  ref="crud" :option="columnOption" :data="tableColumns" />
+        <avue-crud  ref="column" :option="columnOption" :table-loading="loading" :data="tableColumns"/>
     </el-tab-pane>
     <el-tab-pane label="生成信息" name="info">
-        <avue-form ref="form" :option="infoOption" v-model="table"/>
+        <avue-form ref="info" :option="infoOption" v-model="table"/>
     </el-tab-pane>
   </el-tabs>
   <el-form label-width="100px">
@@ -30,6 +30,7 @@ export default {
     props: ['tableId'],
     data(){
        return{
+        loading:true,
         activeName: "column",
         item:{},
         table:{},
@@ -41,32 +42,46 @@ export default {
         btnLoading: false
        }
     },
-    created(){},
     mounted(){
         this.getDetail()
+    },
+    watch:{
+      'table.tplCategory':{
+        handler(val){
+          var parentMenu = this.findObject(this.infoOption.column,'parentMenu')
+          if(val!=='relation'){
+           parentMenu.display=true
+          }else{
+           parentMenu.display=false
+          //  this.findObject(this.infoOption.column,'parentMenu').display = false
+          }
+        },
+        immediate: true
+      }
     },
     methods:{
         getDetail(){
             getObj(this.tableId).then(response => {
-                this.table = response.data.data.table;
-                let columns = response.data.data.tableColumns;
-                columns.map((item, index) => {
-                    this.tableColumns.push(Object.assign({}, item, { $cellEdit:true }))
-                })
-             })
+              this.table = response.data.data.table;
+              let columns = response.data.data.tableColumns;
+              columns.map((item, index) => {
+                  this.tableColumns.push(Object.assign({}, item, { $cellEdit:true }))
+              })
+              this.loading = false
+            })
         },
         handleSubmit(){
             //点提交时加载打开
           this.btnLoading = true;
-          const genForm = this.$refs.form
-          console.log(genForm)
-          Promise.all([ genForm].map(this.getFormPromise)).then(res => {
+          const basic = this.$refs.basic
+          const info = this.$refs.info
+          Promise.all([ basic,info].map(this.getFormPromise)).then(res => {
             const validateResult = res.every(item => !!item);
             if (validateResult) {
-              const genTable = Object.assign({}, {table:genForm.form}, {tableColumns:this.$refs.crud.data});
+              const genTable = Object.assign({}, {table:basic.form}, {tableColumns:this.$refs.column.data});
               putObj(genTable).then(res =>{
                 this.$message.success(res.data.message)
-                if (response.data.code === 200) {
+                if (res.data.code === 200) {
                   this.$emit("editOk");
                 }
               })
@@ -79,6 +94,7 @@ export default {
             this.btnLoading = false;
           },3000)
         },
+        //  表单校验
         getFormPromise(form) {
             return new Promise(resolve => {
                 form.validate(res => {
@@ -91,7 +107,7 @@ export default {
             console.log(item.prop)
             this.$message.success('当前选项卡对象'+JSON.stringify(item))
         },
-
+      
     }
     
 }

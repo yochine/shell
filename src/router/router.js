@@ -16,7 +16,7 @@ import Store from '../store/'
 Vue.use(VueRouter)
 //创建路由
 export const createRouter = () => new VueRouter({
-  mode: 'history',
+  // mode: 'history', // 关闭后url会带上hash 即#
   routes: [...PageRouter, ...ViewsRouter]
 })
 
@@ -27,7 +27,8 @@ AvueRouter.install(Vue, {
   i18n: i18n,
   keepAlive: false,
 });
-Router.$avueRouter.formatRoutes(Store.state.user.menu, true)
+Router.$avueRouter.formatRoutes(Store.state.user.menuAll, true)
+Router.addRoutes([...PageRouter, ...ViewsRouter]);
 // 重置路由
 export function resetRouter () {
   const newRouter = createRouter()

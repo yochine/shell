@@ -11,6 +11,7 @@ export const tableOption = {
   align: 'center',
   addBtn: false,
   editBtn: false,
+  delBtn: false,
   searchMenuSpan: 8,
   column: [{
     label: 'id',
@@ -155,21 +156,65 @@ export const columnOption = {
       label: '插入',
       prop: 'isInsert',
       type:'switch',
+      value: '0',
+      dicData: [
+        {
+          label: '',
+          value: '0'
+        },
+        {
+          label: '',
+          value: '1'
+        }
+      ],
       cell: true
     },{
       label: '编辑',
       prop: 'isEdit',
       type:'switch',
+      value: '0',
+      dicData: [
+        {
+          label: '',
+          value: '0'
+        },
+        {
+          label: '',
+          value: '1'
+        }
+      ],
       cell: true
     },{
       label: '列表',
       prop: 'isList',
       type:'switch',
+      value: '0',
+      dicData: [
+        {
+          label: '',
+          value: '0'
+        },
+        {
+          label: '',
+          value: '1'
+        }
+      ],
       cell: true
     },{
       label: '查询',
       prop: 'isQuery',
       type:'switch',
+      value: '0',
+      dicData: [
+        {
+          label: '',
+          value: '0'
+        },
+        {
+          label: '',
+          value: '1'
+        }
+      ],
       cell: true
     },{
       label: '查询方式',
@@ -213,6 +258,17 @@ export const columnOption = {
       label: '必填',
       prop: 'isRequired',
       type:'switch',
+      value: '0',
+      dicData: [
+        {
+          label: '',
+          value: '0'
+        },
+        {
+          label: '',
+          value: '1'
+        }
+      ],
       cell: true
     },{
       label: '显示类型',
@@ -333,7 +389,7 @@ export const infoOption = {
       }],
     },{
       label: '上级菜单',
-      prop: 'text1',
+      prop: 'parentMenu',
       type: 'select',
       // dicUrl: "/admin/hadoop/not_auth/subType",
       // dicMethod: "post",

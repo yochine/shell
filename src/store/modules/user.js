@@ -18,12 +18,18 @@ function addPath(ele, first) {
   const icon = ele[propsDefault.icon]
   ele[propsDefault.icon] = validatenull(icon) ? menu.iconDefault : icon
   const isChild = ele[propsDefault.children] && ele[propsDefault.children].length !== 0
+  if (isURL(ele[propsDefault.path])) {
+    ele[propsDefault.path] = ele[propsDefault.path].replace(/&/g, "$")
+  }
   if (!isChild) ele[propsDefault.children] = []
   if (!isChild && first && !isURL(ele[propsDefault.path])) {
     ele[propsDefault.path] = ele[propsDefault.path] + '/index'
   } else {
-    ele[propsDefault.children].forEach(child => {
-      addPath(child)
+    ele[propsDefault.children] && ele[propsDefault.children].forEach(child => {
+      if (!isURL(child[propsDefault.path])) {
+        child[propsDefault.path] = `${child[propsDefault.path] ? child[propsDefault.path] : 'index'}`
+      }
+      addPath(child);
     })
   }
 }
@@ -37,6 +43,7 @@ const user = {
       name: 'permissions'
     }) || [],
     roles: [],
+    menuId: getStore({ name: 'menuId' }) || [],
     menu: getStore({
       name: 'menu'
     }) || [],
@@ -126,6 +133,8 @@ const user = {
         logout().then(() => {
           resetRouter();
           commit('SET_MENU', [])
+          commit('SET_MENUID', {})
+          commit('SET_MENU_ALL', [])
           commit('SET_PERMISSIONS', [])
           commit('SET_USER_INFO', {})
           commit('SET_ACCESS_TOKEN', '')
@@ -145,6 +154,8 @@ const user = {
       return new Promise(resolve => {
         resetRouter();
         commit('SET_MENU', [])
+        commit('SET_MENUID', {})
+        commit('SET_MENU_ALL', [])
         commit('SET_PERMISSIONS', [])
         commit('SET_USER_INFO', {})
         commit('SET_ACCESS_TOKEN', '')
@@ -156,16 +167,16 @@ const user = {
       })
     },
     // 获取系统菜单
-    GetMenu({commit}, obj) {
+    GetMenu({commit}, parentId) {
       return new Promise(resolve => {
-        getMenu(obj.id).then((res) => {
+        getMenu(parentId).then((res) => {
           const data = res.data.data
           const menu = deepClone(data)
           menu.forEach(ele => {
             addPath(ele)
           })
-          let type = obj.type
-          commit('SET_MENU', {type, menu})
+          commit('SET_MENU_ALL', menu)
+          commit('SET_MENU', menu)
           resolve(menu)
         })
       })
@@ -186,7 +197,7 @@ const user = {
       setStore({
         name: 'access_token',
         content: state.access_token,
-        type: 'session'
+        // type: 'session'
       })
     },
     SET_EXPIRES_IN: (state, expires_in) => {
@@ -210,25 +221,46 @@ const user = {
       setStore({
         name: 'userInfo',
         content: userInfo,
-        type: 'session'
+        // type: 'session'
       })
     },
-    SET_MENU: (state, params = {}) => {
-      let {menu, type} = params;
-      if (type !== false) state.menu = menu
+    SET_MENUID (state, menuId) {
+      state.menuId = menuId;
+      setStore({ name: 'menuId', content: state.menuId, type: 'session' })
+    },
+    SET_MENU: (state,menu) => {
+      state.menu = menu
       setStore({
         name: 'menu',
         content: menu,
         type: 'session'
       })
+      if (validatenull(menu)) return
+      //合并动态路由去重
+      let menuAll = state.menuAll;
+      menuAll = menuAll.concat(menu).reverse();
+      let newMenu = [];
+      for (let item1 of menuAll) {
+        let flag = true;
+        for (let item2 of newMenu) {
+          if (item1.label == item2.label || item1.path == item2.path) {
+            flag = false;
+          }
+        }
+        if (flag) newMenu.push(item1);
+      }
+      state.menuAll = newMenu
+      setStore({ name: 'menuAll', content: state.menuAll, type: 'session' })
     },
     SET_MENU_ALL: (state, menuAll) => {
       state.menuAll = menuAll
+      setStore({ name: 'menuAll', content: state.menuAll })
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
     },
     SET_PERMISSIONS: (state, permissions) => {
+      console.log(permissions)
       const list = {}
       for (let i = 0; i < permissions.length; i++) {
         list[permissions[i].authority] = true
