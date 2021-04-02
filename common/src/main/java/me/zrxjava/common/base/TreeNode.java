@@ -17,15 +17,15 @@ import java.util.List;
 public class TreeNode {
 
 	@ApiModelProperty(value = "当前节点id")
-	protected int id;
+	protected Integer id;
 
 	@ApiModelProperty(value = "父节点id")
-	protected int pid;
+	protected Integer pid;
 
 	@ApiModelProperty(value = "子节点列表")
-	protected List<TreeNode> children = new ArrayList<TreeNode>();
+	protected List<TreeNode> children = new ArrayList<>();
 
-	public void add(TreeNode node) {
+	public <T extends TreeNode> void add(T node) {
 		children.add(node);
 	}
 

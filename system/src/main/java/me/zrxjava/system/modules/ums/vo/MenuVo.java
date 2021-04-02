@@ -2,6 +2,8 @@ package me.zrxjava.system.modules.ums.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import me.zrxjava.common.base.TreeNode;
 
 import java.io.Serializable;
 
@@ -9,8 +11,9 @@ import java.io.Serializable;
  * @author void
  * @create 2020-12-03
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class MenuVo implements Serializable {
+public class MenuVo extends TreeNode implements Serializable {
 
     @ApiModelProperty(value = "ID")
     private Integer menuId;
@@ -57,4 +60,9 @@ public class MenuVo implements Serializable {
     @ApiModelProperty(value = "位置")
     private String position;
 
+
+    @Override
+    public Integer getId() {
+        return this.getMenuId();
+    }
 }

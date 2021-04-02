@@ -1,7 +1,6 @@
 package ${packageName}.mapper;
 
 import java.util.List;
-import
 import me.zrxjava.common.base.CommonMapper;
 import ${packageName}.entity.${ClassName};
 

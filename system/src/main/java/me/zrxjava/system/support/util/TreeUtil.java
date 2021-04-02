@@ -29,7 +29,7 @@ public class TreeUtil {
 			}
 
 			for (T it : treeNodes) {
-				if (it.getPid() == treeNode.getId()) {
+				if (it.getPid().equals(treeNode.getId())) {
 					if (treeNode.getChildren() == null) {
 						treeNode.setChildren(new ArrayList<>());
 					}
@@ -62,7 +62,7 @@ public class TreeUtil {
 	 */
 	public <T extends TreeNode> T findChildren(T treeNode, List<T> treeNodes) {
 		for (T it : treeNodes) {
-			if (treeNode.getId() == it.getPid()) {
+			if (treeNode.getId().equals(it.getPid())) {
 				if (treeNode.getChildren() == null) {
 					treeNode.setChildren(new ArrayList<>());
 				}

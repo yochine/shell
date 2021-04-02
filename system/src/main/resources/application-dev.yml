@@ -24,6 +24,10 @@ spring:
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
+  global-config:
+    db-config:
+      logic-delete-field: deleteFlag
+      logic-delete-value: 1
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 

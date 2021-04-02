@@ -30,7 +30,7 @@ public class QueryHelper {
     public static ThreadLocal<QueryWrapper> queryWrapperThreadLocal = new ThreadLocal<>();
     protected static Map<String, List<Field>> FIELD_CACHE = new ConcurrentHashMap<>(16);
     protected static Map<String, String> COLUMN_CACHE = new ConcurrentHashMap<>(16);
-    public static final String[] pageParams= {"size","current","isAsc"};
+    public static final String[] pageParams= {"size","current","isAsc","serialVersionUID"};
 
     /**
      * Mybatis Plus  查询构建
@@ -95,6 +95,7 @@ public class QueryHelper {
             List<Object> between = null;
             switch (query.type()) {
                 case EQ:
+                    queryWrapper.eq(attributeName, value);
                     break;
                 case GE:
                     queryWrapper.ge(attributeName, value);
@@ -133,7 +134,7 @@ public class QueryHelper {
                     break;
             }
         } else {
-            queryWrapper.eq(field.getName(), value);
+            queryWrapper.eq(attributeName, value);
         }
     }
 

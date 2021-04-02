@@ -3,19 +3,17 @@ package ${packageName}.vo;
 #foreach ($import in $importList)
 import ${import};
 #end
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import me.zrxjava.common.base.TreeNode;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import me.zrxjava.common.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
+import java.io.Serializable;
 #if($table.crud)
     #set($Entity="BaseEntity")
 #elseif($table.tree)
     #set($Entity="TreeNode")
+import me.zrxjava.common.base.TreeNode;
 #end
 
 /**

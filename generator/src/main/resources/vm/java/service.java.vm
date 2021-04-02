@@ -1,12 +1,12 @@
 package ${packageName}.service;
 
-import java.util.List;
 import ${packageName}.dto.${ClassName}Dto;
 import ${packageName}.vo.${ClassName}Vo;
 import ${packageName}.entity.${ClassName};
 import ${packageName}.criteria.${ClassName}Criteria;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
+import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.Set;
 /**
  * ${functionName}Service接口
  * 

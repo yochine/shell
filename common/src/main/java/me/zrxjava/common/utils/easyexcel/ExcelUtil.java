@@ -32,7 +32,7 @@ public class ExcelUtil {
      * @return Excel 数据 list
      */
     public static <T> List<T> readExcel(MultipartFile excel, Class<T>  clazz) throws IOException {
-        return readExcel(excel, clazz, 1, 1);
+        return readExcel(excel, clazz, 0, 1);
     }
 
     /**
@@ -66,7 +66,7 @@ public class ExcelUtil {
      *
      * @param excel       文件
      * @param clazz    实体类映射
-     * @param sheetNo     sheet 的序号 从1开始
+     * @param sheetNo     sheet 的序号 从0开始
      * @param headLineNum 表头行数，默认为1
      * @return Excel 数据 list
      */

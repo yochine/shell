@@ -3,7 +3,7 @@ import request from '@/router/axios'
 
 export function fetchList(query) {
   return request({
-    url: '/${moduleName}/${businessName}/list',
+    url: '/system/menu/list',
     method: 'get',
     params: query
   })
@@ -11,30 +11,29 @@ export function fetchList(query) {
 
 export function addObj(obj) {
   return request({
-    url: '/${moduleName}/${businessName}',
+    url: '/system/menu',
     method: 'post',
     data: obj
   })
 }
 
-export function getObj(${pkColumn.javaField}) {
+export function getObj(menuId) {
   return request({
-    url: '/${moduleName}/${businessName}/' + ${pkColumn.javaField},
+    url: '/system/menu/' + menuId,
     method: 'get'
   })
 }
 
-export function delObj(ids) {
+export function delObj(menuId) {
   return request({
-    url: '/${moduleName}/${businessName}',
-    data: ids,
+    url: '/system/menu/' + menuId,
     method: 'delete'
   })
 }
 
 export function putObj(obj) {
   return request({
-    url: '/${moduleName}/${businessName}',
+    url: '/system/menu',
     method: 'put',
     data: obj
   })

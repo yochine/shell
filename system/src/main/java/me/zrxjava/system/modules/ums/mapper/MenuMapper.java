@@ -1,7 +1,7 @@
 package me.zrxjava.system.modules.ums.mapper;
 
+import me.zrxjava.common.base.CommonMapper;
 import me.zrxjava.system.modules.ums.entity.Menu;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  * @author void
  * @since 2020-09-17
  */
-public interface MenuMapper extends BaseMapper<Menu> {
+public interface MenuMapper extends CommonMapper<Menu> {
 
     /**
      * 根据角色id查找菜单

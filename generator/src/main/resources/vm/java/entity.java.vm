@@ -1,8 +1,6 @@
 package ${packageName}.entity;
 
-#foreach ($import in $importList)
-import ${import};
-#end
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -20,7 +18,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("${tableName}")
-@ApiModel(value=" ${tableName}对象", description="${tableComment}")
+@ApiModel(value="${tableName}对象", description="${tableComment}")
 public class ${ClassName} extends BaseEntity
 {
     private static final long serialVersionUID = 1L;

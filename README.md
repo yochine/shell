@@ -32,6 +32,7 @@
     * 反射拷贝对象使用hutool封装cglib的BeanCopier的CglibUtil，高性能拷贝工具类
     * 抛弃jwt集成sa-token
     * 引入wepush推送消息
+    * 缓存使用JetCache
 > 二期计划
 
     * 分布式版 shell-warm

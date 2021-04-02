@@ -1,13 +1,14 @@
 package me.zrxjava.system.modules.ums.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import me.zrxjava.common.base.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import me.zrxjava.common.base.BaseEntity;
 
 /**
  * <p>
@@ -70,5 +71,8 @@ public class Menu extends BaseEntity {
 
     @ApiModelProperty(value = "位置")
     private String position;
+
+    @TableField(value = "delete_flag")
+    private Integer deleteFlag;
 
 }

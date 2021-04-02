@@ -35,10 +35,10 @@ import java.util.zip.ZipOutputStream;
 public class VelocityUtils
 {
     /** 项目空间路径 */
-    private static final String PROJECT_PATH = "main/java";
+    private static final String PROJECT_PATH = "src/main/java";
 
     /** mybatis空间路径 */
-    private static final String MYBATIS_PATH = "main/resources/mapper";
+    private static final String MYBATIS_PATH = "src/main/resources/mapper";
 
     /** 默认上级菜单，系统工具 */
     private static final String DEFAULT_PARENT_MENU_ID = "3";
@@ -80,7 +80,6 @@ public class VelocityUtils
         for (String template : templates) {
             // 渲染模板
             try (StringWriter sw = new StringWriter()){
-
                 Template tpl = Velocity.getTemplate(template, "utf-8");
                 tpl.merge(context, sw);
                 String path = getGenPath(table, template);
@@ -232,6 +231,7 @@ public class VelocityUtils
         templates.add("vm/xml/mapper.xml.vm");
         templates.add("vm/sql/sql.vm");
         templates.add("vm/js/api.js.vm");
+        templates.add("vm/js/crud.js.vm");
         if (GenConstants.TPL_CRUD.equals(tplCategory))
         {
             templates.add("vm/avue/index.vue.vm");
@@ -246,6 +246,7 @@ public class VelocityUtils
             templates.remove("vm/java/controller.java.vm");
             templates.remove("vm/sql/sql.vm");
             templates.remove("vm/js/api.js.vm");
+            templates.remove("vm/js/crud.js.vm");
 
         }
         return templates;
@@ -313,7 +314,7 @@ public class VelocityUtils
         }
         else if (template.contains("sql.vm"))
         {
-            fileName = businessName + "Menu.sql";
+            fileName = businessName + ".sql";
         }
         else if (template.contains("api.js.vm"))
         {
@@ -326,6 +327,10 @@ public class VelocityUtils
         else if (template.contains("index-tree.vue.vm"))
         {
             fileName = String.format("%s/views/%s/%s/index.vue", vuePath, moduleName, businessName);
+        }
+        else if (template.contains("crud.js.vm"))
+        {
+            fileName = String.format("%s/const/crud/%s/%s.js", vuePath, moduleName, businessName);
         }
         return fileName;
     }

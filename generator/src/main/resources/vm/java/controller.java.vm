@@ -54,7 +54,7 @@ public class ${ClassName}Controller
     /**
      * 查询${functionName}列表
      */
-    @PreAuthorize("@ps.hasPermi('${permissionPrefix}:list')")
+    @PreAuthorize("@ps.check('${permissionPrefix}:list')")
     @GetMapping("/list")
     @ApiOperation("${functionName}列表")
 #if($table.crud)
@@ -68,21 +68,10 @@ public class ${ClassName}Controller
 #end
 
     /**
-     * 导出${functionName}列表
-     */
-    @PreAuthorize("@ps.hasPermi('${permissionPrefix}:export')")
-    @Log(title = "${functionName}", businessType = BusinessType.EXPORT)
-    @GetMapping("/export")
-    @ResponseExcel(name = "${className}")
-    public ResponseResult<List<${ClassName}Vo>> list(${ClassName}Criteria criteria){
-        return ResponseResult.success(${className}Service.selectList(criteria));
-    }
-
-    /**
      * 获取${functionName}详细信息
      */
     @ApiOperation("${functionName}详情")
-    @PreAuthorize("@ps.hasPermi('${permissionPrefix}:detail')")
+    @PreAuthorize("@ps.check('${permissionPrefix}:detail')")
     @GetMapping(value = "/{${pkColumn.javaField}}")
     public ResponseResult<${ClassName}Vo> detail(@PathVariable("${pkColumn.javaField}") @NotNull ${pkColumn.javaType} ${pkColumn.javaField}){
         return ResponseResult.success(${className}Service.detail(${pkColumn.javaField}));
@@ -92,7 +81,7 @@ public class ${ClassName}Controller
      * 新增${functionName}
      */
     @ApiOperation("${functionName}新增")
-    @PreAuthorize("@ps.hasPermi('${permissionPrefix}:add')")
+    @PreAuthorize("@ps.check('${permissionPrefix}:add')")
     @Log(title = "${functionName}", businessType = BusinessType.INSERT)
     @PostMapping
     public ResponseResult<Boolean> add(@RequestBody @Validated(Insert.class) ${ClassName}Dto dto){
@@ -103,7 +92,7 @@ public class ${ClassName}Controller
      * 修改${functionName}
      */
     @ApiOperation("${functionName}修改")
-    @PreAuthorize("@ps.hasPermi('${permissionPrefix}:edit')")
+    @PreAuthorize("@ps.check('${permissionPrefix}:edit')")
     @Log(title = "${functionName}", businessType = BusinessType.UPDATE)
     @PutMapping
     public ResponseResult<Boolean> edit(@RequestBody @Validated(Update.class) ${ClassName}Dto dto){
@@ -114,10 +103,10 @@ public class ${ClassName}Controller
      * 删除${functionName}
      */
     @ApiOperation("${functionName}删除")
-    @PreAuthorize("@ps.hasPermi('${permissionPrefix}:delete')")
+    @PreAuthorize("@ps.check('${permissionPrefix}:delete')")
     @Log(title = "${functionName}", businessType = BusinessType.DELETE)
 	@DeleteMapping
-    public ResponseResult<Boolean> delete(@NotEmpty(message = "缺少参数")  Set<${pkColumn.javaType}> ids){
-        return ResponseResult.setBody(tableService.delete(ids));
+    public ResponseResult<Boolean> delete(@RequestBody @NotEmpty(message = "缺少参数")  Set<${pkColumn.javaType}> ids){
+        return ResponseResult.setBody(${className}Service.delete(ids));
     }
 }

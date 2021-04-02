@@ -22,12 +22,12 @@
 </template>
 
 <script>
-    import {fetchList, getObj, addObj, putObj, delObj} from '@/api/${moduleName}/${businessName}'
-    import {tableOption} from '@/const/crud/${moduleName}/${businessName}'
+    import {fetchList, getObj, addObj, putObj, delObj} from '@/api/menu'
+    import {tableOption} from '@/const/crud/menu'
     import {mapGetters} from 'vuex'
 
     export default {
-        name: '${businessName}Component',
+        name: 'menu',
         data() {
             return {
                 searchForm: {},
@@ -45,9 +45,9 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.vaildData(this.permissions['${moduleName}:${businessName}:add'], false),
-                    delBtn: this.vaildData(this.permissions.['${moduleName}:${businessName}:delete'], false),
-                    editBtn: this.vaildData(this.permissions.['${moduleName}:${businessName}:edit'], false)
+                    addBtn: this.vaildData(this.permissions.system:menu:add, false),
+                    delBtn: this.vaildData(this.permissions.system:menu:delete, false),
+                    editBtn: this.vaildData(this.permissions.system:menu:edit, false)
                 };
             }
         },
@@ -66,12 +66,12 @@
                 })
             },
             rowDel: function (row, index) {
-                this.$confirm('是否确认删除ID为' + row.$pkColumn.javaField + '吗？', '提示', {
+                this.$confirm('是否确认删除ID为' + row.$pk.lowerAttrName + '吗？', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(function () {
-                    return delObj(row.$pkColumn.javaField)
+                    return delObj(row.$pk.lowerAttrName)
                 }).then(data => {
                     this.$message.success('删除成功')
                     this.getList(this.page)

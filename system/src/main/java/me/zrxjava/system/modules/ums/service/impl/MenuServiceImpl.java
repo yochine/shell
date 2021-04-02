@@ -2,6 +2,9 @@ package me.zrxjava.system.modules.ums.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
+import me.zrxjava.common.utils.QueryHelper;
+import me.zrxjava.system.modules.ums.criteria.MenuCriteria;
+import me.zrxjava.system.modules.ums.dto.MenuDto;
 import me.zrxjava.system.modules.ums.entity.Menu;
 import me.zrxjava.system.modules.ums.enums.MenuTypeEnum;
 import me.zrxjava.system.modules.ums.mapper.MenuMapper;
@@ -14,6 +17,7 @@ import me.zrxjava.system.support.constants.SystemConstants;
 import me.zrxjava.system.support.util.TreeUtil;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
@@ -22,21 +26,19 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
- * <p>
- * 系统菜单 服务实现类
- * </p>
- *
- * @author void
- * @since 2020-09-17
+ * 系统菜单Service业务层处理
+ * 
+ * @author zrxjava
+ * @date 2021-02-24
  */
 @Service
 @RequiredArgsConstructor
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IMenuService {
 
-    private final MenuMapper menuMapper;
-
     private final MenuTransfer menuTransfer;
 
+    private final MenuMapper menuMapper;
+    
     @Override
     @Cacheable(value = CacheConstants.MENU_INFO, key = "#roleId", unless = "#result.isEmpty()")
     public List<MenuVo> getByRoleId(Long roleId) {
@@ -66,5 +68,66 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
             return !MenuTypeEnum.BUTTON.getType().equals(vo.getType());
         };
     }
+    
+
+    /**
+     * 查询系统菜单
+     * 
+     * @param menuId 系统菜单ID
+     * @return 系统菜单
+     */
+    @Override
+    public MenuVo detail(Long menuId) {
+        return menuTransfer.toVo(getById(menuId));
+    }
+
+    /**
+     * 查询系统菜单列表
+     * 
+     * @param criteria
+     * @return 系统菜单
+     */
+    @Override
+    public List<MenuVo> selectList(MenuCriteria criteria){
+        List<MenuVo> menuVos = menuTransfer.toVos(this.list(QueryHelper.getQueryWrapper(criteria,Menu.class)));
+        return TreeUtil.buildByRecursive(menuVos,SystemConstants.MENU_TREE_ROOT_ID);
+    }
+
+    /**
+     * 新增系统菜单
+     * 
+     * @param dto
+     * @return 结果
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean add(MenuDto dto) {
+        return save(menuTransfer.toEntity(dto));
+    }
+
+    /**
+     * 修改系统菜单
+     * 
+     * @param dto
+     * @return 结果
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean edit(MenuDto dto) {
+        return updateById(menuTransfer.toEntity(dto));
+    }
+
+    /**
+     * 批量删除系统菜单
+     * 
+     * @param ids 需要删除的系统菜单ID
+     * @return 结果
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean delete(Set<Long> ids) {
+        return removeByIds(ids);
+    }
+
 
 }
