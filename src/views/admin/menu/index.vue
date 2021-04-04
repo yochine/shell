@@ -2,7 +2,7 @@
 <template>
     <div class="execution">
         <basic-container>
-            <avue-crud ref="crud"
+            <avue-crud ref="menu"
                        :data="tableData"
                        :permission="permissionList"
                        :table-loading="tableLoading"
@@ -14,7 +14,14 @@
                        @row-update="handleUpdate"
                        @row-save="handleSave"
                        @row-del="rowDel">
+              <template slot-scope="scope" slot="position">
+                <el-tag>{{scope.row.position}}</el-tag>
+              </template>
+               <template slot-scope="scope" slot="path">
+                <el-tag>{{scope.row.path}}</el-tag>
+              </template>
             </avue-crud>
+           
         </basic-container>
     </div>
 </template>
@@ -36,16 +43,59 @@
             }
         },
         watch:{
+            'menu.iFrame':{
+                 handler(val){
+                    var linkPath =this.findObject(this.tableOption.column,'linkPath')
+                    if(val === 0){
+                        linkPath.display=false
+                    }else{
+                        linkPath.display=true
+                    }
+                 }
+            },
             'menu.type':{
                 handler(val){
                   var permission =this.findObject(this.tableOption.column,'permission')
-                  var cache=this.findObject(this.tableOption.column,'cache')
+                  var icon =this.findObject(this.tableOption.column,'icon')
+                  var position =this.findObject(this.tableOption.column,'position')
+                  var componentName =this.findObject(this.tableOption.column,'componentName')
+                  var path =this.findObject(this.tableOption.column,'path')
+                  var sort =this.findObject(this.tableOption.column,'sort')
+                 
+                  var iFrame =this.findObject(this.tableOption.column,'iFrame')
+                  var cache =this.findObject(this.tableOption.column,'cache')
                   var hidden =this.findObject(this.tableOption.column,'hidden')
-                  if(val == 0 ){
+                 if(val === 2 ){
+                    permission.display=true
+                    icon.display=false
+                    position.display=false
+                    componentName.display=false
+                    path.display=false
+                    sort.display=false
+                    iFrame.display=false
+                    cache.display=false
+                    hidden.display=false
+                  }else if(val === 0 ){
+                    permission.display=false
+                    cache.display=false
+                    icon.display=true
+                    position.display=true
+                    componentName.display=true
+                    path.display=true
+                    sort.display=true
+                    iFrame.display=true
+                    hidden.display=true
+                  }else if(val === 1){
                     permission.display=true
                     cache.display=true
+                    icon.display=true
+                    position.display=true
+                    componentName.display=true
+                    path.display=true
+                    sort.display=true
+                    iFrame.display=true
                     hidden.display=true
-                  }      
+                  }    
                 },
                 immediate: true
             }
@@ -94,8 +144,10 @@
                     loading();
                 });
             },
-            handleSave: function (row, done,loading) {
-                addObj(row).then(data => {
+            handleSave: function (form, done,loading) {
+                console.log(form)
+                console.log(this.menu)
+                addObj(form).then(data => {
                     this.$message.success('添加成功')
                     done()
                     this.getList(this.searchForm)

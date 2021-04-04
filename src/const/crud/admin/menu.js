@@ -14,10 +14,20 @@ export const tableOption = {
       editDisplay:false,
     },
     {
-      type: "select",
+      type: "tree",
       label: "上级菜单",
       prop: "pid",
-      hide:true
+      hide:true,
+      dicUrl:"/ums/menu/list",
+      props: {
+        label: 'label',
+        value: 'menuId'
+      },
+      rules: [{
+        required: true,
+        message: "请选择上级菜单",
+        trigger: "blur"
+      }],
     },
     {
       type: "input",
@@ -34,6 +44,7 @@ export const tableOption = {
       type: "icon",
       label: "图标",
       prop: "icon",
+      display:true,
       iconList: iconList
     },
     {
@@ -42,6 +53,7 @@ export const tableOption = {
       prop: "type",
       search:true,
       button:true,
+      value:0,
       dicData: [
         {
           label: '目录',
@@ -68,6 +80,9 @@ export const tableOption = {
       prop: "position",
       search:true,
       button:true,
+      slot:true,
+      display:true,
+      value:'left',
       dicData: [
         {
           label: '左侧',
@@ -87,31 +102,30 @@ export const tableOption = {
 	  {
       type: "input",
       label: "组件名称",
+      display:true,
       prop: "componentName"
     },
 	  {
       type: "input",
       label: "组件路径",
       prop: "path",
+      slot:true,
+      display:true,
       span: 12
     },
 	  {
       type: "number",
       label: "排序",
       prop: "sort",
-      hide:true
-    },
-	
-	  {
-      type: "input",
-      label: "链接地址",
-      prop: "linkPath",
+      display:true,
       hide:true
     },
 	  {
-      type: "radio",
+      type: "switch",
       label: "外链",
       prop: "iFrame",
+      value:0,
+      display:true,
       dicData: [
         {
           label: '否',
@@ -125,10 +139,18 @@ export const tableOption = {
       hide:true
     },
 	  {
-      type: "radio",
+      type: "input",
+      label: "链接地址",
+      prop: "linkPath",
+      display:true,
+      hide:true
+    },
+	  {
+      type: "switch",
       label: "缓存",
       prop: "cache",
       hide:true,
+      display:true,
       dicData: [
         {
           label: '否',
@@ -142,9 +164,10 @@ export const tableOption = {
       span: 12
     },
 	  {
-      type: "radio",
+      type: "switch",
       label: "隐藏",
       prop: "hidden",
+      display:true,
       dicData: [
         {
           label: '否',
@@ -160,7 +183,8 @@ export const tableOption = {
 	  {
       type: "input",
       label: "权限",
-      prop: "permission"
+      prop: "permission",
+      display:true,
     }
   ]
 }

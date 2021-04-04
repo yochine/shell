@@ -389,11 +389,19 @@ export const infoOption = {
       }],
     },{
       label: '上级菜单',
-      prop: 'parentMenu',
-      type: 'select',
-      // dicUrl: "/admin/hadoop/not_auth/subType",
-      // dicMethod: "post",
-      // props: { label: "value", value: "key" },
+      prop: 'parentMenuId',
+      type: 'tree',
+      dicUrl:"/ums/menu/list",
+      display:true,
+      props: {
+        label: 'label',
+        value: 'menuId'
+      },
+      rules: [{
+        required: true,
+        message: "请选择上级菜单",
+        trigger: "blur"
+      }],
       filterable: true   //开启搜索功能
     }
   ]

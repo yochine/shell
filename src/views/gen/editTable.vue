@@ -48,12 +48,11 @@ export default {
     watch:{
       'table.tplCategory':{
         handler(val){
-          var parentMenu = this.findObject(this.infoOption.column,'parentMenu')
-          if(val!=='relation'){
-           parentMenu.display=true
+          var parentMenuId = this.findObject(this.infoOption.column,'parentMenuId')
+          if(val ==='relation'){
+           parentMenuId.display=false
           }else{
-           parentMenu.display=false
-          //  this.findObject(this.infoOption.column,'parentMenu').display = false
+           parentMenuId.display=true
           }
         },
         immediate: true

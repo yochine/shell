@@ -23,7 +23,7 @@
             @click="handleDown(scope.row,scope.index)">批量下载
           </el-button>
           <el-button
-            icon="el-icon-add"
+            icon="el-icon-import"
             type="primary"
             size="small"
             @click="openDbTable()">导入
