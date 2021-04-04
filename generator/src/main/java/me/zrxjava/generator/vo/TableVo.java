@@ -48,6 +48,9 @@ public class TableVo {
     @ApiModelProperty(value = "生成路径（不填默认项目路径）")
     private String genPath;
 
+    @ApiModelProperty(value = "上级菜单id")
+    private Long parentMenuId;
+
     @ApiModelProperty(value = "其它生成选项")
     private String options;
 

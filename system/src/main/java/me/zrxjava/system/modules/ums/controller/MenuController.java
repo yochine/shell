@@ -58,7 +58,7 @@ public class MenuController
     @GetMapping("/tree")
     @ApiOperation("查询用户菜单")
     @PreAuthorize("@ps.check('ums:menu:tree')")
-    public ResponseResult<List<MenuTree>> tree(String position, Integer parentId){
+    public ResponseResult<List<MenuTree>> tree(String position, Long parentId){
         Set<MenuVo> menus = Sets.newHashSet();
         SecurityUtil.getCurrentUserRoleIds().forEach(roleId -> menus.addAll(menuService.getByRoleId(roleId)));
         return ResponseResult.success(menuService.buildMenuTree(menus, position, parentId));

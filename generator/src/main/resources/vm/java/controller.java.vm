@@ -31,11 +31,6 @@ import javax.validation.constraints.NotNull;
 import me.zrxjava.common.annotation.ResponseExcel;
 
 
-#if($table.crud)
-
-#elseif($table.tree)
-#end
-
 /**
  * ${functionName}控制器
  * 

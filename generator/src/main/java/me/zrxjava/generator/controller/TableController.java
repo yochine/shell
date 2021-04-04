@@ -90,7 +90,6 @@ public class TableController {
     @PreAuthorize("@ps.check('tool:gen:update')")
     @Log(title = "系统工具",businessType = BusinessType.UPDATE)
     public ResponseResult<Boolean> update(@Validated @RequestBody UpdateTableDto dto){
-        //todo 参数增加valid校验
         return ResponseResult.setBody(tableService.updateTableAndColumn(dto));
     }
 

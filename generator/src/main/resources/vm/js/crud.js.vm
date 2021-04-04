@@ -3,6 +3,7 @@ export const tableOption = {
   indexLabel: "序号",
   dialogDrag: true,
   align: "center",
+  stripe: true,
   searchMenuSpan: 6,
   viewBtn:true,
   column: [

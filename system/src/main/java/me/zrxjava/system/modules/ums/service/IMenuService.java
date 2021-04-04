@@ -33,7 +33,7 @@ public interface IMenuService extends IService<Menu>
      * @param parentId
      * @return
      */
-    List<MenuTree> buildMenuTree(Set<MenuVo> menus, String position, Integer parentId);
+    List<MenuTree> buildMenuTree(Set<MenuVo> menus, String position, Long parentId);
 
     /**
      * 查询系统菜单

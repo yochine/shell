@@ -1,12 +1,15 @@
 package ${packageName}.service;
 
+import ${packageName}.entity.${ClassName};
+import com.baomidou.mybatisplus.extension.service.IService;
+#if($tplCategory != 'relation')
 import ${packageName}.dto.${ClassName}Dto;
 import ${packageName}.vo.${ClassName}Vo;
-import ${packageName}.entity.${ClassName};
 import ${packageName}.criteria.${ClassName}Criteria;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.Set;
+#end
+
 /**
  * ${functionName}Service接口
  * 
@@ -15,6 +18,7 @@ import java.util.Set;
  */
 public interface I${ClassName}Service extends IService<${ClassName}>
 {
+#if($tplCategory != 'relation')
     /**
      * 查询${functionName}
      * 
@@ -59,6 +63,6 @@ public interface I${ClassName}Service extends IService<${ClassName}>
      * @return 结果
      */
     public Boolean delete(Set<${pkColumn.javaType}> ids);
-
+#end
 
 }

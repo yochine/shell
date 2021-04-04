@@ -28,10 +28,10 @@ public class ${ClassName}Criteria extends BasePage implements Serializable{
     #foreach ($column in $columns)
         #if($column.isQuery == '1')
             #if($column.javaType == 'Date')
-        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
             #end
-        @ApiModelProperty(value = "$column.columnComment")
-        private $column.javaType $column.javaField;
+    @ApiModelProperty(value = "$column.columnComment")
+    private $column.javaType $column.javaField;
         #end
     #end
 

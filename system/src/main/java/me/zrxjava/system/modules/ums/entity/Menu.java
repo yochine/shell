@@ -28,10 +28,10 @@ public class Menu extends BaseEntity {
 
     @ApiModelProperty(value = "menuId")
     @TableId(value = "menu_id", type = IdType.ASSIGN_ID)
-    private Integer menuId;
+    private Long menuId;
 
     @ApiModelProperty(value = "上级菜单ID")
-    private Integer pid;
+    private Long pid;
 
     @ApiModelProperty(value = "子菜单数目")
     private Integer subCount;

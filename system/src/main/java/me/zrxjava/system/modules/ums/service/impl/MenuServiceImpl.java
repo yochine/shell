@@ -47,7 +47,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 
 
     @Override
-    public List<MenuTree> buildMenuTree(Set<MenuVo> menus, String position, Integer parentId) {
+    public List<MenuTree> buildMenuTree(Set<MenuVo> menus, String position, Long parentId) {
         List<MenuTree> menuList = menus.stream().filter(menuPositionPredicate(position))
                 .map(MenuTree::new).sorted(Comparator.comparing(MenuTree::getSort)).collect(Collectors.toList());
         parentId = parentId == null ? SystemConstants.MENU_TREE_ROOT_ID : parentId;

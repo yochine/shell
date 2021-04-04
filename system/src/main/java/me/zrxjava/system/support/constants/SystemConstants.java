@@ -10,7 +10,7 @@ public interface SystemConstants {
     /**
      * 菜单树根节点
      */
-    Integer MENU_TREE_ROOT_ID = 0;
+    Long MENU_TREE_ROOT_ID = 0L;
 
     /**
      * 左侧菜单位置

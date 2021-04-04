@@ -16,10 +16,10 @@ import java.io.Serializable;
 public class MenuVo extends TreeNode implements Serializable {
 
     @ApiModelProperty(value = "ID")
-    private Integer menuId;
+    private Long menuId;
 
     @ApiModelProperty(value = "上级菜单ID")
-    private Integer pid;
+    private Long pid;
 
     @ApiModelProperty(value = "子菜单数目")
     private Integer subCount;
@@ -62,7 +62,7 @@ public class MenuVo extends TreeNode implements Serializable {
 
 
     @Override
-    public Integer getId() {
+    public Long getId() {
         return this.getMenuId();
     }
 }
