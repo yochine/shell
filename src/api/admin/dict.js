@@ -1,25 +1,9 @@
-/*
- *    Copyright (c) 2018-2025, intelligence All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the pig4cloud.com developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: intelligence
- */
 
 import request from '@/router/axios'
 
 export function fetchList(query) {
   return request({
-    url: '/admin/dict/page',
+    url: '/system/dict/list',
     method: 'get',
     params: query
   })
@@ -27,7 +11,7 @@ export function fetchList(query) {
 
 export function fetchItemList(query) {
   return request({
-    url: '/admin/dict/item/page',
+    url: '/system/dict/detail/list',
     method: 'get',
     params: query
   })
@@ -35,7 +19,7 @@ export function fetchItemList(query) {
 
 export function addItemObj(obj) {
   return request({
-    url: '/admin/dict/item',
+    url: '/system/dict/detail',
     method: 'post',
     data: obj
   })
@@ -43,21 +27,22 @@ export function addItemObj(obj) {
 
 export function getItemObj(id) {
   return request({
-    url: '/admin/dict/item/' + id,
+    url: '/system/dict/detail/' + id,
     method: 'get'
   })
 }
 
 export function delItemObj(id) {
   return request({
-    url: '/admin/dict/item/' + id,
+    url: '/system/dict/detail',
+    data: id,
     method: 'delete'
   })
 }
 
 export function putItemObj(obj) {
   return request({
-    url: '/admin/dict/item',
+    url: '/system/dict/detail',
     method: 'put',
     data: obj
   })
@@ -65,7 +50,7 @@ export function putItemObj(obj) {
 
 export function addObj(obj) {
   return request({
-    url: '/admin/dict/',
+    url: '/system/dict',
     method: 'post',
     data: obj
   })
@@ -73,21 +58,22 @@ export function addObj(obj) {
 
 export function getObj(id) {
   return request({
-    url: '/admin/dict/' + id,
+    url: '/system/dict/' + id,
     method: 'get'
   })
 }
 
-export function delObj(row) {
+export function delObj(ids) {
   return request({
-    url: '/admin/dict/' + row.id,
+    url: '/system/dict',
+    data: ids,
     method: 'delete'
   })
 }
 
 export function putObj(obj) {
   return request({
-    url: '/admin/dict/',
+    url: '/system/dict',
     method: 'put',
     data: obj
   })

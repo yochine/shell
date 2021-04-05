@@ -128,7 +128,6 @@
                 }).then(function () {
                     let ids = new Array()
                     ids.push(row.menuId)
-                    console.log(ids)
                     return delObj(ids)
                 }).then(data => {
                     this.$message.success('删除成功')
@@ -145,8 +144,6 @@
                 });
             },
             handleSave: function (form, done,loading) {
-                console.log(form)
-                console.log(this.menu)
                 addObj(form).then(data => {
                     this.$message.success('添加成功')
                     done()

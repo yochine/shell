@@ -13,6 +13,7 @@
         @row-update="handleUpdate"
         @row-save="handleSave"
         @search-change="searchChange"
+        @refresh-change="refreshChange"
         @size-change="sizeChange"
         @current-change="currentChange"
         @row-del="rowDel">
@@ -20,7 +21,6 @@
           slot-scope="scope"
           slot="menu">
           <el-button
-            v-if="permissions.sys_dict_add"
             type="text"
             size="small"
             icon="el-icon-menu"
@@ -65,7 +65,7 @@
           type: undefined,
           dictId: undefined
         },
-        dictType: undefined,
+        dictName: undefined,
         dictId: undefined,
         dialogFormVisible: false,
         tableData: [],
@@ -89,10 +89,10 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.vaildData(this.permissions.sys_dict_add, false),
-          delBtn: this.vaildData(this.permissions.sys_dict_del, false),
-          editBtn: this.vaildData(this.permissions.sys_dict_edit, false)
-        }
+          addBtn: this.vaildData(this.permissions['system:dict:add'], true),
+          delBtn: this.vaildData(this.permissions['system:dict:delete'], true),
+          editBtn: this.vaildData(this.permissions['system:dict:edit'], true)
+        };
       }
     },
     methods: {
@@ -108,13 +108,18 @@
           this.tableLoading = false
         })
       },
+      refreshChange(){
+        this.getList(this.page)
+      },
       rowDel: function (row) {
-        this.$confirm('是否确认删除数据类型为"' + row.type + '"的数据项?', '警告', {
+        this.$confirm('是否确认删除ID为"' + row.dictId + '"的数据项?', '警告', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(function () {
-          return delObj(row)
+          let ids = new Array()
+          ids.push(row.dictId)
+          return delObj(ids)
         }).then(() => {
           this.getList(this.page)
           this.$message.success('删除成功')
@@ -153,8 +158,8 @@
         this.itemPage.currentPage = 1
       },
       handleItem: function (row) {
-        this.dictId = row.id
-        this.dictType = row.type
+        this.dictId = row.dictId
+        this.dictName = row.name
         this.getDictItemList()
       },
       getDictItemList() {
@@ -168,7 +173,7 @@
         })
       },
       handleBeforeOpen(done) {
-        this.form.type = this.dictType
+        this.form.dictName = this.dictName
         this.form.dictId = this.dictId
         done()
       },
@@ -200,7 +205,9 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(function () {
-          return delItemObj(row.id)
+          let ids = new Array()
+          ids.push(row.dictDetailId)
+          return delItemObj(ids)
         }).then(() => {
           this.getDictItemList()
           this.$message.success('删除成功')
