@@ -118,9 +118,10 @@ public class TableServiceImpl extends ServiceImpl<TableMapper, Table> implements
             }
         });
         //删除的字段
-        List<TableColumn> delColumns = genColumns.stream().filter(column -> !dbNames.contains(column.getColumnName())).collect(Collectors.toList());
-        if (CollectionUtil.isNotEmpty(delColumns)) {
-            tableColumnService.getBaseMapper().deleteBatchIds(delColumns);
+        Set<Long> delIds = genColumns.stream().filter(column -> !dbNames.contains(column.getColumnName()))
+                .map(TableColumn::getColumnId).collect(Collectors.toSet());
+        if (CollectionUtil.isNotEmpty(delIds)) {
+            tableColumnService.removeByIds(delIds);
         }
         return Boolean.TRUE;
     }

@@ -1,6 +1,6 @@
 package ${packageName}.controller;
 
-import java.util.List;
+import java.util.Set;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

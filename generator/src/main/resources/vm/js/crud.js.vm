@@ -5,7 +5,6 @@ export const tableOption = {
   align: "center",
   stripe: true,
   searchMenuSpan: 6,
-  viewBtn:true,
   column: [
 #foreach ($column in $columns)
 	  {
@@ -22,7 +21,7 @@ export const tableOption = {
           editDisplay:false,
         #end
         #if($column.isList == '0')
-          overHidden:true,
+          hide:true,
         #end
         #if($column.isRequired == '1')
           rules: [{
