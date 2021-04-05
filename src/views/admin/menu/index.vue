@@ -104,9 +104,9 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.vaildData(this.permissions['system:menu:add'], true),
-                    delBtn: this.vaildData(this.permissions['system:menu:delete'], true),
-                    editBtn: this.vaildData(this.permissions['system:menu:edit'], true)
+                    addBtn: this.vaildData(this.permissions['system:menu:add'], this.permissions['Super_Admin']),
+                    delBtn: this.vaildData(this.permissions['system:menu:delete'], this.permissions['Super_Admin']),
+                    editBtn: this.vaildData(this.permissions['system:menu:edit'], this.permissions['Super_Admin'])
                 };
             }
         },

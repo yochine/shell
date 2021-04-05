@@ -87,7 +87,7 @@ const user = {
           commit('SET_REFRESH_TOKEN', data.refresh_token)
           commit('SET_EXPIRES_IN', data.expires_in)
           commit('SET_USER_INFO', data.user_info)
-          commit('SET_PERMISSIONS', data.user_info.authorities || [])
+          commit('SET_PERMISSIONS', data.authorities || [])
           commit('CLEAR_LOCK')
           resolve()
         }).catch(error => {
@@ -104,7 +104,7 @@ const user = {
           commit('SET_REFRESH_TOKEN', data.refresh_token)
           commit('SET_EXPIRES_IN', data.expires_in)
           commit('SET_USER_INFO', data.user_info)
-          commit('SET_PERMISSIONS', data.user_info.authorities || [])
+          commit('SET_PERMISSIONS', data.authorities || [])
           commit('CLEAR_LOCK')
           resolve()
         }).catch(error => {
@@ -263,7 +263,7 @@ const user = {
       console.log(permissions)
       const list = {}
       for (let i = 0; i < permissions.length; i++) {
-        list[permissions[i].authority] = true
+        list[permissions[i]] = true
       }
 
       state.permissions = list

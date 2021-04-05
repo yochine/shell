@@ -102,7 +102,7 @@
                    :visible.sync="generateJsonVisible"
                    size="50%"
                    destroy-on-close>
-            <monaco-editor v-model="widgetFormPreview"-
+            <monaco-editor v-model="widgetFormPreview"
                            height="300"
                            keyIndex="widgetFormPreview"
                            :read-only="true"></monaco-editor>

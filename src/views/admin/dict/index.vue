@@ -89,9 +89,9 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.vaildData(this.permissions['system:dict:add'], true),
-          delBtn: this.vaildData(this.permissions['system:dict:delete'], true),
-          editBtn: this.vaildData(this.permissions['system:dict:edit'], true)
+          addBtn: this.vaildData(this.permissions['system:dict:add'], this.permissions['Super_Admin']),
+          delBtn: this.vaildData(this.permissions['system:dict:delete'], this.permissions['Super_Admin']),
+          editBtn: this.vaildData(this.permissions['system:dict:edit'], this.permissions['Super_Admin'])
         };
       }
     },
