@@ -45,9 +45,9 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.vaildData(this.permissions['${moduleName}:${businessName}:add'], false),
-                    delBtn: this.vaildData(this.permissions['${moduleName}:${businessName}:delete'], false),
-                    editBtn: this.vaildData(this.permissions['${moduleName}:${businessName}:edit'], false)
+                    addBtn: this.vaildData(this.permissions['${moduleName}:${businessName}:add'], this.permissions['Super_Admin']),
+                    delBtn: this.vaildData(this.permissions['${moduleName}:${businessName}:delete'], this.permissions['Super_Admin']),
+                    editBtn: this.vaildData(this.permissions['${moduleName}:${businessName}:edit'], this.permissions['Super_Admin'])
                 };
             }
         },
