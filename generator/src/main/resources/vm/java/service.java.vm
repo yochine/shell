@@ -16,8 +16,7 @@ import java.util.Set;
  * @author ${author}
  * @date ${datetime}
  */
-public interface I${ClassName}Service extends IService<${ClassName}>
-{
+public interface I${ClassName}Service extends IService<${ClassName}> {
 #if($tplCategory != 'relation')
     /**
      * 查询${functionName}

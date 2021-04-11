@@ -1,7 +1,7 @@
 package me.zrxjava.system.modules.ums.service;
 
-import me.zrxjava.system.modules.ums.entity.RolesMenus;
 import com.baomidou.mybatisplus.extension.service.IService;
+import me.zrxjava.system.modules.ums.entity.RoleMenu;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author void
  * @since 2020-09-17
  */
-public interface IRolesMenusService extends IService<RolesMenus> {
+public interface IRoleMenuService extends IService<RoleMenu> {
 
 }

@@ -37,6 +37,14 @@ public class ${ClassName}Vo extends $Entity implements Serializable {
     @ApiModelProperty(value = "$column.columnComment")
     private $column.javaType $column.javaField;
     #end
+
+
+    #if($table.tree && $column.isPk == '1')
+    @Override
+    public Long getId() {
+        return this.get$column.javaField();
+    }
+    #end
 #end
 
 }

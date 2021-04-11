@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 角色部门关联 前端控制器
+ * 用户角色关联 前端控制器
  * </p>
  *
  * @author void
- * @since 2020-09-20
+ * @since 2020-09-17
  */
 @RestController
-@RequestMapping("/roles-depts")
-public class RolesDeptsController {
+@RequestMapping("/user-role")
+public class UserRoleController {
 
 }
 

@@ -1,15 +1,14 @@
 package me.zrxjava.system.modules.ums.mapper;
 
+import java.util.List;
+import me.zrxjava.common.base.CommonMapper;
 import me.zrxjava.system.modules.ums.entity.Dept;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
- * <p>
- * 部门 Mapper 接口
- * </p>
- *
- * @author void
- * @since 2020-09-20
+ * 部门Mapper接口
+ * 
+ * @author zrxjava
+ * @date 2021-04-11
  */
-public interface DeptMapper extends BaseMapper<Dept> {
+public interface DeptMapper extends CommonMapper<Dept> {
 }

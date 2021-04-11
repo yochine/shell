@@ -1,7 +1,7 @@
 package me.zrxjava.system.modules.ums.service;
 
-import me.zrxjava.system.modules.ums.entity.UsersRoles;
 import com.baomidou.mybatisplus.extension.service.IService;
+import me.zrxjava.system.modules.ums.entity.UserRole;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author void
  * @since 2020-09-17
  */
-public interface IUsersRolesService extends IService<UsersRoles> {
+public interface IUserRoleService extends IService<UserRole> {
 
 }

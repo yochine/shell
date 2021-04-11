@@ -3,6 +3,6 @@
 <mapper namespace="me.zrxjava.system.modules.ums.mapper.RoleMapper">
 
     <select id="getByUserId" resultType="me.zrxjava.system.modules.ums.entity.Role">
-        select a.* from sys_role a join sys_users_roles b on a.role_id = b.role_id where b.user_id = #{userId}
+        select a.* from sys_role a join sys_user_role b on a.role_id = b.role_id where b.user_id = #{userId}
     </select>
 </mapper>

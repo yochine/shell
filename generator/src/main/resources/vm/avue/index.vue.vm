@@ -71,7 +71,9 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(function () {
-                    return delObj(row.$pkColumn.javaField)
+                    let ids = []
+                    ids.push(row.$pkColumn.javaField)
+                    return delObj(ids)
                 }).then(data => {
                     this.$message.success('删除成功')
                     this.getList(this.page)

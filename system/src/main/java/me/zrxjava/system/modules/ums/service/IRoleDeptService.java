@@ -1,7 +1,7 @@
 package me.zrxjava.system.modules.ums.service;
 
-import me.zrxjava.system.modules.ums.entity.RolesDepts;
 import com.baomidou.mybatisplus.extension.service.IService;
+import me.zrxjava.system.modules.ums.entity.RoleDept;
 
 import java.util.Set;
 
@@ -13,12 +13,12 @@ import java.util.Set;
  * @author void
  * @since 2020-09-20
  */
-public interface IRolesDeptsService extends IService<RolesDepts> {
+public interface IRoleDeptService extends IService<RoleDept> {
 
     /**
      * 获取角色绑定自定义组织权限
      * @param roleId
      * @return
      */
-    Set<Long> getCustomizeDepts(Long roleId);
+    Set<Long> getCustomizeDept(Long roleId);
 }

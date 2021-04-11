@@ -27,7 +27,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 #end
 public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${ClassName}> implements I${ClassName}Service {
 #if($tplCategory != 'relation')
-    private final ${ClassName}Transfer ${className}transfer;
+    private final ${ClassName}Transfer ${className}Transfer;
 
     /**
      * 查询${functionName}
@@ -37,7 +37,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
      */
     @Override
     public ${ClassName}Vo detail(${pkColumn.javaType} ${pkColumn.javaField}) {
-        return ${className}transfer.toVo(getById(${pkColumn.javaField}));
+        return ${className}Transfer.toVo(getById(${pkColumn.javaField}));
     }
 
     /**
@@ -50,11 +50,11 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
     #if($table.crud)
     public Page<${ClassName}Vo> selectPage(${ClassName}Criteria criteria){
         Page<${ClassName}> page = new Page<>(criteria.getCurrent(), criteria.getSize());
-        return ${className}transfer.toPageVo(this.page(page, QueryHelper.getQueryWrapper(criteria,${ClassName}.class)));
+        return ${className}Transfer.toPageVo(this.page(page, QueryHelper.getQueryWrapper(criteria,${ClassName}.class)));
     }
     #elseif($table.tree)
     public List<${ClassName}Vo> selectList(${ClassName}Criteria criteria){
-        List<${ClassName}Vo> vos =  ${className}transfer.toVos(this.list(QueryHelper.getQueryWrapper(criteria,${ClassName}.class)));
+        List<${ClassName}Vo> vos =  ${className}Transfer.toVos(this.list(QueryHelper.getQueryWrapper(criteria,${ClassName}.class)));
         Integer parentId = parentId == null ? 0 : parentId;
         return TreeUtil.buildByRecursive(vos,parentId);
     }
@@ -69,7 +69,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean add(${ClassName}Dto dto) {
-        return save(${className}transfer.toEntity(dto));
+        return save(${className}Transfer.toEntity(dto));
     }
 
     /**
@@ -81,7 +81,7 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean edit(${ClassName}Dto dto) {
-        return updateById(${className}transfer.toEntity(dto));
+        return updateById(${className}Transfer.toEntity(dto));
     }
 
     /**

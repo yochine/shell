@@ -1,7 +1,7 @@
 package me.zrxjava.system.modules.ums.mapper;
 
-import me.zrxjava.system.modules.ums.entity.RolesDepts;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import me.zrxjava.system.modules.ums.entity.RoleDept;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author void
  * @since 2020-09-20
  */
-public interface RolesDeptsMapper extends BaseMapper<RolesDepts> {
+public interface RoleDeptMapper extends BaseMapper<RoleDept> {
 
 }

@@ -21,6 +21,6 @@ public interface MenuMapper extends CommonMapper<Menu> {
      * @param roleId
      * @return
      */
-    @Select("SELECT m.* FROM sys_menu m INNER JOIN sys_roles_menus rm on m.menu_id = rm.menu_id  WHERE m.hidden =0 and rm.role_id = #{roleId}")
+    @Select("SELECT m.* FROM sys_menu m INNER JOIN sys_role_menu rm on m.menu_id = rm.menu_id  WHERE m.hidden =0 and rm.role_id = #{roleId}")
     List<Menu> getByRoleId(Long roleId);
 }

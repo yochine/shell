@@ -9,7 +9,7 @@ import me.zrxjava.sercurity.bo.UserGrantedAuthority;
 import me.zrxjava.system.modules.ums.entity.Role;
 import me.zrxjava.system.modules.ums.service.IDeptService;
 import me.zrxjava.system.modules.ums.service.IMenuService;
-import me.zrxjava.system.modules.ums.service.IRolesDeptsService;
+import me.zrxjava.system.modules.ums.service.IRoleDeptService;
 import me.zrxjava.system.modules.ums.vo.MenuVo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class AuthorityService
 
     private final IDeptService deptService;
 
-    private final IRolesDeptsService rolesDeptsService;
+    private final IRoleDeptService roleDeptService;
 
     private final IMenuService menuService;
 
@@ -57,7 +57,7 @@ public class AuthorityService
                     deptIds.addAll(deptService.getChildDepts(deptId));
                     break;
                 case CUSTOMIZE:
-                    deptIds.addAll(rolesDeptsService.getCustomizeDepts(role.getRoleId()));
+                    deptIds.addAll(roleDeptService.getCustomizeDept(role.getRoleId()));
                     break;
                 case ALL:
                     deptIds.add(0L);

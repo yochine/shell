@@ -19,8 +19,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @TableName("${tableName}")
 @ApiModel(value="${tableName}对象", description="${tableComment}")
-public class ${ClassName} extends BaseEntity
-{
+public class ${ClassName} extends BaseEntity{
     private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)

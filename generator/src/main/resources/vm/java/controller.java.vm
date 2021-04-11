@@ -41,19 +41,18 @@ import me.zrxjava.common.annotation.ResponseExcel;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/${moduleName}/${businessName}")
-public class ${ClassName}Controller
-{
+public class ${ClassName}Controller {
 
     private final I${ClassName}Service ${className}Service;
 
     /**
      * 查询${functionName}列表
      */
-    @PreAuthorize("@ps.check('${permissionPrefix}:list')")
+    @PreAuthorize("@ps.check('${permissionPrefix}:pageList')")
     @GetMapping("/list")
     @ApiOperation("${functionName}列表")
 #if($table.crud)
-    public ResponseResult<Page<${ClassName}Vo>> list(${ClassName}Criteria criteria){
+    public ResponseResult<Page<${ClassName}Vo>> pageList(${ClassName}Criteria criteria){
         return ResponseResult.success(${className}Service.selectPage(criteria));
     }
 #elseif($table.tree)
