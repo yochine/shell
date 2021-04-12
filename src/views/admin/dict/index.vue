@@ -85,6 +85,22 @@
         tableDictItemOption: tableDictItemOption
       }
     },
+    mounted () {
+       let _this = this 
+      document.onkeyup = function (event) {
+        let key = window.event.keyCode;
+         console.log(event )
+        if (key === 73 && event.ctrlKey) { 
+          // 监听ctrl+I组合键      
+          window.event.preventDefault(); //关闭浏览器默认快捷键      
+          console.log('crtl+ I组合键')  
+          _this.dialogFormVisible = true  
+        } else if(key === 83 && event.ctrlKey) {       
+          window.event.preventDefault(); //关闭浏览器快捷键
+          console.log('保存');
+        }
+      }
+    },
     computed: {
       ...mapGetters(['permissions']),
       permissionList() {

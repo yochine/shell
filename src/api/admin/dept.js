@@ -1,9 +1,9 @@
 
 import request from '@/router/axios'
 
-export function fetchTree(query) {
+export function fetchList(query) {
   return request({
-    url: '/admin/dept/tree',
+    url: '/system/dept/list',
     method: 'get',
     params: query
   })
@@ -11,29 +11,30 @@ export function fetchTree(query) {
 
 export function addObj(obj) {
   return request({
-    url: '/admin/dept/',
+    url: '/system/dept',
     method: 'post',
     data: obj
   })
 }
 
-export function getObj(id) {
+export function getObj(deptId) {
   return request({
-    url: '/admin/dept/' + id,
+    url: '/system/dept/' + deptId,
     method: 'get'
   })
 }
 
-export function delObj(id) {
+export function delObj(ids) {
   return request({
-    url: '/admin/dept/' + id,
+    url: '/system/dept',
+    data: ids,
     method: 'delete'
   })
 }
 
 export function putObj(obj) {
   return request({
-    url: '/admin/dept/',
+    url: '/system/dept',
     method: 'put',
     data: obj
   })

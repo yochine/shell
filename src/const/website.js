@@ -1,6 +1,6 @@
 export default {
   title: 'shell 快速开发框架',
-  copyright: 'Copyright © 2020 shell.com. All rights reserved.',
+  copyright: 'Copyright © 2021 shell.com. All rights reserved.',
   isFirstPage: true,// 配置首页不可关闭
   key: 'shell', // 配置主键,目前用于存储
   whiteList: ['/login', '/404', '/401', '/lock'], // 配置无权限可以访问的页面

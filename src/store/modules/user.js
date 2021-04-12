@@ -260,7 +260,6 @@ const user = {
       state.roles = roles
     },
     SET_PERMISSIONS: (state, permissions) => {
-      console.log(permissions)
       const list = {}
       for (let i = 0; i < permissions.length; i++) {
         list[permissions[i]] = true

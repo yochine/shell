@@ -18,7 +18,7 @@
                 <el-tag>{{scope.row.position}}</el-tag>
               </template>
                <template slot-scope="scope" slot="path">
-                <el-tag>{{scope.row.path}}</el-tag>
+                <el-tag v-if="scope.row.path">{{scope.row.path}}</el-tag>
               </template>
             </avue-crud>
            

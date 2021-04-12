@@ -298,6 +298,12 @@ export const columnOption = {
           label:'复选框',
           value:'checkbox'
         },{
+          label:'数字',
+          value:'number'
+        },{
+          label:'树形',
+          value:'tree'
+        },{
           label:'日期控件',
           value:'datetime'
         },{
@@ -310,13 +316,12 @@ export const columnOption = {
       ]
     },{
       label: '字典类型',
-      prop: 'text1',
+      prop: 'dictType',
       type: 'select',
       minWidth: 155,
       cell: true,
-      // dicUrl: "/admin/hadoop/not_auth/subType",
-      // dicMethod: "post",
-      // props: { label: "value", value: "key" },
+      dicUrl: "/system/dict/list",
+      props: { res:"data.records",label: "description", value: "name" },
       filterable: true   
     }
   ]

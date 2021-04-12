@@ -81,9 +81,8 @@ export function handleDown(ids) {
     url: 'tool/gen/downLoad',
     method: 'get',
     params: {ids:ids},
-    responseType: 'arraybuffer'
+    responseType: 'blob'
   }).then((response) => { // 处理返回的文件流
-    console.log(5555)
     const blob = new Blob([response.data], {type: 'application/zip'})
     const filename = table.tableName + '.zip'
     const link = document.createElement('a')
@@ -145,7 +144,6 @@ export function postForm(formInfo, tableName, dsId) {
  * @param {String} mimeType MIME类型
  */
 export function resolveBlob(res, mimeType) {
-  console.log(22)
   const aLink = document.createElement('a')
   var blob = new Blob([res.data], { type: mimeType })
   // //从response的headers中获取filename, 后端response.setHeader("Content-disposition", "attachment; filename=xxxx.docx") 设置的文件名;
