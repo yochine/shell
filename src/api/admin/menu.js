@@ -16,7 +16,7 @@ export function getTopMenu() {
     method: 'get'
   })
 }
-export function fetchList(query) {
+export function fetchMenuTree(query) {
   return request({
     url: '/ums/menu/list',
     method: 'get',

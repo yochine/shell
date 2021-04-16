@@ -1,7 +1,7 @@
 
 import request from '@/router/axios'
 
-export function fetchList(query) {
+export function fetchDeptTree(query) {
   return request({
     url: '/system/dept/list',
     method: 'get',

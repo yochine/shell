@@ -12,7 +12,7 @@
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^1.0.2",
     "@riophae/vue-treeselect": "0.4.0",
-    "@smallwei/avue": "^2.8.4",
+    "@smallwei/avue": "^2.8.6",
     "@sscfaith/avue-form-design": "^1.4.2",
     "avue-plugin-ueditor": "^0.1.7",
     "axios": "^0.21.1",

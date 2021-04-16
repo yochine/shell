@@ -304,6 +304,9 @@ export const columnOption = {
           label:'树形',
           value:'tree'
         },{
+          label:'开关项',
+          value:'switch'
+        },{
           label:'日期控件',
           value:'datetime'
         },{

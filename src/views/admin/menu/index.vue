@@ -27,7 +27,7 @@
 </template>
 
 <script>
-    import {fetchList, getObj, addObj, putObj, delObj} from '@/api/admin/menu'
+    import {fetchMenuTree, getObj, addObj, putObj, delObj} from '@/api/admin/menu'
     import {tableOption} from '@/const/crud/admin/menu'
     import {mapGetters} from 'vuex'
 
@@ -113,7 +113,7 @@
         methods: {
             getList(params) {
                 this.tableLoading = true
-                fetchList(Object.assign({},params, this.searchForm )).then(response => {
+                fetchMenuTree(Object.assign({},params, this.searchForm )).then(response => {
                     this.tableData = response.data.data
                     this.tableLoading = false
                 }).catch(() => {

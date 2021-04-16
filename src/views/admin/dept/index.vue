@@ -19,7 +19,7 @@
 </template>
 
 <script>
-    import {fetchList, getObj, addObj, putObj, delObj} from '@/api/admin/dept'
+    import {fetchDeptTree, getObj, addObj, putObj, delObj} from '@/api/admin/dept'
     import {tableOption} from '@/const/crud/admin/dept'
     import {mapGetters} from 'vuex'
 
@@ -46,7 +46,7 @@
         methods: {
             getList(page, params) {
                 this.tableLoading = true
-                fetchList(Object.assign({}, params, this.searchForm )).then(response => {
+                fetchDeptTree(Object.assign({}, params, this.searchForm )).then(response => {
                     this.tableData = response.data.data
                     this.tableLoading = false
                 }).catch(() => {
