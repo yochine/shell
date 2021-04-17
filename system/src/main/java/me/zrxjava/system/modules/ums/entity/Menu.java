@@ -27,7 +27,7 @@ public class Menu extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "menuId")
-    @TableId(value = "menu_id", type = IdType.ASSIGN_ID)
+    @TableId(value = "menu_id", type = IdType.AUTO)
     private Long menuId;
 
     @ApiModelProperty(value = "上级菜单ID")

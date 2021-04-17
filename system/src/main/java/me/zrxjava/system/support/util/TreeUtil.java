@@ -6,6 +6,8 @@ import me.zrxjava.common.base.TreeNode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author void
@@ -70,6 +72,27 @@ public class TreeUtil {
 			}
 		}
 		return treeNode;
+	}
+
+
+	public <T extends TreeNode> List<T> listToTree(List<T> treeNodes) {
+		List<T> newList = new ArrayList<>();
+		Map<Long, T> map = treeNodes.parallelStream().collect(Collectors.toMap(T::getId, t -> t));
+		for (T node : treeNodes){
+			T parent = map.get(node.getPid());
+			if (parent != null){
+				if (parent.getChildren() == null){
+					parent.add(node);
+				}else {
+					List<TreeNode> children = parent.getChildren();
+					children.add(node);
+					parent.setChildren(children);
+				}
+			}else {
+				newList.add(node);
+			}
+		}
+		return newList;
 	}
 
 }

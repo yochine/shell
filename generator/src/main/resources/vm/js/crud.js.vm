@@ -7,6 +7,7 @@ export const tableOption = {
   searchMenuSpan: 6,
   column: [
 #foreach ($column in $columns)
+  #if($column.isInsert == '1' || $column.isEdit == '1' ||  $column.isQuery == '1')
     {
       type: "$column.htmlType",
       label: "$column.columnComment",
@@ -24,11 +25,11 @@ export const tableOption = {
       hide:true,
       #end
       #if($column.dictType)
-      dicUrl: "/system/dict/list",
+      dicUrl: "/system/dict/detail/list",
       dicQuery:{
-      name:'$column.dictType'
+        dictName:'$column.dictType'
       },
-      props: { res:"data.records",label: "description", value: "name" },
+      props: { res:"data.records",label: "label", value: "value" },
       filterable: true,
       #end
       #if($column.isRequired == '1')
@@ -39,6 +40,7 @@ export const tableOption = {
       }],
     #end
     }#if($foreach.hasNext),#end
+  #end
 #end
   ]
 }

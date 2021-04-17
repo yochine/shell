@@ -55,8 +55,10 @@ public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${C
     #elseif($table.tree)
     public List<${ClassName}Vo> selectList(${ClassName}Criteria criteria){
         List<${ClassName}Vo> vos =  ${className}Transfer.toVos(this.list(QueryHelper.getQueryWrapper(criteria,${ClassName}.class)));
-        Integer parentId = parentId == null ? 0 : parentId;
-        return TreeUtil.buildByRecursive(vos,parentId);
+        if (CollUtil.isEmpty(vos)){
+            return null;
+        }
+        return TreeUtil.listToTree(vos);
     }
     #end
 

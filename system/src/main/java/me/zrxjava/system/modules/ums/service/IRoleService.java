@@ -1,19 +1,62 @@
 package me.zrxjava.system.modules.ums.service;
 
-import me.zrxjava.system.modules.ums.entity.Role;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import me.zrxjava.system.modules.ums.criteria.RoleCriteria;
+import me.zrxjava.system.modules.ums.dto.RoleDto;
+import me.zrxjava.system.modules.ums.entity.Role;
+import me.zrxjava.system.modules.ums.vo.RoleVo;
 
 import java.util.List;
+import java.util.Set;
 
 /**
- * <p>
- * 角色表 服务类
- * </p>
- *
- * @author void
- * @since 2020-09-17
+ * 角色Service接口
+ * 
+ * @author zrxjava
+ * @date 2021-04-12
  */
 public interface IRoleService extends IService<Role> {
+    /**
+     * 查询角色
+     * 
+     * @param roleId 角色ID
+     * @return 角色
+     */
+    public RoleVo detail(Long roleId);
+
+
+    /**
+     * 查询角色列表
+     * 
+     * @param  criteria
+     * @return 角色集合
+     */
+     public Page<RoleVo> selectPage(RoleCriteria criteria);
+
+    /**
+     * 新增角色
+     * 
+     * @param dto
+     * @return 结果
+     */
+    public Boolean add(RoleDto dto);
+
+    /**
+     * 修改角色
+     * 
+     * @param dto
+     * @return 结果
+     */
+    public Boolean edit(RoleDto dto);
+
+    /**
+     * 批量删除角色
+     * 
+     * @param ids 需要删除的角色ID
+     * @return 结果
+     */
+    public Boolean delete(Set<Long> ids);
 
     /**
      * 查询用户角色

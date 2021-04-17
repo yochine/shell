@@ -1,9 +1,11 @@
 package me.zrxjava.system.modules.ums.criteria;
 
 
+import com.baomidou.mybatisplus.core.enums.SqlKeyword;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import me.zrxjava.common.annotation.Query;
 
 import java.io.Serializable;
 
@@ -19,9 +21,15 @@ public class MenuCriteria  implements Serializable{
 
     @ApiModelProperty(value = "菜单位置")
     private String position;
+
     @ApiModelProperty(value = "菜单类型0目录1菜单2按钮")
     private Long type;
+
     @ApiModelProperty(value = "菜单标题")
+    @Query(type = SqlKeyword.LIKE)
     private String label;
+
+    @Query(type = SqlKeyword.ORDER_BY)
+    private Integer sort;
 
 }

@@ -48,7 +48,7 @@ public class AuthorityService
         Set<Long> deptIds = Sets.newHashSet();
         // 获取对应的部门ID
         for (Role role : roles) {
-            DataScopeEnum dataScopeEnum = DataScopeEnum.find(role.getDataScope());
+            DataScopeEnum dataScopeEnum = DataScopeEnum.find(Integer.parseInt(role.getDataScope()));
             switch (Objects.requireNonNull(dataScopeEnum)) {
                 case THIS_LEVEL:
                     deptIds.add(deptId);

@@ -1,18 +1,19 @@
 package me.zrxjava.system.modules.ums.service.impl;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import me.zrxjava.common.utils.QueryHelper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import me.zrxjava.system.modules.ums.transfer.DictTransfer;
-import me.zrxjava.system.modules.ums.dto.DictDto;
-import me.zrxjava.system.modules.ums.vo.DictVo;
 import me.zrxjava.system.modules.ums.criteria.DictCriteria;
-import org.springframework.transaction.annotation.Transactional;
-import java.util.Set;
-import me.zrxjava.system.modules.ums.mapper.DictMapper;
+import me.zrxjava.system.modules.ums.dto.DictDto;
 import me.zrxjava.system.modules.ums.entity.Dict;
-import org.springframework.stereotype.Service;
+import me.zrxjava.system.modules.ums.mapper.DictMapper;
 import me.zrxjava.system.modules.ums.service.IDictService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import me.zrxjava.system.modules.ums.transfer.DictTransfer;
+import me.zrxjava.system.modules.ums.vo.DictVo;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
 /**
  * 数据字典Service业务层处理
  * 
@@ -22,7 +23,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 @Service
 @RequiredArgsConstructor
 public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements IDictService {
-    private final DictTransfer dicttransfer;
+    private final DictTransfer dictTransfer;
 
     /**
      * 查询数据字典
@@ -32,7 +33,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements ID
      */
     @Override
     public DictVo detail(Long dictId) {
-        return dicttransfer.toVo(getById(dictId));
+        return dictTransfer.toVo(getById(dictId));
     }
 
     /**
@@ -44,7 +45,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements ID
     @Override
     public Page<DictVo> selectPage(DictCriteria criteria){
         Page<Dict> page = new Page<>(criteria.getCurrent(), criteria.getSize());
-        return dicttransfer.toPageVo(this.page(page, QueryHelper.getQueryWrapper(criteria,Dict.class)));
+        return dictTransfer.toPageVo(this.page(page, QueryHelper.getQueryWrapper(criteria,Dict.class)));
     }
 
     /**
@@ -56,7 +57,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements ID
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean add(DictDto dto) {
-        return save(dicttransfer.toEntity(dto));
+        return save(dictTransfer.toEntity(dto));
     }
 
     /**
@@ -68,7 +69,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements ID
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean edit(DictDto dto) {
-        return updateById(dicttransfer.toEntity(dto));
+        return updateById(dictTransfer.toEntity(dto));
     }
 
     /**

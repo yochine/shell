@@ -23,7 +23,7 @@ public class Dept extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** ID */
-    @TableId(value = "dept_id", type = IdType.ASSIGN_ID)
+    @TableId(value = "dept_id", type = IdType.AUTO)
     private Long deptId;
 
     /** 上级部门 */

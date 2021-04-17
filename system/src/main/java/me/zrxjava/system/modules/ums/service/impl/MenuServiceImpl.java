@@ -1,5 +1,6 @@
 package me.zrxjava.system.modules.ums.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import me.zrxjava.common.utils.QueryHelper;
@@ -90,7 +91,10 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     @Override
     public List<MenuVo> selectList(MenuCriteria criteria){
         List<MenuVo> menuVos = menuTransfer.toVos(this.list(QueryHelper.getQueryWrapper(criteria,Menu.class)));
-        return TreeUtil.buildByRecursive(menuVos,SystemConstants.MENU_TREE_ROOT_ID);
+        if (CollUtil.isEmpty(menuVos)){
+            return null;
+        }
+        return TreeUtil.listToTree(menuVos);
     }
 
     /**

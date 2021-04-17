@@ -1,5 +1,6 @@
 package me.zrxjava.system.modules.ums.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -13,7 +14,6 @@ import me.zrxjava.system.modules.ums.mapper.DeptMapper;
 import me.zrxjava.system.modules.ums.service.IDeptService;
 import me.zrxjava.system.modules.ums.transfer.DeptTransfer;
 import me.zrxjava.system.modules.ums.vo.DeptVo;
-import me.zrxjava.system.support.constants.SystemConstants;
 import me.zrxjava.system.support.util.TreeUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,11 +52,15 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements ID
     @Override
     public List<DeptVo> selectList(String name){
         LambdaQueryWrapper<Dept> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.orderByAsc(Dept::getSort);
         if (StrUtil.isNotBlank(name)){
             queryWrapper.like(Dept::getName,name);
         }
         List<DeptVo> deptVos = deptTransfer.toVos(this.list(queryWrapper));
-        return TreeUtil.buildByRecursive(deptVos, SystemConstants.MENU_TREE_ROOT_ID);
+        if (CollUtil.isEmpty(deptVos)){
+            return null;
+        }
+        return TreeUtil.listToTree(deptVos);
     }
 
     /**

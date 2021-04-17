@@ -1,21 +1,21 @@
 
 <template>
-    <div class="execution">
-        <basic-container>
-            <avue-crud ref="crud"
-                       :data="tableData"
-                       :permission="permissionList"
-                       :table-loading="tableLoading"
-                       :option="tableOption"
-                       @on-load="getList"
-                       @search-change="searchChange"
-                       @refresh-change="refreshChange"
-                       @row-update="handleUpdate"
-                       @row-save="handleSave"
-                       @row-del="rowDel">
-            </avue-crud>
-        </basic-container>
-    </div>
+  <div class="execution">
+    <basic-container>
+      <avue-crud ref="crud"
+         :data="tableData"
+         :permission="permissionList"
+         :table-loading="tableLoading"
+         :option="tableOption"
+         @on-load="getList"
+         @search-change="searchChange"
+         @refresh-change="refreshChange"
+         @row-update="handleUpdate"
+         @row-save="handleSave"
+         @row-del="rowDel">
+      </avue-crud>
+    </basic-container>
+  </div>
 </template>
 
 <script>
@@ -24,75 +24,75 @@
     import {mapGetters} from 'vuex'
 
     export default {
-        name: '${businessName}Component',
-        data() {
-            return {
-                searchForm: {},
-                tableData: [],
-                tableLoading: false,
-                tableOption: tableOption
-            }
-        },
-        computed: {
-            ...mapGetters(['permissions']),
-            permissionList() {
-                return {
-                    addBtn: this.vaildData(this.permissions['${moduleName}:${businessName}:add'], this.permissions['Super_Admin']),
-                    delBtn: this.vaildData(this.permissions['${moduleName}:${businessName}:delete'], this.permissions['Super_Admin']),
-                    editBtn: this.vaildData(this.permissions['${moduleName}:${businessName}:edit'], this.permissions['Super_Admin'])
-                };
-            }
-        },
-        methods: {
-            getList(params) {
-                this.tableLoading = true
-                fetchList(Object.assign({}, params, this.searchForm )).then(response => {
-                    this.tableData = response.data.data
-                    this.tableLoading = false
-                }).catch(() => {
-                    this.tableLoading=false
-                })
-            },
-            rowDel: function (row, index) {
-                this.$confirm('是否确认删除ID为' + row.$pkColumn.javaField + '吗？', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(function () {
-                    let ids = []
-                    ids.push(row.$pkColumn.javaField)
-                    return delObj(ids)
-                }).then(data => {
-                    this.$message.success('删除成功')
-                    this.getList()
-                })
-            },
-            handleUpdate: function (row, index, done,loading) {
-                putObj(row).then(data => {
-                    this.$message.success('修改成功')
-                    done()
-                    this.getList()
-                }).catch(() => {
-                    loading();
-                });
-            },
-            handleSave: function (row, done,loading) {
-                addObj(row).then(data => {
-                    this.$message.success('添加成功')
-                    done()
-                    this.getList()
-                }).catch(() => {
-                    loading();
-                });
-            },
-            searchChange(form, done) {
-                this.searchForm = form
-                this.getList(form)
-                done()
-            },
-            refreshChange() {
-                this.getList()
-            }
+      name: '${businessName}Component',
+      data() {
+        return {
+          searchForm: {},
+          tableData: [],
+          tableLoading: false,
+          tableOption: tableOption
         }
+      },
+      computed: {
+        ...mapGetters(['permissions']),
+        permissionList() {
+          return {
+            addBtn: this.vaildData(this.permissions['${moduleName}:${businessName}:add'], this.permissions['Super_Admin']),
+            delBtn: this.vaildData(this.permissions['${moduleName}:${businessName}:delete'], this.permissions['Super_Admin']),
+            editBtn: this.vaildData(this.permissions['${moduleName}:${businessName}:edit'], this.permissions['Super_Admin'])
+          };
+        }
+      },
+      methods: {
+        getList(params) {
+          this.tableLoading = true
+          fetchList(Object.assign({}, params, this.searchForm )).then(response => {
+            this.tableData = response.data.data
+            this.tableLoading = false
+          }).catch(() => {
+            this.tableLoading=false
+          })
+        },
+        rowDel: function (row, index) {
+          this.$confirm('是否确认删除ID为' + row.$pkColumn.javaField + '吗？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(function () {
+            let ids = []
+            ids.push(row.$pkColumn.javaField)
+            return delObj(ids)
+          }).then(data => {
+            this.$message.success('删除成功')
+            this.getList()
+          })
+        },
+        handleUpdate: function (row, index, done,loading) {
+          putObj(row).then(data => {
+            this.$message.success('修改成功')
+            done()
+            this.getList()
+          }).catch(() => {
+            loading();
+          });
+        },
+        handleSave: function (row, done,loading) {
+          addObj(row).then(data => {
+            this.$message.success('添加成功')
+            done()
+            this.getList()
+          }).catch(() => {
+            loading();
+          });
+        },
+        searchChange(form, done) {
+          this.searchForm = form
+          this.getList(form)
+          done()
+        },
+        refreshChange() {
+          this.getList()
+        }
+      }
     }
 </script>

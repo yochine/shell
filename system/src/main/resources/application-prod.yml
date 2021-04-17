@@ -39,6 +39,18 @@ aj:
     water-mark: shell  #汉字统一使用Unicode,保证程序通过@value读取到是中文，可通过这个在线转换 https://tool.chinaz.com/tools/unicode.aspx 中文转Unicode
 
 
+login:
+  isSingle: false
+  needCode: false
+  enableCache: true
+  publicKey: 040471008F95FFD0E1F8AD1CC886E09402F45CC8A935DAE145B88B3768C80BF6E18879AAE458FEFBBB7114F6D9F11192860359FA50B403293F00592A6061B59F8F
+  privateKey: 3A2C8E1BB7B922FC7CB8E32FE7EFB6C1F3C0BF3ABAFE5560552BF67DA55BFD4B
+  user:
+    admin: 'ums:admin'
+    expire: 1800 # 0.5小时
+
+
+
 knife4j:
   production: true #true则屏蔽swagger资源
 

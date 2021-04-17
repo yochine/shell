@@ -28,7 +28,6 @@ import me.zrxjava.common.base.TreeNode;
 public class ${ClassName}Vo extends $Entity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
 #foreach ($column in $columns)
     #if(!$table.isSuperColumn($column.javaField) && $column.isList == '1' )
         #if($column.javaType == 'Date')
@@ -37,8 +36,6 @@ public class ${ClassName}Vo extends $Entity implements Serializable {
     @ApiModelProperty(value = "$column.columnComment")
     private $column.javaType $column.javaField;
     #end
-
-
     #if($table.tree && $column.isPk == '1')
     @Override
     public Long getId() {
