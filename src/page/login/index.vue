@@ -43,7 +43,7 @@
   </div>
 </template>
 <script>
-import {fetchList} from '@/api/admin/tenant'
+// import {fetchList} from '@/api/admin/tenant'
 import userLogin from './userlogin'
 import codeLogin from './codelogin'
 import thirdLogin from './thirdlogin'
@@ -111,11 +111,11 @@ export default {
     handleCommand (command) {
       setStore({ name: 'tenantId', content: command })
     },
-    getTenantList () {
-      fetchList().then(response => {
-        this.tenantList = response.data.data
-      })
-    },
+    // getTenantList () {
+    //   fetchList().then(response => {
+    //     this.tenantList = response.data.data
+    //   })
+    // },
     watermark () {
       const text = ''
       const canvas = document.createElement('canvas')

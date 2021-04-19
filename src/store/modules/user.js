@@ -1,10 +1,10 @@
 import {getStore, setStore} from '@/util/store'
 import {isURL, validatenull} from '@/util/validate'
-import {loginByMobile, loginBySocial, loginByUsername, logout, refreshToken} from '@/api/login'
+import {loginByMobile, loginBySocial, loginByUsername, logout, refreshToken} from '@/api/login/login'
 import {deepClone, sm2encrypt,loginEncrypt} from '@/util/util'
 import webiste from '@/const/website'
 import {resetRouter} from '@/router/router'
-import {getMenu, getTopMenu} from '@/api/admin/menu'
+import {getMenu, getTopMenu} from '@/api/system/menu'
 
 function addPath(ele, first) {
   const menu = webiste.menu

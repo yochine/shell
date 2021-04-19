@@ -10,7 +10,7 @@
       <div class="setting__header">版权信息</div>
       <div class="setting__body setting__about">
         <p>Version：shell 0.0.1</p>
-        <p>Copyright: shell ©2021-2025</p>
+        <p>Copyright: shell ©2020-2025</p>
       </div>
       <div class="setting__header">设置
         <small>(滑动鼠标下面还有更多设置)</small>
