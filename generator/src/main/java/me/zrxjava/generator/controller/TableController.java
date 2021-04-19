@@ -47,7 +47,7 @@ import java.util.Set;
 @Api("代码生成")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/tool/gen")
+@RequestMapping("/dev/gen")
 public class TableController {
 
 

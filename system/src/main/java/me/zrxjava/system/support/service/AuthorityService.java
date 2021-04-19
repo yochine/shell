@@ -6,11 +6,11 @@ import com.google.common.collect.Sets;
 import lombok.RequiredArgsConstructor;
 import me.zrxjava.common.enums.DataScopeEnum;
 import me.zrxjava.sercurity.bo.UserGrantedAuthority;
-import me.zrxjava.system.modules.ums.entity.Role;
-import me.zrxjava.system.modules.ums.service.IDeptService;
-import me.zrxjava.system.modules.ums.service.IMenuService;
-import me.zrxjava.system.modules.ums.service.IRoleDeptService;
-import me.zrxjava.system.modules.ums.vo.MenuVo;
+import me.zrxjava.system.modules.entity.Role;
+import me.zrxjava.system.modules.service.IDeptService;
+import me.zrxjava.system.modules.service.IMenuService;
+import me.zrxjava.system.modules.service.IRoleDeptService;
+import me.zrxjava.system.modules.vo.MenuVo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
@@ -84,8 +84,8 @@ public class AuthorityService
         roles.forEach(role -> {
             List<MenuVo> menus = menuService.getByRoleId(role.getRoleId());
             if (CollectionUtil.isNotEmpty(menus)){
-                sets.addAll(menus.stream().filter(menu -> StrUtil.isNotBlank(menu.getPermission()))
-                        .map(MenuVo::getPermission).collect(Collectors.toSet()));
+                sets.addAll(menus.stream().map(MenuVo::getPermission)
+                        .filter(StrUtil::isNotBlank).collect(Collectors.toSet()));
             }
         });
         return sets.stream().map(UserGrantedAuthority::new).collect(Collectors.toSet());

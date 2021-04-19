@@ -1,7 +1,7 @@
 package me.zrxjava.system.config;
 
 import me.zrxjava.sercurity.config.SecurityConfig;
-import me.zrxjava.system.modules.login.handler.LogoutSuccessHandlerImpl;
+import me.zrxjava.system.support.handler.LogoutSuccessHandlerImpl;
 import me.zrxjava.system.support.filter.JwtTokenFilter;
 import me.zrxjava.system.support.filter.MyAuthenticationFilter;
 import me.zrxjava.system.support.service.UserDetailsServiceImpl;

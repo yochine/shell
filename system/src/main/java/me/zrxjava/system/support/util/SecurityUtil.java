@@ -2,7 +2,7 @@ package me.zrxjava.system.support.util;
 
 import lombok.extern.slf4j.Slf4j;
 import me.zrxjava.common.exception.BadRequestException;
-import me.zrxjava.system.modules.login.bo.AdminUserDetails;
+import me.zrxjava.system.modules.bo.AdminUserDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

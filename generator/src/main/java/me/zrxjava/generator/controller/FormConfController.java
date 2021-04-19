@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
  * @since 2021-02-05
  */
 @RestController
-@RequestMapping("/gen/form")
+@RequestMapping("/dev/form")
 public class FormConfController {
 
     @Autowired

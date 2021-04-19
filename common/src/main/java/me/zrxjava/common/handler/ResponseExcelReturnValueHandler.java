@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class ResponseExcelReturnValueHandler implements HandlerMethodReturnValueHandler {
 
-	private ResponseSheetWriteHandler responseSheetWriteHandler;
+	private final ResponseSheetWriteHandler responseSheetWriteHandler;
 
 	public ResponseExcelReturnValueHandler(ResponseSheetWriteHandler responseSheetWriteHandler) {
 		this.responseSheetWriteHandler = responseSheetWriteHandler;

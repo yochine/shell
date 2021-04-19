@@ -3,11 +3,11 @@ package me.zrxjava.system.support.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import me.zrxjava.common.component.redis.RedisUtil;
-import me.zrxjava.system.modules.login.bo.AdminUserDetails;
-import me.zrxjava.system.modules.ums.entity.Role;
-import me.zrxjava.system.modules.ums.entity.User;
-import me.zrxjava.system.modules.ums.service.IRoleService;
-import me.zrxjava.system.modules.ums.service.IUserService;
+import me.zrxjava.system.modules.bo.AdminUserDetails;
+import me.zrxjava.system.modules.entity.Role;
+import me.zrxjava.system.modules.entity.User;
+import me.zrxjava.system.modules.service.IRoleService;
+import me.zrxjava.system.modules.service.IUserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -53,7 +53,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             // 数据权限
             Set<Long> deptIds = authorityService.getDeptIds(roles,user.getDeptId());
             // 操作权限
-            Set<GrantedAuthority> grantedAuthorities = authorityService.getGrantedAuthorities(roles,user.getIsAdmin());
+            Set<GrantedAuthority> grantedAuthorities = authorityService.getGrantedAuthorities(roles,user.getIsAdmin().equals(1));
             Set<Long>  roleIds = roles.parallelStream().map(Role::getRoleId).collect(Collectors.toSet());
             AdminUserDetails userDetails =  new AdminUserDetails(user,deptIds,grantedAuthorities,roleIds);
             redisUtil.setCacheObject(USER_ADMIN + ":" + userName,userDetails,USER_EXPIRE);
