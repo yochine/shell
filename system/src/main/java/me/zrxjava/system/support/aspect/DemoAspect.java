@@ -1,5 +1,6 @@
 package me.zrxjava.system.support.aspect;
 
+import cn.hutool.core.util.URLUtil;
 import lombok.SneakyThrows;
 import me.zrxjava.common.base.ResponseResult;
 import me.zrxjava.common.enums.ResultCode;
@@ -11,6 +12,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 演示模式切面
@@ -34,6 +37,13 @@ public class DemoAspect {
     @SneakyThrows
     @Around("requestServer()")
     public Object doAround(ProceedingJoinPoint pjp) {
+
+        HttpServletRequest request = ServletUtils.getRequest();
+        String path = URLUtil.getPath(request.getRequestURI());
+        System.out.println(path);
+        if ("/shell/code".equals(path)){
+            return pjp.proceed();
+        }
         if ("demo".equals(mode)){
             ServletUtils.renderString(ResponseResult.failed(ResultCode.DEMO));
             return null;
