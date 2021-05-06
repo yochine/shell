@@ -26,7 +26,7 @@ axios.defaults.withCredentials = true
 NProgress.configure({
   showSpinner: false
 })
-
+axios.defaults.baseURL="/api"
 // HTTPrequest拦截
 axios.interceptors.request.use(config => {
   NProgress.start() // start progress bar

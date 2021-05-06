@@ -8,7 +8,7 @@ import request from '@/router/axios'
  */
 export function getCode(query, code) {
   return request({
-    url: '/code',
+    url: '/api/code',
     method: 'get',
     params: query,
     responseType: 'arraybuffer'
