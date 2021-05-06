@@ -10,9 +10,13 @@ import me.zrxjava.system.modules.mapper.UserMapper;
 import me.zrxjava.system.modules.service.IUserService;
 import me.zrxjava.system.modules.transfer.UserTransfer;
 import me.zrxjava.system.modules.vo.UserVo;
+import org.apache.ibatis.cursor.Cursor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 /**
  * 系统用户Service业务层处理
@@ -24,6 +28,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
     private final UserTransfer userTransfer;
+    private final UserMapper userMapper;
 
     /**
      * 查询系统用户
@@ -82,5 +87,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Transactional(rollbackFor = Exception.class)
     public Boolean delete(Set<Long> ids) {
         return removeByIds(ids);
+    }
+
+
+    /**
+     * mybatis 流式查询
+     * 采用@Transactional 保证流处于打开状态 但是要注意spring事务失效问题
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public List<UserVo> cursorList() throws IOException {
+        List<UserVo> vos = new ArrayList<>();
+        try (Cursor<UserVo> userVos = userMapper.cursorList()){
+           userVos.forEach(vos::add);
+        }
+        return vos;
     }
 }

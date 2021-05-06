@@ -1,19 +1,23 @@
 
 
 server:
-  port: 8091
+  port: 9091
   shutdown: GRACEFUL #开启优雅停机 GRACEFUL
+  servlet:
+    context-path: /shell
 
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/shell?useUnicode=true&useSSL=false&characterEncoding=utf8
+    url: jdbc:mysql://172.17.0.3:3307/shell?useUnicode=true&useSSL=false&characterEncoding=utf8
     username: root
-    password: root@123456
+    password: root
   main:
     allow-bean-definition-overriding: true
   jackson:
       default-property-inclusion: non_null #为null的属性不返回
+  redis:
+    host: 172.17.0.4
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
@@ -31,8 +35,8 @@ aj:
     timing-clear: 180  #local定时清除过期缓存(单位秒),设置为0代表不执行
     font-type: \u5b8b\u4f53
     interference-options: 2   #滑动干扰项(0/1/2) 1.2.2版本新增
-    jigsaw: classpath:images/jigsaw  #滑动验证，底图路径，不配置将使用默认图片
-    pic-click: classpath:images/pic-click #点击验证，底图路径，不配置将使用默认图片
+    #jigsaw: classpath*:images/jigsaw  #滑动验证，底图路径，不配置将使用默认图片
+    #pic-click: classpath*:images/pic-click #点击验证，底图路径，不配置将使用默认图片
     slip-offset: 5  #校验滑动拼图允许误差偏移量(默认5像素)
     type: default #验证码类型default两种都实例化  blockPuzzle 滑块拼图   clickWord 文字点选
     water-font: \u5b8b\u4f53 # 宋体
@@ -48,11 +52,12 @@ login:
   user:
     admin: 'ums:admin'
     expire: 1800 # 0.5小时
+  mode: demo
 
 
 
 knife4j:
-  production: true #true则屏蔽swagger资源
+  production: false #true则屏蔽swagger资源
 
 jwt:
   tokenHeader: Authorization #JWT存储的请求头

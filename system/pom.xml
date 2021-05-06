@@ -23,6 +23,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <dependency>
             <groupId>me.zrxjava</groupId>
             <artifactId>generator</artifactId>
@@ -38,44 +39,55 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <!-- 跳过单元测试 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <mainClass>me.zrxjava.system.ShellApplication</mainClass>
+                    <skipTests>true</skipTests>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker.maven.plugin.version}</version>
+                <!--将Docker命令绑定到Maven阶段,也就是使用maven的package命令打包时自动构建镜像-->
                 <executions>
                     <execution>
+                        <id>build-image</id>
+                        <phase>package</phase>
                         <goals>
-                            <goal>repackage</goal><!--可以把依赖的包都打包到生成的Jar包中-->
+                            <goal>build</goal>
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <buildArgs>
+                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+                    <forceTags>true</forceTags>
+                    <rm>true</rm>
+                    <imageName>zrxjava/${project.build.finalName}:${project.version}</imageName>
+                    <!--强制覆盖-->
+                    <forceTags>true</forceTags>
+                    <dockerHost>${docker.host}</dockerHost>
+<!--                    <dockerDirectory>${project.basedir}</dockerDirectory>-->
+                    <baseImage>java:8</baseImage>
+                    <volumes>
+                        <volume>/mydata/soft/shell-admin/data</volume>
+                    </volumes>
+                    <entryPoint>["java", "-jar", "-Dspring.profiles.active=prod","/opt/soft/${project.build.finalName}.jar"]</entryPoint>
+                    <resources>
+                        <resource>
+                            <targetPath>/opt/soft/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
             </plugin>
-
-
-            <!--docker build-->
-<!--            <plugin>-->
-<!--                <groupId>com.spotify</groupId>-->
-<!--                <artifactId>dockerfile-maven-plugin</artifactId>-->
-<!--                <version>1.4.13</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>default</id>-->
-<!--                        <goals>-->
-<!--                            <goal>build</goal>-->
-<!--                            <goal>push</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--                <configuration>-->
-<!--                    <repository>${project.groupId}/${project.artifactId}</repository>-->
-<!--                    <tag>${project.version}</tag>-->
-<!--                    <buildArgs>-->
-<!--                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>-->
-<!--                    </buildArgs>-->
-<!--                    <dockerfile>${project.basedir}/Dockerfile</dockerfile>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
         </plugins>
-
     </build>
 
 </project>

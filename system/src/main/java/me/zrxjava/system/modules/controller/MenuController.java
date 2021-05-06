@@ -42,7 +42,7 @@ import java.util.Set;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/ums/menu")
+@RequestMapping("/system/menu")
 @Api(value = "菜单管理",tags = "菜单服务")
 public class MenuController
 {

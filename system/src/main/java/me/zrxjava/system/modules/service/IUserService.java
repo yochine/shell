@@ -1,11 +1,14 @@
 package me.zrxjava.system.modules.service;
 
-import me.zrxjava.system.modules.entity.User;
-import com.baomidou.mybatisplus.extension.service.IService;
-import me.zrxjava.system.modules.dto.UserDto;
-import me.zrxjava.system.modules.vo.UserVo;
-import me.zrxjava.system.modules.criteria.UserCriteria;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
+import me.zrxjava.system.modules.criteria.UserCriteria;
+import me.zrxjava.system.modules.dto.UserDto;
+import me.zrxjava.system.modules.entity.User;
+import me.zrxjava.system.modules.vo.UserVo;
+
+import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -56,4 +59,10 @@ public interface IUserService extends IService<User> {
      */
     public Boolean delete(Set<Long> ids);
 
+    /**
+     * 大数据用户流式查询
+     *
+     * @return
+     */
+    List<UserVo> cursorList() throws IOException;
 }

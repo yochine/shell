@@ -82,6 +82,13 @@ public class ServletUtils
         return (ServletRequestAttributes) attributes;
     }
 
+    public static String renderString(ResponseResult result)
+    {
+
+        HttpServletResponse response = getResponse();
+        return renderString(response,result);
+    }
+
     /**
      * 将字符串渲染到客户端
      *

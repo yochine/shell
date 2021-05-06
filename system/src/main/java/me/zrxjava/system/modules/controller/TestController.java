@@ -2,19 +2,22 @@ package me.zrxjava.system.modules.controller;
 
 import cn.hutool.core.util.RandomUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import me.zrxjava.common.annotation.AccessLimit;
 import me.zrxjava.common.annotation.RedisLock;
 import me.zrxjava.common.base.ResponseResult;
 import me.zrxjava.system.modules.service.IUserService;
+import me.zrxjava.system.modules.vo.UserVo;
 import me.zrxjava.system.support.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author void
@@ -51,9 +54,10 @@ public class TestController {
         return ResponseResult.success(name);
     }
 
-    @PostMapping("/3")
-    public void test1(String username,String password){
-        System.out.println("hello world" + username);
+    @GetMapping("/cursorList")
+    @ApiOperation("大数据用户流式查询")
+    public ResponseResult<List<UserVo>> cursorList() throws IOException {
+        return ResponseResult.success(userService.cursorList());
     }
 
 

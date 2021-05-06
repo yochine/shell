@@ -59,7 +59,7 @@ login:
   user:
     admin: 'ums:admin'
     expire: 86400 # 24小时
-
+  mode: demo
 
 
 
