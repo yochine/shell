@@ -27,7 +27,7 @@
 - ✅   自定义实现数据权限 mp sql注入器
 - 🏗   轻量级http客户端 retrofit
 - 🏗   引入dynamic-datasource-spring-boot-starter 
-- 🏗   MyBatis 流式查询
+- ✅   MyBatis 流式查询
 - 🏗   使用goole的Jib 一键部署docker
 - ✅   反射拷贝对象使用hutool封装cglib的BeanCopier的CglibUtil，高性能拷贝工具类
 - 🏗   抛弃jwt集成sa-token

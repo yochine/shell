@@ -1,6 +1,6 @@
 
 server:
-  port: 9091
+  port: 9099
   shutdown: immediate #开启优雅停机 GRACEFUL
 
 spring:
@@ -20,7 +20,8 @@ spring:
     password:
     port: 6379
     timeout: 6000
-    
+  cache:
+    type: redis
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
@@ -94,6 +95,17 @@ rest:
   read:
       timeout: 5000
 
+justauth:
+  enabled: true
+  type:
+    GITEE:
+      client-id: 5e06fa3a0e0d3a864fd1c9d2d19df7551dbcdc04e130c2b45d24e6d8ab25f97e
+      client-secret: dca4fa85200cb0ce7bc5ffb0c933e3e52da334781d4f42fdbbc9a31edd3b6b92
+      redirect-uri: http://127.0.0.1:9099/oauth/gitee/callback
+    GITHUB:
+      client-id: bd5869573540c0122dab
+      client-secret: c00cde39860c48036afccbcfaecf5ba64194f263
+      redirect-uri: http://127.0.0.1:9099/test/oauth/github/callback
 
 #日志配置 无特殊需求无需更改
 logging:

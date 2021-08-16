@@ -161,7 +161,7 @@ http {
                         proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
                 }
                 location / {
-                        root  /shell/vue/dist;
+                        root  /opt/shell/vue/dist;
                         index  index.html;
                 }
         }
@@ -259,3 +259,7 @@ http {
 -v /var/run/docker.sock:/var/run/docker.sock \
 -v /mydata/portainer/data:/data \
 -d portainer/portainer`
+
+> 修改默认启动端口
+> --bind=":19000" --tunnel-port="18000"
+> http端口是19000 ，ws端口是 18000 。必须两个端口都可以访问才行
