@@ -14,42 +14,42 @@
         <span>
           <el-collapse v-model="activeNames">
             <el-collapse-item  name="1">
-              <div>基于Spring Cloud Gateway</div>
-              <div>基于Spring Cloud Hoxton.SR8</div>
-              <div>基于Spring Boot 2.3.3.RELEASE</div>
-              <div>基于Spring Cloud Alibaba 2.2.2.RELEASE</div>
+              <!-- <div>基于Spring Cloud Gateway</div>
+              <div>基于Spring Cloud Hoxton.SR8</div> -->
+              <div>基于Spring Boot 2.3.4.RELEASE</div>
+              <div>基于Mybatis-Plus 3.4.0</div>
             </el-collapse-item>
             <el-collapse-item  name="2">
-              <div>基于Spring Security OAuth实现鉴权体系；</div>
+              <div>基于Spring Security 5.3.4</div>
               <div>深度定制，支持全流程的登录授权，Server Resource</div>
             </el-collapse-item>
             <el-collapse-item  name="3">
               <div>支持docker部署</div>
-              <div>支持Rancher2 + Kubernetes部署</div>
-              <div>支持企业Pass Rainbond 部署</div>
+              <div>支持Maven一键打包</div>
+              <div>支持Alibaba Cloud Toolkit部署</div>
             </el-collapse-item>
-            <el-collapse-item  name="4">
+            <!-- <el-collapse-item  name="4">
               <div>基于开源LCN 分布式事务解决方案深度定制</div>
               <div>完美兼容2.X，优化集群部署，提升性能</div>
-            </el-collapse-item>
+            </el-collapse-item> -->
             <el-collapse-item  name="5">
               <div>扩展Spring Cache无缝兼容</div>
               <div>支持开发过程无感知</div>
             </el-collapse-item>
-            <el-collapse-item  name="6">
+            <!-- <el-collapse-item  name="6">
               <div>基于activiti5.22整合OAuth2</div>
               <div>支持在线流程设计</div>
             </el-collapse-item>
             <el-collapse-item name="7">
               <div>支持数据库存储SCG路由信息</div>
               <div>支持前端动态编辑</div>
-            </el-collapse-item>
-            <el-collapse-item  name="8">
+            </el-collapse-item> -->
+            <!-- <el-collapse-item  name="8">
               <div>单点登录</div>
               <div>扩展SBA支持服务监听事件redis保存</div>
               <div>扩展Turbine,定制展示UI</div>
               <div>扩展ResourceServer完全屏蔽实现细节开发更简单</div>
-            </el-collapse-item>
+            </el-collapse-item> -->
           </el-collapse>
         </span>
       </div>
