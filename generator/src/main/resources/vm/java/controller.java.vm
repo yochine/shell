@@ -1,0 +1,106 @@
+package ${packageName}.controller;
+
+import java.util.Set;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+import me.zrxjava.common.annotation.Log;
+import me.zrxjava.common.base.ResponseResult;
+import me.zrxjava.common.enums.BusinessType;
+import me.zrxjava.common.validated.group.Insert;
+import me.zrxjava.common.validated.group.Update;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.springframework.validation.annotation.Validated;
+import ${packageName}.dto.${ClassName}Dto;
+import ${packageName}.vo.${ClassName}Vo;
+import ${packageName}.criteria.${ClassName}Criteria;
+import ${packageName}.service.I${ClassName}Service;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import me.zrxjava.common.annotation.ResponseExcel;
+
+
+/**
+ * ${functionName}控制器
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Api("${functionName}")
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/${moduleName}/${businessName}")
+public class ${ClassName}Controller {
+
+    private final I${ClassName}Service ${className}Service;
+
+    /**
+     * 查询${functionName}列表
+     */
+    @PreAuthorize("@ps.check('${permissionPrefix}:pageList')")
+    @GetMapping("/list")
+    @ApiOperation("${functionName}列表")
+#if($table.crud)
+    public ResponseResult<Page<${ClassName}Vo>> pageList(${ClassName}Criteria criteria){
+        return ResponseResult.success(${className}Service.selectPage(criteria));
+    }
+#elseif($table.tree)
+    public ResponseResult<List<${ClassName}Vo>> list(${ClassName}Criteria criteria){
+        return ResponseResult.success(${className}Service.selectList(criteria));
+    }
+#end
+
+    /**
+     * 获取${functionName}详细信息
+     */
+    @ApiOperation("${functionName}详情")
+    @PreAuthorize("@ps.check('${permissionPrefix}:detail')")
+    @GetMapping(value = "/{${pkColumn.javaField}}")
+    public ResponseResult<${ClassName}Vo> detail(@PathVariable("${pkColumn.javaField}") @NotNull ${pkColumn.javaType} ${pkColumn.javaField}){
+        return ResponseResult.success(${className}Service.detail(${pkColumn.javaField}));
+    }
+
+    /**
+     * 新增${functionName}
+     */
+    @ApiOperation("${functionName}新增")
+    @PreAuthorize("@ps.check('${permissionPrefix}:add')")
+    @Log(title = "${functionName}", businessType = BusinessType.INSERT)
+    @PostMapping
+    public ResponseResult<Boolean> add(@RequestBody @Validated(Insert.class) ${ClassName}Dto dto){
+        return ResponseResult.setBody(${className}Service.add(dto));
+    }
+
+    /**
+     * 修改${functionName}
+     */
+    @ApiOperation("${functionName}修改")
+    @PreAuthorize("@ps.check('${permissionPrefix}:edit')")
+    @Log(title = "${functionName}", businessType = BusinessType.UPDATE)
+    @PutMapping
+    public ResponseResult<Boolean> edit(@RequestBody @Validated(Update.class) ${ClassName}Dto dto){
+        return ResponseResult.setBody(${className}Service.edit(dto));
+    }
+
+    /**
+     * 删除${functionName}
+     */
+    @ApiOperation("${functionName}删除")
+    @PreAuthorize("@ps.check('${permissionPrefix}:delete')")
+    @Log(title = "${functionName}", businessType = BusinessType.DELETE)
+	@DeleteMapping
+    public ResponseResult<Boolean> delete(@RequestBody @NotEmpty(message = "缺少参数")  Set<${pkColumn.javaType}> ids){
+        return ResponseResult.setBody(${className}Service.delete(ids));
+    }
+}

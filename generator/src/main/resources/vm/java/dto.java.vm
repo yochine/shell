@@ -1,0 +1,62 @@
+package ${packageName}.dto;
+
+#foreach ($import in $importList)
+import ${import};
+#end
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import me.zrxjava.common.validated.group.Insert;
+import me.zrxjava.common.validated.group.Update;
+import org.springframework.format.annotation.DateTimeFormat;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+
+/**
+ * ${functionName}Dto对象 ${tableName}
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Data
+@ApiModel(value="${functionName}dto对象", description="${tableComment}")
+public class ${ClassName}Dto implements Serializable{
+
+    private static final long serialVersionUID = 1L;
+
+#foreach ($column in $columns)
+    #if(!$table.isSuperColumn($column.javaField) && ($column.isInsert == '1' || $column.isEdit == '1'))
+    @ApiModelProperty(value = "$column.columnComment")
+        #if($column.javaType == 'Date')
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        #end
+        #if($column.isRequired == '1')
+            #if($column.javaType == "String")
+                #if($column.isInsert == '1' && $column.isEdit != '1')
+    @NotBlank(message = "$column.columnComment 不能为空" ,groups = Insert.class)
+                #end
+                #if($column.isInsert != '1' && $column.isEdit == '1')
+    @NotBlank(message = "$column.columnComment 不能为空" ,groups = Update.class)
+                #end
+                #if($column.isInsert == '1' && $column.isEdit == '1')
+    @NotBlank(message = "$column.columnComment 不能为空")
+                #end
+            #else
+                #if($column.isInsert == '1' && $column.isEdit != '1')
+    @NotNull(message = "$column.columnComment 不能为空" ,groups = Insert.class)
+                #end
+                #if($column.isInsert != '1' && $column.isEdit == '1')
+    @NotNull(message = "$column.columnComment 不能为空" ,groups = Update.class)
+                #end
+                #if($column.isInsert == '1' && $column.isEdit == '1')
+    @NotNull(message = "$column.columnComment 不能为空")
+                #end
+            #end
+        #end
+    private $column.javaType $column.javaField;
+    #end
+#end
+
+}

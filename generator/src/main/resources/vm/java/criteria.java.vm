@@ -1,0 +1,38 @@
+package ${packageName}.criteria;
+
+#foreach ($import in $importList)
+import ${import};
+#end
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import me.zrxjava.common.base.BasePage;
+import org.springframework.format.annotation.DateTimeFormat;
+import java.io.Serializable;
+
+/**
+ * ${functionName}查询对象 ${tableName}
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ApiModel(value="${functionName}查询对象", description="${tableComment}")
+public class ${ClassName}Criteria extends BasePage implements Serializable{
+
+    private static final long serialVersionUID = 1L;
+
+    #foreach ($column in $columns)
+        #if($column.isQuery == '1')
+            #if($column.javaType == 'Date')
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+            #end
+    @ApiModelProperty(value = "$column.columnComment")
+    private $column.javaType $column.javaField;
+        #end
+    #end
+
+}

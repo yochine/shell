@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  */
 @Data
 @Component
-@ConfigurationProperties(prefix = "task.pool")
+@ConfigurationProperties(prefix = "async.task.pool")
 public class AsyncTaskProperties {
 
     private int corePoolSize;

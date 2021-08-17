@@ -1,0 +1,101 @@
+package ${packageName}.service.impl;
+#if($tplCategory != 'relation')
+import lombok.RequiredArgsConstructor;
+import me.zrxjava.common.utils.QueryHelper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import ${packageName}.transfer.${ClassName}Transfer;
+import ${packageName}.dto.${ClassName}Dto;
+import ${packageName}.vo.${ClassName}Vo;
+import ${packageName}.criteria.${ClassName}Criteria;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.Set;
+#end
+import ${packageName}.mapper.${ClassName}Mapper;
+import ${packageName}.entity.${ClassName};
+import org.springframework.stereotype.Service;
+import ${packageName}.service.I${ClassName}Service;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+/**
+ * ${functionName}Service业务层处理
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Service
+#if($tplCategory != 'relation')
+@RequiredArgsConstructor
+#end
+public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${ClassName}> implements I${ClassName}Service {
+#if($tplCategory != 'relation')
+    private final ${ClassName}Transfer ${className}Transfer;
+
+    /**
+     * 查询${functionName}
+     * 
+     * @param ${pkColumn.javaField} ${functionName}ID
+     * @return ${functionName}
+     */
+    @Override
+    public ${ClassName}Vo detail(${pkColumn.javaType} ${pkColumn.javaField}) {
+        return ${className}Transfer.toVo(getById(${pkColumn.javaField}));
+    }
+
+    /**
+     * 查询${functionName}列表
+     * 
+     * @param criteria
+     * @return ${functionName}
+     */
+    @Override
+    #if($table.crud)
+    public Page<${ClassName}Vo> selectPage(${ClassName}Criteria criteria){
+        Page<${ClassName}> page = new Page<>(criteria.getCurrent(), criteria.getSize());
+        return ${className}Transfer.toPageVo(this.page(page, QueryHelper.getQueryWrapper(criteria,${ClassName}.class)));
+    }
+    #elseif($table.tree)
+    public List<${ClassName}Vo> selectList(${ClassName}Criteria criteria){
+        List<${ClassName}Vo> vos =  ${className}Transfer.toVos(this.list(QueryHelper.getQueryWrapper(criteria,${ClassName}.class)));
+        if (CollUtil.isEmpty(vos)){
+            return null;
+        }
+        return TreeUtil.listToTree(vos);
+    }
+    #end
+
+    /**
+     * 新增${functionName}
+     * 
+     * @param dto
+     * @return 结果
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean add(${ClassName}Dto dto) {
+        return save(${className}Transfer.toEntity(dto));
+    }
+
+    /**
+     * 修改${functionName}
+     * 
+     * @param dto
+     * @return 结果
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean edit(${ClassName}Dto dto) {
+        return updateById(${className}Transfer.toEntity(dto));
+    }
+
+    /**
+     * 批量删除${functionName}
+     * 
+     * @param ids 需要删除的${functionName}ID
+     * @return 结果
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean delete(Set<${pkColumn.javaType}> ids) {
+        return removeByIds(ids);
+    }
+#end
+}

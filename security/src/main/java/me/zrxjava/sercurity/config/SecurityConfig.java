@@ -2,14 +2,10 @@ package me.zrxjava.sercurity.config;
 
 import me.zrxjava.sercurity.component.JwtAccessDeniedHandler;
 import me.zrxjava.sercurity.component.JwtAuthenticationEntryPoint;
-import me.zrxjava.sercurity.filter.JwtTokenFilter;
-import me.zrxjava.sercurity.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @create 2020-09-16
  */
 
-@Configuration
+//@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${security.ignoreUrl}")
@@ -54,8 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint())
                 .accessDeniedHandler(jwtAccessDeniedHandler())
                 .and()
-                // jwt过滤器
-                .addFilter(jwtFilter());
+                .headers().frameOptions().disable();
+
     }
 
 
@@ -65,10 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-    @Bean
-    public JwtTokenFilter jwtFilter() throws Exception {
-        return  new JwtTokenFilter(authenticationManagerBean());
-    }
+
 
     @Bean
     public JwtAccessDeniedHandler jwtAccessDeniedHandler() {
@@ -80,8 +73,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthenticationEntryPoint();
     }
 
-    @Bean
-    public JwtTokenUtil jwtTokenUtil() {
-        return new JwtTokenUtil();
-    }
+
 }

@@ -12,7 +12,7 @@
         </Console>
 
         <RollingFile name="RollingFile" fileName="${LOG_FILE_PATH}/${SERVICE_NAME}.log"
-                     filePattern="logs/%d{yyyy-MM}/%d{yyyy-MM-dd}.log.gz">
+                     filePattern="${LOG_FILE_PATH}/%d{yyyy-MM}/%d{yyyy-MM-dd}.log.gz">
             <PatternLayout>
                 <Pattern>${LOG_PATTERN}</Pattern>
             </PatternLayout>

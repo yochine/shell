@@ -1,0 +1,40 @@
+package ${packageName}.entity;
+
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
+import me.zrxjava.common.base.BaseEntity;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+/**
+ * ${functionName}对象 ${tableName}
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Data
+@EqualsAndHashCode(callSuper = true)
+@TableName("${tableName}")
+@ApiModel(value="${tableName}对象", description="${tableComment}")
+public class ${ClassName} extends BaseEntity{
+    private static final long serialVersionUID = 1L;
+
+#foreach ($column in $columns)
+    #if(!$table.isSuperColumn($column.javaField))
+    /** $column.columnComment */
+       #if($column.isPk == '1')
+          #if($isIncrement == "1")
+    @TableId(value = "$column.columnName", type = IdType.AUTO)
+          #else
+    @TableId(value = "$column.columnName", type = IdType.ASSIGN_ID)
+          #end
+       #end
+    private $column.javaType $column.javaField;
+
+    #end
+#end
+
+}

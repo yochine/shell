@@ -2,7 +2,6 @@ package me.zrxjava.common.base;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import me.zrxjava.common.enums.ResultCode;
 import org.slf4j.MDC;
@@ -30,6 +29,9 @@ public class ResponseResult<T> implements Serializable {
     private static final String TRACE_ID = "traceId";
 
     public ResponseResult(int code, String message, T data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
         this.traceId = MDC.get(TRACE_ID);
     }
 
@@ -39,7 +41,7 @@ public class ResponseResult<T> implements Serializable {
      * @param data 获取的数据
      */
     public static <T> ResponseResult<T> success(T data) {
-        return new ResponseResult<T>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), data);
+        return new ResponseResult<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), data);
     }
 
     /**
@@ -79,6 +81,14 @@ public class ResponseResult<T> implements Serializable {
 
     /**
      * 失败返回结果
+     * @param message 提示信息
+     */
+    public static <T> ResponseResult<T> failed(int code,String message) {
+        return new ResponseResult<T>(code, message, null);
+    }
+
+    /**
+     * 默认失败
      */
     public static <T> ResponseResult<T> failed() {
         return failed(ResultCode.FAILED);
