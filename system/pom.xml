@@ -76,4 +76,15 @@
         </plugins>
     </build>
 
+
+    <!-- omitted xml -->
+    <distributionManagement>
+        <repository>
+            <!--必须与 settings.xml 的 id 一致-->
+            <id>zrxjava-zhong-cloud-mvnrepo</id>
+            <name>mvnrepo</name>
+            <url>https://zrxjava-maven.pkg.coding.net/repository/zhong-cloud/mvnrepo/</url>
+        </repository>
+    </distributionManagement>
+
 </project>

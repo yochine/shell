@@ -30,7 +30,7 @@ pipeline {
       stage('构建镜像并推送到 CODING Docker 制品库') {
         steps {
           script {
-            docker.withRegistry('https://${CODING_DOCKER_REGISTRY_HOSTNAME}', '${DOCKER_REGISTRY_CREDENTIAL}') {
+            docker.withRegistry('https://${CODING_DOCKER_REGISTRY_HOSTNAME}', '${CODING_DOCKER_REGISTRY_CREDENTIAL}') {
               sh "docker build -t ${CODING_DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} -f ${DOCKERFILE_PATH} ${DOCKER_BUILD_CONTEXT}"
               useCustomStepPlugin(
                 key: 'codingcorp:artifact_docker_push',
@@ -49,7 +49,7 @@ pipeline {
     environment {
        CODING_DOCKER_REG_HOST = "${CCI_CURRENT_TEAM}-docker.pkg.${CCI_CURRENT_DOMAIN}"
        CODING_DOCKER_IMAGE_NAME = "${PROJECT_NAME.toLowerCase()}/${DOCKER_REPO_NAME}/${DOCKER_IMAGE_NAME}"
-       DOCKER_REGISTRY_CREDENTIAL = "${DOCKER_REGISTRY_CREDENTIAL}"
+       CODING_DOCKER_REGISTRY_CREDENTIAL = "${DOCKER_REGISTRY_CREDENTIAL}"
        CODING_DOCKER_REGISTRY_HOSTNAME = "${DOCKER_REGISTRY_HOSTNAME}"
     }
   }
