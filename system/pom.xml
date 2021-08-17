@@ -41,53 +41,32 @@
 
 
     <build>
-        <finalName>shell</finalName>
+        <finalName>shell-api</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <!-- 跳过单元测试 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <skipTests>true</skipTests>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>${docker.maven.plugin.version}</version>
                 <!--将Docker命令绑定到Maven阶段,也就是使用maven的package命令打包时自动构建镜像-->
-                <executions>
-                    <execution>
-                        <id>build-image</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                    </execution>
-                </executions>
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>build-image</id>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>build</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
                 <configuration>
-                    <buildArgs>
-                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
-                    </buildArgs>
-                    <forceTags>true</forceTags>
-                    <rm>true</rm>
-                    <imageName>zrxjava/${project.build.finalName}:${project.version}</imageName>
-                    <!--强制覆盖-->
-                    <forceTags>true</forceTags>
-                    <dockerHost>${docker.host}</dockerHost>
-<!--                    <dockerDirectory>${project.basedir}</dockerDirectory>-->
-                    <baseImage>java:8</baseImage>
-                    <volumes>
-                        <volume>/mydata/soft/shell-admin/data</volume>
-                    </volumes>
-                    <entryPoint>["java", "-jar", "-Dspring.profiles.active=prod","/opt/soft/${project.build.finalName}.jar"]</entryPoint>
+<!--                    <dockerDirectory>/</dockerDirectory>-->
+                    <imageName>zrxjava/shell-api:${project.version}</imageName>
                     <resources>
                         <resource>
-                            <targetPath>/opt/soft/</targetPath>
+                            <targetPath>/</targetPath>
                             <directory>${project.build.directory}</directory>
                             <include>${project.build.finalName}.jar</include>
                         </resource>
