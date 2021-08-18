@@ -9,7 +9,7 @@ server:
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:13306/shell?useUnicode=true&useSSL=false&characterEncoding=utf8
+    url: jdbc:mysql://1.14.137.58:13306/shell?useUnicode=true&useSSL=false&characterEncoding=utf8
     username: root
     password: root@123
   main:
@@ -17,7 +17,7 @@ spring:
   jackson:
       default-property-inclusion: non_null #为null的属性不返回
   redis:
-    host: 127.0.0.1
+    host: 1.14.137.58
     port: 16379
     password: root@123
 
