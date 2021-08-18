@@ -4,20 +4,22 @@ server:
   port: 9091
   shutdown: GRACEFUL #开启优雅停机 GRACEFUL
   servlet:
-    context-path: /shell
+    context-path: /shell-api
 
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3307/shell?useUnicode=true&useSSL=false&characterEncoding=utf8
+    url: jdbc:mysql://127.0.0.1:13306/shell?useUnicode=true&useSSL=false&characterEncoding=utf8
     username: root
-    password: root
+    password: root@123
   main:
     allow-bean-definition-overriding: true
   jackson:
       default-property-inclusion: non_null #为null的属性不返回
   redis:
     host: 127.0.0.1
+    port: 16379
+    password: root@123
 
 
 mybatis-plus:

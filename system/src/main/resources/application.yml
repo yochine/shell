@@ -1,5 +1,7 @@
 
 spring:
+  application:
+    name: shell-api
   profiles:
     active: dev
   lifecycle:

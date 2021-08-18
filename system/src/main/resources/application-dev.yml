@@ -1,8 +1,9 @@
 
 server:
-  port: 9099
+  port: 9091
   shutdown: immediate #开启优雅停机 GRACEFUL
-
+  servlet:
+    context-path: /shell-api
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
