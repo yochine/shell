@@ -41,7 +41,7 @@ public class DemoAspect {
         HttpServletRequest request = ServletUtils.getRequest();
         String path = URLUtil.getPath(request.getRequestURI());
         System.out.println(path);
-        if ("/shell/code".equals(path)){
+        if ("/shell-api/code".equals(path)){
             return pjp.proceed();
         }
         if ("demo".equals(mode)){
