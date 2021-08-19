@@ -1,4 +1,4 @@
-FROM zrxjava-docker.pkg.coding.net/zhong-cloud/rep/java-base:1.0.0
+FROM ccr.ccs.tencentyun.com/zrx-cloud/java-base:master
 
 COPY target/shell-api.jar  /opt
 # Image创建容器时的初始化内存，最大内存，及启动时使用的profile. -c为清除以前启动的数据
