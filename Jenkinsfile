@@ -28,20 +28,15 @@ pipeline {
         }
       }
     }
-    stage('构建镜像并推送到 CODING Docker 制品库') {
+    stage('构建并推送镜像') {
       steps {
         script {
-          docker.withRegistry('https://${CODING_DOCKER_REGISTRY_HOSTNAME}', "${CODING_DOCKER_REGISTRY_CREDENTIAL}") {
-            sh "docker build -t ${CODING_DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} -f ${DOCKERFILE_PATH} ${DOCKER_BUILD_CONTEXT}"
-            useCustomStepPlugin(
-              key: 'codingcorp:artifact_docker_push',
-              version: 'latest',
-              params: [
-                image:"${CODING_DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}",
-                repo:"rep",
-                properties:"[]"
-              ]
-            )
+          docker.withRegistry("https://${DOCKER_REGISTRY_HOSTNAME}", "${DOCKER_REGISTRY_CREDENTIAL}") {
+            // 确保仓库中有可用的 Dockerfile
+            dir("${DOCKER_BUILD_DIR}"){
+              sh "docker build -t ${DOCKER_REPOSITORY_NAME}:${DOCKER_IMAGE_NAME} ."
+            }
+            docker.image("${DOCKER_REPOSITORY_NAME}:${DOCKER_IMAGE_NAME}").push()
           }
         }
       }
@@ -108,9 +103,9 @@ pipeline {
   }
 
   environment {
-    CODING_DOCKER_REG_HOST = "${CCI_CURRENT_TEAM}-docker.pkg.${CCI_CURRENT_DOMAIN}"
-    CODING_DOCKER_IMAGE_NAME = "${PROJECT_NAME.toLowerCase()}/${DOCKER_REPO_NAME}/${DOCKER_IMAGE_NAME}"
-    CODING_DOCKER_REGISTRY_CREDENTIAL = "${DOCKER_REGISTRY_CREDENTIAL}"
-    CODING_DOCKER_REGISTRY_HOSTNAME = "${DOCKER_REGISTRY_HOSTNAME}"
+    DOCKER_REGISTRY_HOSTNAME = "${TCR_REGISTRY_HOSTNAME}"
+    DOCKER_REGISTRY_CREDENTIAL = "${TCR_REGISTRY_CREDENTIAL}"
+    DOCKER_REPOSITORY_NAME = "${TCR_NAMESPACE_NAME}/${TCR_REPOSITORY_NAME}"
+    DOCKER_IMAGE_NAME = "${TCR_IMAGE_NAME}"
   }
 }
